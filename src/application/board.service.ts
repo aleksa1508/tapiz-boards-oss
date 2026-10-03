@@ -11,26 +11,17 @@ import { fail, ok, type ActionResult } from "@/lib/action-result";
 
 export const boardService = {
   async getBoard(projectId: string) {
-    const [columns, activeSprint] = await Promise.all([
-      boardRepo.boardWithStories(projectId),
-      sprintsRepo.findActiveByProject(projectId),
-    ]);
+    const activeSprint = await sprintsRepo.findActiveByProject(projectId);
     if (!activeSprint) {
+      const columns = await boardRepo.columns(projectId);
       return columns.map((column) => ({ ...column, stories: [] }));
     }
-    return columns.map((column) => ({
-      ...column,
-      stories: column.stories.filter((story) => story.sprintId === activeSprint.id),
-    }));
+    return boardRepo.boardWithStories(projectId, activeSprint.id);
   },
 
   async getBacklog(projectId: string) {
-    const [stories, activeSprint] = await Promise.all([
-      boardRepo.storiesByProject(projectId),
-      sprintsRepo.findActiveByProject(projectId),
-    ]);
-    if (!activeSprint) return stories;
-    return stories.filter((story) => story.sprintId !== activeSprint.id);
+    const activeSprint = await sprintsRepo.findActiveByProject(projectId);
+    return boardRepo.backlog(projectId, activeSprint?.id ?? null);
   },
   getColumns: (projectId: string) => boardRepo.columns(projectId),
   getComments: (storyId: string) => boardRepo.comments(storyId),
@@ -44,9 +35,15 @@ export const boardService = {
     return ok(story);
   },
 
+  /** Story lookup scoped to a project — a foreign story ID is reported as missing. */
+  async getProjectStory(projectId: string, storyId: string): Promise<ActionResult<StoryDto>> {
+    const story = await boardRepo.storyById(storyId);
+    if (!story || story.projectId !== projectId) return fail("User story ne postoji");
+    return ok(story);
+  },
+
   async createColumn(projectId: string, name: string): Promise<ActionResult<void>> {
-    const cols = await boardRepo.columns(projectId);
-    await boardRepo.createColumn(projectId, name, cols.length);
+    await boardRepo.createColumn(projectId, name);
     return ok(undefined);
   },
 
@@ -72,11 +69,11 @@ export const boardService = {
     return ok(undefined);
   },
 
-  /** Deleting a column sends its stories to the backlog (FK on delete set null). */
+  /** Deleting a column sends its stories to the backlog (see repo). */
   async removeColumn(projectId: string, columnId: string): Promise<ActionResult<void>> {
     const col = await boardRepo.columnById(columnId);
     if (!col || col.projectId !== projectId) return fail("Kolona ne postoji");
-    await boardRepo.removeColumn(columnId);
+    await boardRepo.removeColumn(projectId, columnId);
     return ok(undefined);
   },
 
@@ -100,10 +97,7 @@ export const boardService = {
     if (sprintId && activeSprint?.id === sprintId && columnId === null) {
       columnId = firstColumnId;
     }
-    if (columnId) {
-      const col = await boardRepo.columnById(columnId);
-      if (!col || col.projectId !== projectId) return fail("Kolona ne postoji");
-    }
+    if (columnId && !columns.some((col) => col.id === columnId)) return fail("Kolona ne postoji");
     if (sprintId) {
       const sprint = await sprintsRepo.findById(sprintId);
       if (!sprint || sprint.projectId !== projectId) return fail("Sprint ne postoji");
@@ -122,32 +116,34 @@ export const boardService = {
     return ok(undefined);
   },
 
-  /** Updates details (column, assignee, sprint, priority). The passed-in `story`
-   *  is used directly — no redundant DB read inside the service. */
-  async updateStoryDetails(
+  /**
+   * Full save from StoryDetailPanel: validates every field first, then writes
+   * title, description and details in a single UPDATE — a rejected sprint or
+   * column can no longer leave a half-applied edit behind.
+   */
+  async updateStoryFull(
     projectId: string,
     story: StoryDto,
-    input: StoryDetailsInput,
+    titleDesc: StoryInput,
+    details: StoryDetailsInput,
   ): Promise<ActionResult<void>> {
-    let sprintId = input.sprintId;
-    let columnId = input.columnId;
+    if (story.projectId !== projectId) return fail("Story ne pripada ovom projektu");
+    let sprintId = details.sprintId;
+    let columnId = details.columnId;
     const [activeSprint, columns] = await Promise.all([
       sprintsRepo.findActiveByProject(projectId),
       boardRepo.columns(projectId),
     ]);
-    const firstColumnId = columns[0]?.id ?? null;
 
     if (columnId && sprintId === null) {
       if (!activeSprint) return fail("Pokrenite sprint pre prebacivanja story-ja na board");
       sprintId = activeSprint.id;
     }
     if (sprintId && activeSprint?.id === sprintId && columnId === null) {
-      columnId = firstColumnId;
+      columnId = columns[0]?.id ?? null;
     }
-
-    if (story.projectId !== projectId) return fail("Story ne pripada ovom projektu");
-    if (input.assigneeId) {
-      const isMember = await projectsRepo.isMember(projectId, input.assigneeId);
+    if (details.assigneeId) {
+      const isMember = await projectsRepo.isMember(projectId, details.assigneeId);
       if (!isMember) return fail("Dodeljena osoba nije član projekta");
     }
     if (sprintId) {
@@ -157,73 +153,76 @@ export const boardService = {
         return fail("Story ne može biti premešten u završen sprint");
       }
     }
-    if (columnId) {
-      const col = await boardRepo.columnById(columnId);
-      if (!col || col.projectId !== projectId) return fail("Kolona ne postoji");
-    }
-    if (columnId !== story.columnId) {
-      const nextPosition = await boardRepo.nextStoryPosition(projectId, columnId);
-      await boardRepo.moveStory(story.id, columnId, nextPosition);
-    }
-    await boardRepo.updateStoryDetails(story.id, {
-      ...input,
-      sprintId,
-      columnId,
-    });
-    return ok(undefined);
-  },
+    if (columnId && !columns.some((col) => col.id === columnId)) return fail("Kolona ne postoji");
 
-  /** Updates title/description and all details in one call — for a full save from StoryDetailPanel. */
-  async updateStoryFull(
-    projectId: string,
-    story: StoryDto,
-    titleDesc: StoryInput,
-    details: StoryDetailsInput,
-  ): Promise<ActionResult<void>> {
+    // A column change appends the story to the end of its new column.
+    const position =
+      columnId !== story.columnId ? await boardRepo.nextStoryPosition(projectId, columnId) : undefined;
     await boardRepo.updateStory(story.id, {
       title: titleDesc.title,
       description: titleDesc.description,
+      assigneeId: details.assigneeId,
+      storyPoints: details.storyPoints,
+      priority: details.priority,
+      dueDate: details.dueDate,
+      sprintId,
+      columnId,
+      position,
     });
-    return this.updateStoryDetails(projectId, story, details);
+    return ok(undefined);
   },
 
   removeStory: (storyId: string) => boardRepo.removeStory(storyId),
 
-  async moveStory(projectId: string, input: MoveStoryInput): Promise<ActionResult<void>> {
-    const storyResult = await this.getStory(input.storyId);
+  /**
+   * Drag & drop. `toIndex` is the drop index in the list the user sees: the
+   * active sprint's stories of the target column, or the backlog. Moving onto the
+   * board pulls the story into the active sprint; moving to the backlog takes it
+   * out of the active sprint. Returns the story as it was before the move.
+   */
+  async moveStory(projectId: string, input: MoveStoryInput): Promise<ActionResult<StoryDto>> {
+    const storyResult = await this.getProjectStory(projectId, input.storyId);
     if (!storyResult.ok) return storyResult;
     const story = storyResult.data;
-    if (story.projectId !== projectId) return fail("Story ne pripada ovom projektu");
-    if (input.toColumnId) {
+    const activeSprint = await sprintsRepo.findActiveByProject(projectId);
+
+    if (input.toColumnId !== null) {
       const col = await boardRepo.columnById(input.toColumnId);
       if (!col || col.projectId !== projectId) return fail("Kolona ne postoji");
-      const activeSprint = await sprintsRepo.findActiveByProject(projectId);
       if (!activeSprint) return fail("Pokrenite sprint pre prebacivanja story-ja na board");
-      if (story.sprintId !== activeSprint.id) {
-        await boardRepo.updateStoryPlacement(story.id, {
-          sprintId: activeSprint.id,
-          columnId: story.columnId,
-        });
-      }
+      await boardRepo.moveStory({
+        projectId,
+        storyId: story.id,
+        columnId: col.id,
+        sprintId: activeSprint.id,
+        toIndex: input.toIndex,
+        scope: { kind: "column", columnId: col.id, sprintId: activeSprint.id },
+      });
+      return ok(story);
     }
-    await boardRepo.moveStory(input.storyId, input.toColumnId, input.toIndex);
-    return ok(undefined);
+
+    const activeSprintId = activeSprint?.id ?? null;
+    await boardRepo.moveStory({
+      projectId,
+      storyId: story.id,
+      columnId: null,
+      sprintId: story.sprintId !== null && story.sprintId === activeSprintId ? null : story.sprintId,
+      toIndex: input.toIndex,
+      scope: { kind: "backlog", activeSprintId },
+    });
+    return ok(story);
   },
 
   async getTasks(projectId: string, storyId: string): Promise<ActionResult<Awaited<ReturnType<typeof boardRepo.tasks>>>> {
-    const storyResult = await this.getStory(storyId);
+    const storyResult = await this.getProjectStory(projectId, storyId);
     if (!storyResult.ok) return storyResult;
-    const story = storyResult.data;
-    if (story.projectId !== projectId) return fail("Story ne pripada ovom projektu");
-    return ok(await boardRepo.tasks(story.id));
+    return ok(await boardRepo.tasks(storyResult.data.id));
   },
 
   async addTask(projectId: string, storyId: string, title: string): Promise<ActionResult<void>> {
-    const storyResult = await this.getStory(storyId);
+    const storyResult = await this.getProjectStory(projectId, storyId);
     if (!storyResult.ok) return storyResult;
-    const story = storyResult.data;
-    if (story.projectId !== projectId) return fail("Story ne pripada ovom projektu");
-    await boardRepo.addTask(story.id, title);
+    await boardRepo.addTask(storyResult.data.id, title);
     return ok(undefined);
   },
 

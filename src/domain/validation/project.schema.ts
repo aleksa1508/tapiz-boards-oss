@@ -22,4 +22,5 @@ export const repoUrlSchema = z
 /** Calendar day / month range (yyyy-mm-dd). */
 export const isoDaySchema = z
   .string()
-  .regex(/^\d{4}-\d{2}-\d{2}$/, "Neispravan datum");
+  .regex(/^\d{4}-\d{2}-\d{2}$/, "Neispravan datum")
+  .refine((day) => !Number.isNaN(Date.parse(`${day}T00:00:00Z`)), "Neispravan datum");

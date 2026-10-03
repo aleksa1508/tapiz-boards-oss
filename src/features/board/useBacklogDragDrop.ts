@@ -13,6 +13,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useToast } from "@tapizlabs/ui";
 import type { StoryDto } from "@/domain/types";
 import { moveStoryAction } from "@/lib/actions/board.actions";
+import { useI18n } from "@/i18n/I18nProvider";
 
 interface UseBacklogDragDropOptions {
   projectId: string;
@@ -29,8 +30,8 @@ export interface BacklogDragDropHandlers {
 }
 
 /**
- * Rang backlog-a (drag-reorder). Rang se čuva u `stories.position`; `moveStoryAction`
- * sa `toColumnId: null` renormalizuje pozicije unutar backlog-a (vidi move.queries).
+ * Backlog ranking (drag-reorder). The rank lives in `stories.position`; `moveStoryAction`
+ * with `toColumnId: null` renumbers the backlog list (see move.queries).
  */
 export function useBacklogDragDrop({
   projectId,
@@ -40,6 +41,7 @@ export function useBacklogDragDrop({
 }: UseBacklogDragDropOptions): BacklogDragDropHandlers {
   const router = useRouter();
   const { showToast } = useToast();
+  const { dict } = useI18n();
   const [activeStory, setActiveStory] = useState<StoryDto | null>(null);
   const snapshot = useRef<StoryDto[] | null>(null);
 
@@ -65,14 +67,19 @@ export function useBacklogDragDrop({
     const reordered = arrayMove(stories, oldIndex, newIndex);
     setStories(reordered);
 
-    const result = await moveStoryAction(projectId, {
-      storyId: String(active.id),
-      toColumnId: null,
-      toIndex: newIndex,
-    });
-    if (!result.ok) {
+    const rollback = (message: string) => {
       if (prev) setStories(prev);
-      showToast(result.error, false);
+      showToast(message, false);
+    };
+    try {
+      const result = await moveStoryAction(projectId, {
+        storyId: String(active.id),
+        toColumnId: null,
+        toIndex: newIndex,
+      });
+      if (!result.ok) rollback(result.error);
+    } catch {
+      rollback(dict.common.networkError);
     }
     router.refresh();
   };

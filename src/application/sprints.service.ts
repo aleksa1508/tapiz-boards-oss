@@ -15,7 +15,6 @@ export const sprintsService = {
     return ok(sprint);
   },
 
-  getSprintStories: (sprintId: string) => boardRepo.storiesBySprint(sprintId),
   getStoriesBySprints: (sprintIds: string[]) => boardRepo.storiesBySprints(sprintIds),
 
   create: (projectId: string, input: SprintInput) =>
@@ -40,17 +39,12 @@ export const sprintsService = {
       return fail("Za završavanje sprinta koristite završni tok sprinta");
     }
     if (status === "active") {
-      const all = await sprintsRepo.listByProject(projectId);
-      if (all.some((s) => s.status === "active" && s.id !== sprintId)) {
-        return fail("Projekat već ima aktivan sprint — prvo ga završite");
-      }
       const columns = await boardRepo.columns(projectId);
-      const firstColumnId = columns[0]?.id ?? null;
-      if (firstColumnId !== null) {
-        // One UPDATE for all sprint stories not yet on the board
-        // (previously: one query per story).
-        await boardRepo.placeUnassignedStoriesInColumn(sprintId, firstColumnId);
-      }
+      const outcome = await sprintsRepo.activate(projectId, sprintId, columns[0]?.id ?? null);
+      if (outcome === "missing") return fail("Sprint ne postoji");
+      if (outcome === "completed") return fail("Završen sprint se ne može ponovo aktivirati");
+      if (outcome === "conflict") return fail("Projekat već ima aktivan sprint — prvo ga završite");
+      return ok(sprint);
     }
     await sprintsRepo.setStatus(sprintId, status);
     return ok(sprint);
@@ -79,27 +73,16 @@ export const sprintsService = {
       }
     }
 
-    const [columns, stories] = await Promise.all([
-      boardRepo.columns(projectId),
-      boardRepo.storiesBySprint(sprint.id),
-    ]);
-    const doneId = doneColumnId(columns);
-    const unfinished = stories.filter((story) => story.columnId !== doneId);
-
-    await boardRepo.finishSprintPlacements(
+    const columns = await boardRepo.columns(projectId);
+    const unfinishedCount = await sprintsRepo.complete(
+      projectId,
       sprint.id,
-      unfinished.map((story) => ({
-        id: story.id,
-        sprintId: targetSprint?.id ?? null,
-        columnId: targetSprint ? story.columnId : null,
-      })),
+      doneColumnId(columns),
+      targetSprint?.id ?? null,
     );
+    if (unfinishedCount === null) return fail("Može se završiti samo aktivan sprint");
 
-    return ok({
-      sprint,
-      unfinishedCount: unfinished.length,
-      targetSprint,
-    });
+    return ok({ sprint, unfinishedCount, targetSprint });
   },
 
   async remove(projectId: string, sprintId: string): Promise<ActionResult<void>> {
@@ -107,7 +90,7 @@ export const sprintsService = {
     if (!sprintResult.ok) return sprintResult;
     const sprint = sprintResult.data;
     if (sprint.projectId !== projectId) return fail("Sprint ne pripada ovom projektu");
-    await sprintsRepo.remove(sprintId);
+    await sprintsRepo.remove(sprint.id, sprint.status);
     return ok(undefined);
   },
 

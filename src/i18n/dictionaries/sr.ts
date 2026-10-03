@@ -29,6 +29,7 @@ export const sr = {
     darkTheme: "Tamna tema",
     optional: "Opciono.",
     language: "Jezik",
+    networkError: "Veza sa serverom nije uspela. Pokušajte ponovo.",
   },
   nav: {
     home: "Početna",

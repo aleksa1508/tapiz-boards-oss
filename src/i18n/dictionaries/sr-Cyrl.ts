@@ -27,6 +27,7 @@ export const srCyrl: Dict = {
     darkTheme: "Тамна тема",
     optional: "Опционо.",
     language: "Језик",
+    networkError: "Веза са сервером није успела. Покушајте поново.",
   },
   nav: {
     home: "Почетна",

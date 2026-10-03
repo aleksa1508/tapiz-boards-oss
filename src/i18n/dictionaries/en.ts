@@ -27,6 +27,7 @@ export const en: Dict = {
     darkTheme: "Dark theme",
     optional: "Optional.",
     language: "Language",
+    networkError: "Couldn't reach the server. Please try again.",
   },
   nav: {
     home: "Home",

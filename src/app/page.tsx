@@ -1,29 +1,28 @@
-import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { projectsService } from "@/application/projects.service";
-import { usersService } from "@/application/users.service";
+import { REVOKED_SESSION_PATH, resolveSession } from "@/lib/guards";
 import { AppShellLayout } from "@/components/layout/AppShellLayout";
 import { LandingPage } from "@/features/landing/LandingPage";
 import { Dashboard } from "@/features/dashboard/Dashboard";
 
 export default async function HomePage() {
-  const session = await auth();
-  if (!session?.user?.id) return <LandingPage />;
+  const session = await resolveSession();
+  if (session.kind === "anonymous") return <LandingPage />;
+  if (session.kind === "revoked") redirect(REVOKED_SESSION_PATH);
 
-  const [profile, projects] = await Promise.all([
-    usersService.getById(session.user.id),
-    projectsService.listAll(),
-  ]);
+  const { profile } = session;
+  const projects = await projectsService.listAll();
   const user = {
-    name: profile ? `${profile.firstName} ${profile.lastName}` : session.user.name ?? "",
-    firstName: profile?.firstName ?? "",
-    lastName: profile?.lastName ?? "",
-    role: session.user.role,
-    email: profile?.email ?? session.user.email ?? undefined,
+    name: `${profile.firstName} ${profile.lastName}`,
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+    role: profile.role,
+    email: profile.email,
   };
 
   return (
     <AppShellLayout user={user}>
-      <Dashboard firstName={user.firstName} projects={projects} currentUserId={session.user.id} />
+      <Dashboard firstName={user.firstName} projects={projects} currentUserId={profile.id} />
     </AppShellLayout>
   );
 }

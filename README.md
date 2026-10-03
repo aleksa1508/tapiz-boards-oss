@@ -85,7 +85,7 @@ No LMS, telemetry, or third-party service keys are needed — this edition has n
 
 ## Everyday use
 
-- **Projects** — any member can create a project; it comes pre-seeded with three columns (`TO DO`, `IN PROGRESS`, `DONE`). Invite others via an invite code or add them directly if you're the owner.
+- **Projects** — any member can create a project; it comes pre-seeded with three columns (`TO DO`, `IN PROGRESS`, `DONE`). Every signed-in user can see and work on every project; the owner manages columns, the public link and Trash.
 - **Trash** — deleting a project soft-deletes it into **Trash**, where the owner can restore it or permanently delete it (which also removes its columns, stories, tasks, comments, and sprints).
 - **Admin** — the account created by `create-admin` is an instance admin. Admin's only special power is user management (`/admin/users`): creating accounts, resetting passwords, activating/deactivating, and deleting users. For day-to-day project work, admin behaves exactly like any other member. The instance always keeps at least one active admin — the last one can't be deactivated or deleted.
 
@@ -99,6 +99,12 @@ Smoke test against a real database (creates and cleans up its own throwaway data
 
 ```bash
 npm run smoke
+```
+
+Board integrity test (drag & drop ordering, concurrent moves, sprint start/finish races, column deletion, cascade delete). Point it at a throwaway database; a pool limit above 1 makes the concurrency checks run in parallel:
+
+```bash
+DATABASE_POOL_LIMIT=8 npm run test:board
 ```
 
 ## License

@@ -15,7 +15,7 @@ export async function getTasks(storyId: string): Promise<StoryTaskDto[]> {
     .select(taskSelect)
     .from(storyTasks)
     .where(eq(storyTasks.storyId, storyId))
-    .orderBy(asc(storyTasks.position), asc(storyTasks.createdAt));
+    .orderBy(asc(storyTasks.position), asc(storyTasks.createdAt), asc(storyTasks.id));
 }
 
 export async function getTaskById(id: string): Promise<StoryTaskDto | null> {

@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, ne, or, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/mysql-core";
 import { db } from "@/infrastructure/db/client";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/infrastructure/db/schema";
 import type { BoardColumnWithStories, MyWorkItem, StoryDto } from "@/domain/types";
 import { getColumns } from "./column.queries";
+import { storyOrder } from "./move.queries";
 
 const assignees = alias(users, "assignees");
 const ownProjects = alias(projects, "own_projects");
@@ -49,37 +50,44 @@ export function storySelect() {
     .leftJoin(sprints, eq(sprints.id, stories.sprintId));
 }
 
-export async function listStories(projectId: string, columnId: string | null): Promise<StoryDto[]> {
-  return storySelect()
-    .where(
-      and(
-        eq(stories.projectId, projectId),
-        columnId === null ? isNull(stories.columnId) : eq(stories.columnId, columnId),
-      ),
-    )
-    .orderBy(asc(stories.position), asc(stories.createdAt));
+/** Board columns with the stories of one sprint (the active one), grouped in a single pass. */
+export async function getBoardWithStories(
+  projectId: string,
+  sprintId: string,
+): Promise<BoardColumnWithStories[]> {
+  const [cols, sprintStories] = await Promise.all([
+    getColumns(projectId),
+    storySelect()
+      .where(and(eq(stories.projectId, projectId), eq(stories.sprintId, sprintId)))
+      .orderBy(...storyOrder),
+  ]);
+  const byColumn = new Map<string, StoryDto[]>(cols.map((col) => [col.id, []]));
+  for (const story of sprintStories) {
+    if (story.columnId !== null) byColumn.get(story.columnId)?.push(story);
+  }
+  return cols.map((col) => ({ ...col, stories: byColumn.get(col.id) ?? [] }));
 }
 
-export async function getBoardWithStories(projectId: string): Promise<BoardColumnWithStories[]> {
-  const cols = await getColumns(projectId);
-  const all = await storySelect()
-    .where(eq(stories.projectId, projectId))
-    .orderBy(asc(stories.position), asc(stories.createdAt));
-  return cols.map((col) => ({
-    ...col,
-    stories: all.filter((s) => s.columnId === col.id),
-  }));
+/** Backlog = every story outside the active sprint (all stories when none is active). */
+export async function getBacklogStories(
+  projectId: string,
+  activeSprintId: string | null,
+): Promise<StoryDto[]> {
+  return storySelect()
+    .where(
+      activeSprintId === null
+        ? eq(stories.projectId, projectId)
+        : and(
+            eq(stories.projectId, projectId),
+            or(isNull(stories.sprintId), ne(stories.sprintId, activeSprintId)),
+          ),
+    )
+    .orderBy(...storyOrder);
 }
 
 export async function getStoryById(id: string): Promise<StoryDto | null> {
   const rows = await storySelect().where(eq(stories.id, id)).limit(1);
   return rows[0] ?? null;
-}
-
-export async function getStoriesBySprint(sprintId: string): Promise<StoryDto[]> {
-  return storySelect()
-    .where(eq(stories.sprintId, sprintId))
-    .orderBy(asc(stories.position), asc(stories.createdAt));
 }
 
 /** Batch variant: one query for all sprints (avoids N queries per sprint on the sprints page). */
@@ -90,18 +98,12 @@ export async function getStoriesBySprints(
   if (sprintIds.length === 0) return byId;
   const rows = await storySelect()
     .where(inArray(stories.sprintId, sprintIds))
-    .orderBy(asc(stories.position), asc(stories.createdAt));
+    .orderBy(...storyOrder);
   for (const row of rows) {
     if (row.sprintId === null) continue;
     (byId[row.sprintId] ??= []).push(row);
   }
   return byId;
-}
-
-export async function getStoriesByProject(projectId: string): Promise<StoryDto[]> {
-  return storySelect()
-    .where(eq(stories.projectId, projectId))
-    .orderBy(asc(stories.position), asc(stories.createdAt));
 }
 
 /** All stories assigned to the user, across all their projects — for "My Work". */
@@ -118,7 +120,8 @@ export async function getStoriesAssignedToUser(userId: string): Promise<MyWorkIt
     .leftJoin(sprints, eq(sprints.id, stories.sprintId))
     .innerJoin(ownProjects, eq(ownProjects.id, stories.projectId))
     .leftJoin(boardColumns, eq(boardColumns.id, stories.columnId))
-    .where(eq(stories.assigneeId, userId))
+    // Trashed projects aren't reachable, so their stories don't belong in My Work.
+    .where(and(eq(stories.assigneeId, userId), isNull(ownProjects.deletedAt)))
     .orderBy(desc(stories.createdAt));
 }
 
@@ -134,63 +137,23 @@ export async function createStory(input: {
   await db.insert(stories).values(input);
 }
 
+/** Every editable story field, written in one statement after the service validated it. */
 export async function updateStory(
   id: string,
-  input: { title: string; description: string },
-): Promise<void> {
-  await db.update(stories).set(input).where(eq(stories.id, id));
-}
-
-export async function updateStoryDetails(
-  id: string,
   input: {
+    title: string;
+    description: string;
     assigneeId: string | null;
     storyPoints: number | null;
     sprintId: string | null;
     columnId: string | null;
     priority: StoryDto["priority"];
     dueDate: string | null;
+    /** Set only when the story changes column (appended to the end of the new one). */
+    position?: number;
   },
 ): Promise<void> {
   await db.update(stories).set(input).where(eq(stories.id, id));
-}
-
-export async function updateStoryPlacement(
-  id: string,
-  input: { sprintId: string | null; columnId: string | null },
-): Promise<void> {
-  await db.update(stories).set(input).where(eq(stories.id, id));
-}
-
-/**
- * Moves all not-yet-placed stories of a sprint (columnId = NULL) into a single column —
- * one UPDATE instead of one query per story (called when starting a sprint).
- */
-export async function placeUnassignedStoriesInColumn(
-  sprintId: string,
-  columnId: string,
-): Promise<void> {
-  await db
-    .update(stories)
-    .set({ columnId })
-    .where(and(eq(stories.sprintId, sprintId), isNull(stories.columnId)));
-}
-
-/**
- * Moves unfinished stories (each to its target sprint/column) and completes the
- * sprint in one transaction — if any step fails, no story moves and the sprint
- * doesn't transition to "completed".
- */
-export async function finishSprintPlacements(
-  sprintId: string,
-  placements: { id: string; sprintId: string | null; columnId: string | null }[],
-): Promise<void> {
-  await db.transaction(async (tx) => {
-    for (const { id, sprintId: toSprintId, columnId } of placements) {
-      await tx.update(stories).set({ sprintId: toSprintId, columnId }).where(eq(stories.id, id));
-    }
-    await tx.update(sprints).set({ status: "completed" }).where(eq(sprints.id, sprintId));
-  });
 }
 
 export async function removeStory(id: string): Promise<void> {

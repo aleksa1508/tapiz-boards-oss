@@ -35,7 +35,7 @@ export type StoryTaskInput = z.infer<typeof storyTaskSchema>;
 export const moveStorySchema = z.object({
   storyId: z.string().min(1),
   toColumnId: z.string().min(1).nullable().default(null),
-  toIndex: z.number().int().min(0),
+  toIndex: z.number().int().min(0).max(100_000),
 });
 export type MoveStoryInput = z.infer<typeof moveStorySchema>;
 

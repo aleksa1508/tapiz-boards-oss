@@ -23,14 +23,9 @@ export async function addProjectMemberAction(projectId: unknown, userId: unknown
     const id = idSchema.parse(projectId);
     const { user } = await requireProjectManager(id);
     const memberId = idSchema.parse(userId);
-    const [result, member] = await Promise.all([
-      projectsService.isMember(id, memberId).then((already) =>
-        already ? fail("Korisnik je već član ovog projekta") : ok(undefined),
-      ),
-      usersService.getById(memberId),
-    ]);
+    const result = await projectsService.addMember(id, memberId);
     if (!result.ok) return result;
-    await eventsService.log(id, user.id, "member_added", member ? fullName(member) : "");
+    await eventsService.log(id, user.id, "member_added", fullName(result.data));
     revalidatePath("/");
     return ok(undefined);
   });
@@ -110,7 +105,7 @@ export async function disablePublicLinkAction(projectId: unknown): Promise<Actio
 export async function setProjectRepoAction(projectId: unknown, url: unknown): Promise<ActionResult> {
   return runAction(async () => {
     const id = idSchema.parse(projectId);
-    const user = await requireProjectMember(id);
+    const { user } = await requireProjectMember(id);
     const parsed = repoUrlSchema.safeParse(url);
     if (!parsed.success) return fail(parsed.error.issues[0].message);
     await projectsService.setRepoUrl(id, parsed.data);
@@ -148,9 +143,7 @@ export async function restoreProjectAction(projectId: unknown): Promise<ActionRe
   return runAction(async () => {
     const id = idSchema.parse(projectId);
     const user = await requireUser();
-    const project = await projectsServiceFindOwnedTrashed(id, user.id);
-    if (!project) return fail("Projekat ne postoji u kanti za otpatke");
-    const result = await projectsService.restore(id);
+    const result = await projectsService.restore(id, user.id);
     if (!result.ok) return result;
     revalidatePath("/");
     revalidatePath("/trash");
@@ -162,16 +155,9 @@ export async function permanentDeleteProjectAction(projectId: unknown): Promise<
   return runAction(async () => {
     const id = idSchema.parse(projectId);
     const user = await requireUser();
-    const project = await projectsServiceFindOwnedTrashed(id, user.id);
-    if (!project) return fail("Projekat ne postoji u kanti za otpatke");
-    const result = await projectsService.permanentDelete(id);
+    const result = await projectsService.permanentDelete(id, user.id);
     if (!result.ok) return result;
     revalidatePath("/trash");
     return ok(undefined);
   });
-}
-
-async function projectsServiceFindOwnedTrashed(projectId: string, userId: string) {
-  const trashed = await projectsService.listTrashForUser(userId);
-  return trashed.find((project) => project.id === projectId) ?? null;
 }

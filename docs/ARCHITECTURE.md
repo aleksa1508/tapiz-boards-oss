@@ -20,7 +20,16 @@ The original schema had no soft-delete pattern anywhere. This edition adds a nul
 
 - Normal queries (`listForUser`, `findById`, invite/public-token lookups) filter on `deletedAt IS NULL`.
 - Deleting a project sets `deletedAt = now()` instead of removing the row — it shows up in **Trash** for its owner, who can restore it (clears `deletedAt`) or permanently delete it.
-- Permanent delete issues a single `DELETE FROM projects WHERE id = ?`. Every child table (`board_columns`, `sprints`, `stories`, `project_members`, `project_events`) declares `onDelete: "cascade"` on its `project_id` foreign key, and `stories` cascades further into `story_tasks` and `comments` — so one delete removes the whole subtree with no orphaned rows.
+- Permanent delete runs in one transaction: it deletes the project's stories first (cascading into `story_tasks` and `comments`), then the project row, whose `onDelete: "cascade"` removes `board_columns`, `sprints`, `project_members` and `project_events`. Stories go first because a single `DELETE FROM projects` reaches them through two cascade paths (`project_id` CASCADE and `board_columns` → `column_id` SET NULL), which MySQL rejects with errno 1452.
+
+## Story ordering
+
+`stories.position` is one integer space per column, shared by every sprint, so a column can hold stories that aren't on screen (a planned sprint's carried-over cards, finished cards of past sprints). Order is therefore only meaningful within the list a user actually sees:
+
+- a board column = the active sprint's stories in that column;
+- the backlog = every story outside the active sprint.
+
+A drag & drop move sends the drop index within that visible list. `moveStory` (in `infrastructure/repositories/board/move.queries.ts`) locks the project row, reads the visible list, splices the story in and renumbers that list to `0..n-1`, writing only rows whose position changed in a single `UPDATE … CASE`. Every list query orders by `(position, created_at, id)`, so ties are deterministic. The same project-row lock serializes sprint start/finish and column create/delete, which is what keeps "one active sprint per project" and "finish runs once" true under concurrent requests.
 
 ## Roles: admin vs. member
 

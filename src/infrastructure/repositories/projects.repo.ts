@@ -1,7 +1,7 @@
 import { cache } from "react";
-import { and, asc, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, count, eq, isNotNull, isNull, sql } from "drizzle-orm";
 import { db } from "@/infrastructure/db/client";
-import { boardColumns, projectMembers, projects, users } from "@/infrastructure/db/schema";
+import { boardColumns, projectMembers, projects, stories, users } from "@/infrastructure/db/schema";
 import type { ProjectsRepo } from "@/application/ports";
 import type { ProjectDto, ProjectMemberDto } from "@/domain/types";
 
@@ -84,7 +84,7 @@ export const projectsRepo: ProjectsRepo = {
     return db
       .select(dtoColumns)
       .from(projects)
-      .where(and(eq(projects.ownerId, userId), sql`${projects.deletedAt} is not null`))
+      .where(and(eq(projects.ownerId, userId), isNotNull(projects.deletedAt)))
       .orderBy(asc(projects.name));
   },
 
@@ -130,19 +130,37 @@ export const projectsRepo: ProjectsRepo = {
   },
 
   async softDelete(id: string): Promise<void> {
-    await db.update(projects).set({ deletedAt: new Date() }).where(eq(projects.id, id));
+    await db
+      .update(projects)
+      .set({ deletedAt: new Date() })
+      .where(and(eq(projects.id, id), isNull(projects.deletedAt)));
   },
 
-  async restore(id: string): Promise<void> {
-    await db.update(projects).set({ deletedAt: null }).where(eq(projects.id, id));
+  async restore(id: string, ownerId: string): Promise<boolean> {
+    const [result] = await db
+      .update(projects)
+      .set({ deletedAt: null })
+      .where(and(eq(projects.id, id), eq(projects.ownerId, ownerId), isNotNull(projects.deletedAt)));
+    return result.affectedRows > 0;
   },
 
-  async permanentDelete(id: string): Promise<void> {
-    // All child tables declare onDelete: "cascade" on their project_id FK
-    // (board_columns, sprints, stories, project_events, project_members), and
-    // stories cascades further into story_tasks/comments. A single delete is
-    // sufficient — verified against the generated migration SQL.
-    await db.delete(projects).where(eq(projects.id, id));
+  async permanentDelete(id: string, ownerId: string): Promise<boolean> {
+    return db.transaction(async (tx) => {
+      const [target] = await tx
+        .select({ id: projects.id })
+        .from(projects)
+        .where(and(eq(projects.id, id), eq(projects.ownerId, ownerId), isNotNull(projects.deletedAt)))
+        .for("update");
+      if (!target) return false;
+      // Stories first: a single DELETE on projects reaches stories through two
+      // cascade paths (project_id CASCADE and board_columns → column_id SET NULL),
+      // and MySQL rejects the SET NULL update on a row whose project is already
+      // gone (errno 1452). Stories cascade into story_tasks/comments; everything
+      // else (columns, sprints, retro items, members, events) cascades from projects.
+      await tx.delete(stories).where(eq(stories.projectId, id));
+      await tx.delete(projects).where(eq(projects.id, id));
+      return true;
+    });
   },
 
   async transferOwnership(id: string, newOwnerId: string): Promise<void> {
@@ -160,11 +178,12 @@ export const projectsRepo: ProjectsRepo = {
   },
 
   async countOwnedByUser(userId: string): Promise<number> {
-    const rows = await db
-      .select({ id: projects.id })
+    const [row] = await db
+      .select({ n: count() })
       .from(projects)
-      .where(and(eq(projects.ownerId, userId), isNull(projects.deletedAt)));
-    return rows.length;
+      // Trashed projects count too — their owner FK still blocks deleting the account.
+      .where(eq(projects.ownerId, userId));
+    return row?.n ?? 0;
   },
 
   async members(projectId: string): Promise<ProjectMemberDto[]> {
@@ -183,8 +202,10 @@ export const projectsRepo: ProjectsRepo = {
 
   isMember: isMemberCached,
 
-  async addMember(projectId: string, userId: string): Promise<void> {
-    await db.insert(projectMembers).values({ projectId, userId });
+  async addMember(projectId: string, userId: string): Promise<boolean> {
+    // INSERT IGNORE: the (project_id, user_id) primary key makes a double submit a no-op.
+    const [result] = await db.insert(projectMembers).ignore().values({ projectId, userId });
+    return result.affectedRows > 0;
   },
 
   async removeMember(projectId: string, userId: string): Promise<void> {

@@ -1,11 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { columnSchema } from "@/domain/validation/story.schema";
 import { boardService } from "@/application/board.service";
 import { requireProjectManager } from "@/lib/guards";
 import { ok, fail, type ActionResult } from "@/lib/action-result";
+import { revalidateBoard } from "@/lib/revalidate";
 import { runAction } from "../helpers";
 
 const idSchema = z.string().min(1);
@@ -15,12 +15,6 @@ const wipLimitSchema = z.preprocess(
   (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
   z.number().int().min(1).max(99).nullable(),
 );
-
-export async function revalidateBoard(projectId: string): Promise<void> {
-  revalidatePath(`/projects/${projectId}/board`);
-  revalidatePath(`/projects/${projectId}/backlog`);
-  revalidatePath(`/projects/${projectId}/sprints`);
-}
 
 export async function createColumnAction(projectId: unknown, input: unknown): Promise<ActionResult> {
   return runAction(async () => {

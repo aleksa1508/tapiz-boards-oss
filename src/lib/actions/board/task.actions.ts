@@ -7,7 +7,7 @@ import { eventsService } from "@/application/events.service";
 import { requireProjectMember } from "@/lib/guards";
 import { ok, fail, type ActionResult } from "@/lib/action-result";
 import { runAction } from "../helpers";
-import { revalidateBoard } from "./column.actions";
+import { revalidateBoard } from "@/lib/revalidate";
 
 const idSchema = z.string().min(1);
 
@@ -46,7 +46,7 @@ export async function setStoryTaskDoneAction(
 ): Promise<ActionResult> {
   return runAction(async () => {
     const pid = idSchema.parse(projectId);
-    const user = await requireProjectMember(pid);
+    const { user } = await requireProjectMember(pid);
     const isDone = z.boolean().parse(done);
     const infoResult = await boardService.setTaskDone(pid, idSchema.parse(taskId), isDone);
     if (!infoResult.ok) return infoResult;

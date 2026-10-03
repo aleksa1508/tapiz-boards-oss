@@ -27,6 +27,7 @@ export const hu: Dict = {
     darkTheme: "Sötét téma",
     optional: "Opcionális.",
     language: "Nyelv",
+    networkError: "Nem sikerült elérni a szervert. Próbálja újra.",
   },
   nav: {
     home: "Kezdőlap",

@@ -3,6 +3,7 @@ import { projectsService } from "@/application/projects.service";
 import { boardService } from "@/application/board.service";
 import { getDict } from "@/i18n/server";
 import { PublicBoardView } from "@/features/board/PublicBoardView";
+import { toPublicColumns } from "@/features/board/public-board";
 
 /**
  * Public read-only board view via token — no login required.
@@ -28,7 +29,7 @@ export default async function PublicBoardPage({
     <PublicBoardView
       title={project.name}
       subtitle={dict.board.publicBoardSubtitle}
-      columns={columns}
+      columns={toPublicColumns(columns)}
       dict={dict}
     />
   );

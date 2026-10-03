@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
   finishSprintSchema,
@@ -10,17 +9,12 @@ import {
 } from "@/domain/validation/sprint.schema";
 import { sprintsService } from "@/application/sprints.service";
 import { eventsService } from "@/application/events.service";
-import { isProjectManager, requireProjectMember } from "@/lib/guards";
+import { requireProjectMember } from "@/lib/guards";
+import { revalidateBoard } from "@/lib/revalidate";
 import { ok, fail, type ActionResult } from "@/lib/action-result";
 import { runAction } from "./helpers";
 
 const idSchema = z.string().min(1);
-
-function revalidateSprints(projectId: string) {
-  revalidatePath(`/projects/${projectId}/sprints`);
-  revalidatePath(`/projects/${projectId}/board`);
-  revalidatePath(`/projects/${projectId}/backlog`);
-}
 
 export async function createSprintAction(projectId: unknown, input: unknown): Promise<ActionResult> {
   return runAction(async () => {
@@ -29,7 +23,7 @@ export async function createSprintAction(projectId: unknown, input: unknown): Pr
     const parsed = sprintSchema.safeParse(input);
     if (!parsed.success) return fail(parsed.error.issues[0].message);
     await sprintsService.create(pid, parsed.data);
-    revalidateSprints(pid);
+    revalidateBoard(pid);
     return ok(undefined);
   });
 }
@@ -41,7 +35,7 @@ export async function setSprintStatusAction(
 ): Promise<ActionResult> {
   return runAction(async () => {
     const pid = idSchema.parse(projectId);
-    const user = await requireProjectMember(pid);
+    const { user } = await requireProjectMember(pid);
     const parsedStatus = sprintStatusSchema.safeParse(status);
     if (!parsedStatus.success) return fail("Nepoznat status sprinta");
     const sprintResult = await sprintsService.setStatus(pid, idSchema.parse(sprintId), parsedStatus.data);
@@ -52,7 +46,7 @@ export async function setSprintStatusAction(
     } else if (parsedStatus.data === "completed") {
       await eventsService.log(pid, user.id, "sprint_completed", sprint.name);
     }
-    revalidateSprints(pid);
+    revalidateBoard(pid);
     return ok(undefined);
   });
 }
@@ -64,7 +58,7 @@ export async function finishSprintAction(
 ): Promise<ActionResult> {
   return runAction(async () => {
     const pid = idSchema.parse(projectId);
-    const user = await requireProjectMember(pid);
+    const { user } = await requireProjectMember(pid);
     const parsed = finishSprintSchema.safeParse(input);
     if (!parsed.success) return fail(parsed.error.issues[0].message);
     const result = await sprintsService.finishSprint(
@@ -74,7 +68,7 @@ export async function finishSprintAction(
     );
     if (!result.ok) return result;
     await eventsService.log(pid, user.id, "sprint_completed", result.data.sprint.name);
-    revalidateSprints(pid);
+    revalidateBoard(pid);
     return ok(undefined);
   });
 }
@@ -85,7 +79,7 @@ export async function deleteSprintAction(projectId: unknown, sprintId: unknown):
     await requireProjectMember(pid);
     const result = await sprintsService.remove(pid, idSchema.parse(sprintId));
     if (!result.ok) return result;
-    revalidateSprints(pid);
+    revalidateBoard(pid);
     return ok(undefined);
   });
 }
@@ -110,12 +104,12 @@ export async function addSprintRetroItemAction(
 ): Promise<ActionResult> {
   return runAction(async () => {
     const pid = idSchema.parse(projectId);
-    const user = await requireProjectMember(pid);
+    const { user } = await requireProjectMember(pid);
     const parsed = retroItemSchema.safeParse(input);
     if (!parsed.success) return fail(parsed.error.issues[0].message);
     const result = await sprintsService.addRetroItem(pid, idSchema.parse(sprintId), user.id, parsed.data);
     if (!result.ok) return result;
-    revalidateSprints(pid);
+    revalidateBoard(pid);
     return ok(undefined);
   });
 }
@@ -126,11 +120,10 @@ export async function deleteSprintRetroItemAction(
 ): Promise<ActionResult> {
   return runAction(async () => {
     const pid = idSchema.parse(projectId);
-    const user = await requireProjectMember(pid);
-    const canModerate = await isProjectManager(pid, user);
+    const { user, canManage: canModerate } = await requireProjectMember(pid);
     const result = await sprintsService.removeRetroItem(pid, idSchema.parse(itemId), user.id, canModerate);
     if (!result.ok) return result;
-    revalidateSprints(pid);
+    revalidateBoard(pid);
     return ok(undefined);
   });
 }

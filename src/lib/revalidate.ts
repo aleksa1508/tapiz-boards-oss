@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
 
-/** Osvežava keširane server-rendered stranice tima nakon mutacije (web action ili mobile API ruta). */
-export function revalidateBoard(teamId: string): void {
-  revalidatePath(`/teams/${teamId}/board`);
-  revalidatePath(`/teams/${teamId}/backlog`);
-  revalidatePath(`/teams/${teamId}/sprints`);
+/** Refreshes the cached server-rendered project pages after a board mutation. */
+export function revalidateBoard(projectId: string): void {
+  revalidatePath(`/projects/${projectId}/board`);
+  revalidatePath(`/projects/${projectId}/backlog`);
+  revalidatePath(`/projects/${projectId}/sprints`);
 }

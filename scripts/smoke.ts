@@ -86,11 +86,13 @@ async function main() {
     const trash = await projectsService.listTrashForUser(admin.id);
     check("soft-deleted project appears in trash", trash.some((p) => p.id === projectId));
 
-    await projectsService.restore(projectId);
+    await projectsService.restore(projectId, admin.id);
     const afterRestore = await projectsRepo.findById(projectId);
     check("restored project visible again via findById", afterRestore?.id === projectId);
 
-    await projectsService.permanentDelete(projectId);
+    // Permanent delete only works from Trash, exactly like the UI action.
+    await projectsService.softDelete(projectId);
+    await projectsService.permanentDelete(projectId, admin.id);
     const afterPermanentDelete = await projectsRepo.findByIdIncludingDeleted(projectId);
     check("permanently deleted project is gone (including deleted)", afterPermanentDelete === null);
 

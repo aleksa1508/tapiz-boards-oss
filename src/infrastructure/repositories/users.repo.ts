@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { and, asc, eq, ne } from "drizzle-orm";
+import { and, asc, count, eq, ne } from "drizzle-orm";
 import { db } from "@/infrastructure/db/client";
 import { users } from "@/infrastructure/db/schema";
 import type { NewUser, UserRecord, UsersRepo } from "@/application/ports";
@@ -30,11 +30,11 @@ export const usersRepo: UsersRepo = {
   },
 
   async countActiveAdmins(): Promise<number> {
-    const rows = await db
-      .select({ id: users.id })
+    const [row] = await db
+      .select({ n: count() })
       .from(users)
       .where(and(eq(users.role, "admin"), eq(users.isActive, true)));
-    return rows.length;
+    return row?.n ?? 0;
   },
 
   findById: findByIdCached,
@@ -82,9 +82,9 @@ export const usersRepo: UsersRepo = {
 /** Excludes `excludeUserId` — used by the last-active-admin check when evaluating
  * whether deactivating/deleting a specific admin would leave zero admins. */
 export async function countActiveAdminsExcluding(excludeUserId: string): Promise<number> {
-  const rows = await db
-    .select({ id: users.id })
+  const [row] = await db
+    .select({ n: count() })
     .from(users)
     .where(and(eq(users.role, "admin"), eq(users.isActive, true), ne(users.id, excludeUserId)));
-  return rows.length;
+  return row?.n ?? 0;
 }

@@ -16,14 +16,17 @@ export interface ProjectsRepo {
   /** Creates a project with default board columns and the owner as its first member. */
   create(ownerId: string, name: string): Promise<ProjectDto>;
   softDelete(id: string): Promise<void>;
-  restore(id: string): Promise<void>;
-  /** Permanently deletes the project and all child data (columns, sprints, stories, comments, events, members). */
-  permanentDelete(id: string): Promise<void>;
+  /** Restores a trashed project of `ownerId`; false if no such project is in Trash. */
+  restore(id: string, ownerId: string): Promise<boolean>;
+  /** Permanently deletes a trashed project of `ownerId` and all child data
+   * (columns, sprints, stories, comments, events, members); false if none matched. */
+  permanentDelete(id: string, ownerId: string): Promise<boolean>;
   transferOwnership(id: string, newOwnerId: string): Promise<void>;
-  /** Non-deleted projects owned by the user — used by admin account-deletion checks. */
+  /** Projects owned by the user, including Trash — used by admin account-deletion checks. */
   countOwnedByUser(userId: string): Promise<number>;
   members(projectId: string): Promise<ProjectMemberDto[]>;
   isMember(projectId: string, userId: string): Promise<boolean>;
-  addMember(projectId: string, userId: string): Promise<void>;
+  /** False when the user is already a member (primary key conflict). */
+  addMember(projectId: string, userId: string): Promise<boolean>;
   removeMember(projectId: string, userId: string): Promise<void>;
 }

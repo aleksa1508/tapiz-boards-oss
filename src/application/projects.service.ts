@@ -1,5 +1,6 @@
-import type { ProjectDto } from "@/domain/types";
+import type { ProjectDto, UserDto } from "@/domain/types";
 import { projectsRepo } from "@/infrastructure/repositories/projects.repo";
+import { usersRepo } from "@/infrastructure/repositories/users.repo";
 import { fail, ok, type ActionResult } from "@/lib/action-result";
 
 export const projectsService = {
@@ -18,6 +19,15 @@ export const projectsService = {
   /** Creates a new project with default board columns; owner becomes the first member. */
   async create(ownerId: string, name: string): Promise<ActionResult<ProjectDto>> {
     return ok(await projectsRepo.create(ownerId, name));
+  },
+
+  /** Adds an active account to the project; a repeated request is rejected, not duplicated. */
+  async addMember(projectId: string, userId: string): Promise<ActionResult<UserDto>> {
+    const user = await usersRepo.findById(userId);
+    if (!user || !user.isActive) return fail("Korisnik ne postoji");
+    const added = await projectsRepo.addMember(projectId, userId);
+    if (!added) return fail("Korisnik je već član ovog projekta");
+    return ok(user);
   },
 
   /** Sadržaj člana (story-ji, komentari) se NE briše — samo članstvo. */
@@ -46,13 +56,15 @@ export const projectsService = {
     return ok(undefined);
   },
 
-  async restore(projectId: string): Promise<ActionResult<void>> {
-    await projectsRepo.restore(projectId);
-    return ok(undefined);
+  /** Only the owner restores, and only a project that is actually in Trash. */
+  async restore(projectId: string, ownerId: string): Promise<ActionResult<void>> {
+    const restored = await projectsRepo.restore(projectId, ownerId);
+    return restored ? ok(undefined) : fail("Projekat ne postoji u kanti za otpatke");
   },
 
-  async permanentDelete(projectId: string): Promise<ActionResult<void>> {
-    await projectsRepo.permanentDelete(projectId);
-    return ok(undefined);
+  /** Only the owner deletes permanently, and only from Trash. */
+  async permanentDelete(projectId: string, ownerId: string): Promise<ActionResult<void>> {
+    const deleted = await projectsRepo.permanentDelete(projectId, ownerId);
+    return deleted ? ok(undefined) : fail("Projekat ne postoji u kanti za otpatke");
   },
 };

@@ -1,8 +1,22 @@
-import { and, asc, eq, lt, sql } from "drizzle-orm";
+import { and, asc, eq, gte, lt, sql } from "drizzle-orm";
 import { db } from "@/infrastructure/db/client";
 import { stories, projectEvents, users } from "@/infrastructure/db/schema";
 import type { EventsRepo } from "@/application/ports";
 import type { ActivityDay, ProjectEventDto, ProjectEventType } from "@/domain/types";
+
+/**
+ * [start, end) bounds for whole days, as 'yyyy-mm-dd 00:00:00' literals compared
+ * in the session time zone exactly like `date(created_at)` was — but sargable,
+ * so the (project_id, created_at) index is used instead of scanning every event.
+ */
+function dayRange(fromIso: string, toIso: string) {
+  const end = new Date(`${toIso}T00:00:00Z`);
+  end.setUTCDate(end.getUTCDate() + 1);
+  return and(
+    gte(projectEvents.createdAt, sql`${`${fromIso} 00:00:00`}`),
+    lt(projectEvents.createdAt, sql`${`${end.toISOString().slice(0, 10)} 00:00:00`}`),
+  );
+}
 
 export const eventsRepo: EventsRepo = {
   async add(
@@ -17,8 +31,8 @@ export const eventsRepo: EventsRepo = {
 
   /** Retention: deletes events older than `cutoff`. Returns the number of rows deleted. */
   async deleteOlderThan(cutoff: Date): Promise<number> {
-    const result = await db.delete(projectEvents).where(lt(projectEvents.createdAt, cutoff));
-    return (result[0] as { affectedRows: number }).affectedRows ?? 0;
+    const [result] = await db.delete(projectEvents).where(lt(projectEvents.createdAt, cutoff));
+    return result.affectedRows;
   },
 
   async listByDay(projectId: string, dayIso: string): Promise<ProjectEventDto[]> {
@@ -34,9 +48,9 @@ export const eventsRepo: EventsRepo = {
       .from(projectEvents)
       .innerJoin(users, eq(users.id, projectEvents.actorId))
       .where(
-        and(eq(projectEvents.projectId, projectId), sql`date(${projectEvents.createdAt}) = ${dayIso}`),
+        and(eq(projectEvents.projectId, projectId), dayRange(dayIso, dayIso)),
       )
-      .orderBy(asc(projectEvents.createdAt));
+      .orderBy(asc(projectEvents.createdAt), asc(projectEvents.id));
   },
 
   async daysInRange(projectId: string, fromIso: string, toIso: string): Promise<ActivityDay[]> {
@@ -49,7 +63,7 @@ export const eventsRepo: EventsRepo = {
       .where(
         and(
           eq(projectEvents.projectId, projectId),
-          sql`date(${projectEvents.createdAt}) between ${fromIso} and ${toIso}`,
+          dayRange(fromIso, toIso),
         ),
       )
       .groupBy(sql`date_format(${projectEvents.createdAt}, '%Y-%m-%d')`);

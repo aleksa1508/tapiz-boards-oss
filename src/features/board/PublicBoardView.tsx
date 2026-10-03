@@ -1,15 +1,15 @@
 "use client";
 
 import { Badge, InfoBanner, PageHeader, Surface } from "@tapizlabs/ui";
-import type { BoardColumnWithStories } from "@/domain/types";
 import { isOverdue } from "@/domain/types";
+import type { PublicBoardColumn } from "./public-board";
 import type { Dict } from "@/i18n/dictionaries";
 import { formatIsoDate, todayIso } from "@/lib/date";
 
 interface PublicBoardViewProps {
   title: string;
   subtitle: string;
-  columns: BoardColumnWithStories[];
+  columns: PublicBoardColumn[];
   dict: Dict;
 }
 

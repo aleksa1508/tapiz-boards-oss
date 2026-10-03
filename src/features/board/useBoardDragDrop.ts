@@ -9,10 +9,12 @@ import {
   type DragOverEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 import { useToast } from "@tapizlabs/ui";
 import { useRouter } from "next/navigation";
 import type { BoardColumnWithStories, StoryDto } from "@/domain/types";
 import { moveStoryAction } from "@/lib/actions/board.actions";
+import { useI18n } from "@/i18n/I18nProvider";
 
 interface UseBoardDragDropOptions {
   projectId: string;
@@ -42,6 +44,7 @@ export function useBoardDragDrop({
 }: UseBoardDragDropOptions): BoardDragDropHandlers {
   const router = useRouter();
   const { showToast } = useToast();
+  const { dict } = useI18n();
   const [activeStory, setActiveStory] = useState<StoryDto | null>(null);
   const snapshot = useRef<BoardColumnWithStories[] | null>(null);
 
@@ -76,46 +79,49 @@ export function useBoardDragDrop({
   };
 
   const handleDragEnd = async (event: DragEndEvent) => {
-    if (dragDisabled) return;
     const { active, over } = event;
     setActiveStory(null);
     const prev = snapshot.current;
     snapshot.current = null;
-    if (!over) {
+    if (dragDisabled || !over) {
       if (prev) setColumns(prev);
       return;
     }
 
-    let nextCols: BoardColumnWithStories[] = columns;
-    setColumns((cols) => {
-      const fromId = findColumnId(cols, String(active.id));
-      const toId = findColumnId(cols, String(over.id));
-      if (!fromId || !toId) return cols;
-      if (fromId === toId && active.id !== over.id) {
-        const col = cols.find((c) => c.id === fromId)!;
-        const oldIndex = col.stories.findIndex((s) => s.id === active.id);
-        const newIndex = col.stories.findIndex((s) => s.id === over.id);
-        if (oldIndex === -1 || newIndex === -1) return cols;
-        const next = [...col.stories];
-        const [moved] = next.splice(oldIndex, 1);
-        next.splice(newIndex, 0, moved);
-        nextCols = cols.map((c) => (c.id === fromId ? { ...c, stories: next } : c));
-        return nextCols;
+    // Final order is derived from the current render's columns (cross-column
+    // moves were already applied in handleDragOver) — not from inside a state
+    // updater, which React may run after this handler has continued.
+    const storyId = String(active.id);
+    let nextCols = columns;
+    const fromId = findColumnId(columns, storyId);
+    const toId = findColumnId(columns, String(over.id));
+    if (fromId && fromId === toId && active.id !== over.id) {
+      const col = columns.find((c) => c.id === fromId)!;
+      const oldIndex = col.stories.findIndex((s) => s.id === active.id);
+      const newIndex = col.stories.findIndex((s) => s.id === over.id);
+      if (oldIndex !== -1 && newIndex !== -1) {
+        nextCols = columns.map((c) =>
+          c.id === fromId ? { ...c, stories: arrayMove(c.stories, oldIndex, newIndex) } : c,
+        );
+        setColumns(nextCols);
       }
-      nextCols = cols;
-      return cols;
-    });
+    }
 
-    const targetCol = nextCols.find((c) => c.stories.some((s) => s.id === active.id));
+    const targetCol = nextCols.find((c) => c.stories.some((s) => s.id === storyId));
     if (!targetCol) return;
-    const result = await moveStoryAction(projectId, {
-      storyId: String(active.id),
-      toColumnId: targetCol.id,
-      toIndex: targetCol.stories.findIndex((s) => s.id === active.id),
-    });
-    if (!result.ok) {
+    const toIndex = targetCol.stories.findIndex((s) => s.id === storyId);
+    const unchanged = prev?.find((c) => c.id === targetCol.id)?.stories.findIndex((s) => s.id === storyId);
+    if (unchanged === toIndex) return;
+
+    const rollback = (message: string) => {
       if (prev) setColumns(prev);
-      showToast(result.error, false);
+      showToast(message, false);
+    };
+    try {
+      const result = await moveStoryAction(projectId, { storyId, toColumnId: targetCol.id, toIndex });
+      if (!result.ok) rollback(result.error);
+    } catch {
+      rollback(dict.common.networkError);
     }
     router.refresh();
   };

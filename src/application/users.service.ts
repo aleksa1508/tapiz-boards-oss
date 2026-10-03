@@ -12,6 +12,12 @@ import { fail, ok, type ActionResult } from "@/lib/action-result";
 
 const BCRYPT_ROUNDS = 10;
 
+function isForeignKeyViolation(err: unknown): boolean {
+  const code = (err as { code?: string; cause?: { code?: string } } | null)?.code
+    ?? (err as { cause?: { code?: string } } | null)?.cause?.code;
+  return code === "ER_ROW_IS_REFERENCED_2" || code === "ER_ROW_IS_REFERENCED";
+}
+
 export const usersService = {
   listAll: () => usersRepo.listAll(),
   getById: (id: string) => usersRepo.findById(id),
@@ -94,7 +100,7 @@ export const usersService = {
     return ok(undefined);
   },
 
-  /** Blocks deleting the last remaining active admin, or a user who still owns non-deleted projects. */
+  /** Blocks deleting the last remaining active admin, a project owner (incl. Trash), or an author of existing content. */
   async adminDeleteUser(userId: string): Promise<ActionResult<void>> {
     const existing = await usersRepo.findById(userId);
     if (!existing) return fail("Korisnik ne postoji");
@@ -108,7 +114,15 @@ export const usersService = {
         "Korisnik je vlasnik projekata — prvo prebacite vlasništvo ili obrišite te projekte",
       );
     }
-    await usersRepo.delete(userId);
+    try {
+      await usersRepo.delete(userId);
+    } catch (err) {
+      // Stories, comments, retro items and activity keep their author (FK restrict).
+      if (isForeignKeyViolation(err)) {
+        return fail("Korisnik ima sadržaj u projektima — deaktivirajte nalog umesto brisanja");
+      }
+      throw err;
+    }
     return ok(undefined);
   },
 };
