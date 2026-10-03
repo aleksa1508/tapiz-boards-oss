@@ -18,6 +18,7 @@ import type { ProjectDto, ProjectMemberDto, UserDto } from "@/domain/types";
 import { fullName } from "@/domain/types";
 import {
   addProjectMemberAction,
+  getMemberCandidatesAction,
   getProjectMembersAction,
   removeProjectMemberAction,
 } from "@/lib/actions/projects.actions";
@@ -26,17 +27,18 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { SidePanel } from "@/components/layout/SidePanel";
 
 interface ProjectMembersModalProps {
+  /** Open when set; only the project owner gets this panel. */
   project: ProjectDto | null;
-  users: UserDto[];
   onClose: () => void;
 }
 
-export function ProjectMembersModal({ project, users, onClose }: ProjectMembersModalProps) {
+export function ProjectMembersModal({ project, onClose }: ProjectMembersModalProps) {
   const router = useRouter();
   const { showToast } = useToast();
   const { dict } = useI18n();
   const t = dict.teams;
   const [members, setMembers] = useState<ProjectMemberDto[] | null>(null);
+  const [users, setUsers] = useState<UserDto[]>([]);
   const [selected, setSelected] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [addLoading, setAddLoading] = useState(false);
@@ -54,6 +56,7 @@ export function ProjectMembersModal({ project, users, onClose }: ProjectMembersM
   if (project !== prevProject) {
     setPrevProject(project);
     setMembers(null);
+    setUsers([]);
     setSelected("");
     setError(null);
   }
@@ -61,11 +64,15 @@ export function ProjectMembersModal({ project, users, onClose }: ProjectMembersM
   useEffect(() => {
     if (!project) return;
     let cancelled = false;
-    getProjectMembersAction(project.id).then((result) => {
-      if (cancelled) return;
-      if (result.ok) setMembers(result.data);
-      else setError(result.error);
-    });
+    void Promise.all([getProjectMembersAction(project.id), getMemberCandidatesAction(project.id)]).then(
+      ([membersResult, usersResult]) => {
+        if (cancelled) return;
+        if (membersResult.ok) setMembers(membersResult.data);
+        else setError(membersResult.error);
+        if (usersResult.ok) setUsers(usersResult.data);
+        else setError(usersResult.error);
+      },
+    );
     return () => {
       cancelled = true;
     };
@@ -119,7 +126,7 @@ export function ProjectMembersModal({ project, users, onClose }: ProjectMembersM
                     value: u.id,
                     label: `${fullName(u)} (${u.email})`,
                   }))}
-                  placeholder={t.selectStudent}
+                  placeholder={t.selectPerson}
                   value={selected}
                   onChange={(e) => setSelected(e.target.value)}
                 />
@@ -144,7 +151,7 @@ export function ProjectMembersModal({ project, users, onClose }: ProjectMembersM
               <Spinner />
             </div>
           ) : members.length === 0 ? (
-            <EmptyState title={t.emptyTeamTitle} message={t.emptyTeamMessage} />
+            <EmptyState title={t.emptyMembersTitle} message={t.emptyMembersMessage} />
           ) : (
             <ul className="space-y-2">
               {members.map((m) => (
@@ -161,14 +168,16 @@ export function ProjectMembersModal({ project, users, onClose }: ProjectMembersM
                       <p className="truncate text-xs text-(--tapiz-text-muted)">{m.email}</p>
                     </div>
                   </div>
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    icon={<UserMinus size={14} />}
-                    onClick={() => setRemoving(m)}
-                  >
-                    {dict.common.remove}
-                  </Button>
+                  {m.userId !== project?.ownerId && (
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      icon={<UserMinus size={14} />}
+                      onClick={() => setRemoving(m)}
+                    >
+                      {dict.common.remove}
+                    </Button>
+                  )}
                 </li>
               ))}
             </ul>

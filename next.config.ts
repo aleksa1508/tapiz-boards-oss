@@ -19,7 +19,18 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", headers: securityHeaders },
       // No framing of the app (clickjacking); the public read-only board stays embeddable.
-      { source: "/((?!board/).*)", headers: [{ key: "X-Frame-Options", value: "DENY" }] },
+      // CSP is limited to directives that can't break inline scripts or SSO redirects.
+      {
+        source: "/((?!board/).*)",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Content-Security-Policy", value: "object-src 'none'; base-uri 'self'; frame-ancestors 'none'" },
+        ],
+      },
+      {
+        source: "/board/:path*",
+        headers: [{ key: "Content-Security-Policy", value: "object-src 'none'; base-uri 'self'" }],
+      },
     ];
   },
   env: {

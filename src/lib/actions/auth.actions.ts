@@ -1,6 +1,6 @@
 "use server";
 
-import { AuthError } from "next-auth";
+import { AuthError, CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { signIn, signOut } from "@/lib/auth";
 import { loginSchema } from "@/domain/validation/user.schema";
@@ -18,6 +18,10 @@ export async function loginAction(input: unknown): Promise<ActionResult> {
     return ok(undefined);
   } catch (err) {
     if (isRedirectError(err)) throw err;
+    // Code set by LoginThrottledError in auth.ts.
+    if (err instanceof CredentialsSignin && err.code === "throttled") {
+      return fail("Previše neuspelih pokušaja prijave. Pokušajte ponovo za 15 minuta.");
+    }
     if (err instanceof AuthError) return fail("Pogrešan email ili lozinka");
     throw err;
   }

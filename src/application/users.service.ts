@@ -20,6 +20,8 @@ function isForeignKeyViolation(err: unknown): boolean {
 
 export const usersService = {
   listAll: () => usersRepo.listAll(),
+  /** Active accounts only — candidates for project membership. */
+  listActive: async () => (await usersRepo.listAll()).filter((user) => user.isActive),
   getById: (id: string) => usersRepo.findById(id),
 
   /** Admin creates a member/admin account directly — no self-service registration exists. */

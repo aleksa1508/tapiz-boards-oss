@@ -6,7 +6,7 @@ import { createProjectSchema, repoUrlSchema } from "@/domain/validation/project.
 import { projectsService } from "@/application/projects.service";
 import { eventsService } from "@/application/events.service";
 import { usersService } from "@/application/users.service";
-import { fullName } from "@/domain/types";
+import { fullName, type UserDto } from "@/domain/types";
 import {
   requireProjectManager,
   requireProjectMember,
@@ -47,6 +47,15 @@ export async function removeProjectMemberAction(
     await eventsService.log(id, user.id, "member_removed", member ? fullName(member) : "");
     revalidatePath("/");
     return ok(undefined);
+  });
+}
+
+/** Active accounts the owner can add to the project (membership = assignable to stories). */
+export async function getMemberCandidatesAction(projectId: unknown): Promise<ActionResult<UserDto[]>> {
+  return runAction(async () => {
+    const id = idSchema.parse(projectId);
+    await requireProjectManager(id);
+    return ok(await usersService.listActive());
   });
 }
 

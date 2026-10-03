@@ -28,6 +28,7 @@ import { StoryDetailPanel } from "./story/StoryDetailPanel";
 import { StoryCreateForm } from "./StoryCreateForm";
 import { ColumnManagerModal } from "./ColumnManagerModal";
 import { ProjectSettingsPanel } from "./ProjectSettingsPanel";
+import { ProjectMembersModal } from "@/features/projects/ProjectMembersModal";
 import { ProjectCalendarPanel } from "./ProjectCalendarPanel";
 import { BoardInsightsPanel } from "./BoardInsightsPanel";
 import { BoardSprintBar } from "./BoardSprintBar";
@@ -61,6 +62,7 @@ export function BoardView({
   const [insightsOpen, setInsightsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [membersOpen, setMembersOpen] = useState(false);
 
   const filters = useBoardFilters();
   const { filtersActive } = filters;
@@ -169,8 +171,12 @@ export function BoardView({
         project={project}
         canManage={canManage}
         onManageColumns={() => setManageOpen(true)}
+        onManageMembers={() => setMembersOpen(true)}
         onClose={() => setSettingsOpen(false)}
       />
+      {canManage && (
+        <ProjectMembersModal project={membersOpen ? project : null} onClose={() => setMembersOpen(false)} />
+      )}
       <ProjectCalendarPanel open={calendarOpen} projectId={project.id} onClose={() => setCalendarOpen(false)} />
       <BoardInsightsPanel
         open={insightsOpen}
