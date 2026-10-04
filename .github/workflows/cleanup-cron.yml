@@ -3,6 +3,10 @@ name: Retention cleanup cron
 # Deletes project activity history (project_events) older than the retention
 # window (180 days). The window is wide and row eligibility only changes once
 # a day, so running once daily is enough (no need for a tighter schedule).
+#
+# Opt-in: the scheduled run is skipped until the CLEANUP_URL repository variable
+# points at a deployment (Settings > Secrets and variables > Actions > Variables),
+# together with the CRON_SECRET secret. A manual run without it fails with a hint.
 on:
   schedule:
     - cron: "20 2 * * *" # daily at 02:20 UTC (low-traffic window)
@@ -14,6 +18,7 @@ concurrency:
 
 jobs:
   cleanup:
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.CLEANUP_URL != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Hit cleanup endpoint
@@ -22,7 +27,7 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           if [ -z "$CLEANUP_URL" ]; then
-            echo "CLEANUP_URL repo variable is not set — pointing this at your deployment is required." >&2
+            echo "CLEANUP_URL repo variable is not set. Point it at your deployment to enable the cleanup." >&2
             exit 1
           fi
           URL="${CLEANUP_URL}/api/cron/cleanup"
