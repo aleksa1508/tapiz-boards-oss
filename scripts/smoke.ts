@@ -89,7 +89,7 @@ async function main() {
     check("six projects/boards can be created by one user", extraProjectIds.length === 5);
 
     const extraMemberIds: string[] = [];
-    for (let index = 0; index < 5; index++) {
+    for (let index = 0; index < 9; index++) {
       const result = await usersService.createByAdmin({
         firstName: "Smoke",
         lastName: `Extra${index}`,
@@ -103,9 +103,18 @@ async function main() {
     let addedCount = 0;
     for (const id of memberIdsToAdd) {
       if ((await projectsService.addMember(projectId, id)).ok) addedCount++;
+      if (addedCount === 5) {
+        check("the sixth member can join (past the hosted free-plan limit)", (await projectsService.members(projectId)).length === 6);
+      }
+      if (addedCount === 9) {
+        check("a board supports ten members including its owner", (await projectsService.members(projectId)).length === 10);
+      }
     }
     const allMembers = await projectsService.members(projectId);
-    check("a board supports more than five members", addedCount === 6 && allMembers.length === 7);
+    check(
+      "ten additional members persist alongside the owner (eleven total)",
+      addedCount === 10 && allMembers.length === 11 && memberIdsToAdd.every((id) => allMembers.some((member) => member.userId === id)),
+    );
 
     await projectsService.softDelete(projectId);
     const afterSoftDelete = await projectsRepo.findById(projectId);
