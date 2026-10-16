@@ -8,7 +8,6 @@ export const fr: Dict = {
     cancel: "Annuler",
     save: "Enregistrer",
     create: "Créer",
-    freeLimitReached: "Vous avez atteint la limite du plan gratuit. L'achat individuel arrive bientôt.",
     delete: "Supprimer",
     edit: "Modifier",
     add: "Ajouter",

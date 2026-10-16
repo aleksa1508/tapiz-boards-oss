@@ -4,6 +4,8 @@ A self-hosted Kanban and sprint-planning tool for small teams: backlog, board wi
 
 This is the open-source edition of Tapiz Boards, derived from the hosted product. It has no dependency on Tapiz LMS, no SSO, and no public self-registration — an admin creates every account.
 
+There are **no free-plan quotas**: the self-hosted edition allows unlimited projects (one board per project) and unlimited members per project, subject only to your own infrastructure capacity.
+
 ## Stack
 
 - Next.js 16 (App Router, Turbopack), React 19, Tailwind v4, [`@tapizlabs/ui`](https://www.npmjs.com/package/@tapizlabs/ui) (public MIT design system)

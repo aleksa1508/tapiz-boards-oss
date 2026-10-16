@@ -8,7 +8,6 @@ export const hu: Dict = {
     cancel: "Mégse",
     save: "Mentés",
     create: "Létrehozás",
-    freeLimitReached: "Elérte az ingyenes csomag korlátját. Az egyéni vásárlás hamarosan elérhető.",
     delete: "Törlés",
     edit: "Szerkesztés",
     add: "Hozzáadás",

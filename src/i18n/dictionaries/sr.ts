@@ -10,7 +10,6 @@ export const sr = {
     cancel: "Otkaži",
     save: "Sačuvaj",
     create: "Kreiraj",
-    freeLimitReached: "Dostigli ste granicu besplatnog plana. Individualna kupovina stiže uskoro.",
     delete: "Obriši",
     edit: "Izmeni",
     add: "Dodaj",

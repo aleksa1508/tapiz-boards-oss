@@ -8,7 +8,6 @@ export const srCyrl: Dict = {
     cancel: "Откажи",
     save: "Сачувај",
     create: "Креирај",
-    freeLimitReached: "Достигли сте границу бесплатног плана. Индивидуална куповина стиже ускоро.",
     delete: "Обриши",
     edit: "Измени",
     add: "Додај",

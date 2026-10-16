@@ -1,6 +1,6 @@
 /**
  * End-to-end smoke test against a real database (DATABASE_URL from .env).
- * Exercises: admin bootstrap, member creation, project lifecycle incl. Trash,
+ * Exercises: admin bootstrap, member creation, uncapped projects/members, project lifecycle incl. Trash,
  * the last-admin-standing rule, and login without register/LMS.
  *
  * Creates and cleans up its own throwaway users/projects — safe to run
@@ -79,6 +79,34 @@ async function main() {
     const seededColumns = await db.query.boardColumns.findMany({ where: (c, { eq }) => eq(c.projectId, projectId) });
     check("project seeded with 3 default columns", seededColumns.length === 3);
 
+    // No free-plan caps: each extra project has a board, and project membership
+    // is unrestricted. Exercise counts higher than common freemium thresholds.
+    const extraProjectIds: string[] = [];
+    for (let index = 0; index < 5; index++) {
+      const result = await projectsService.create(admin.id, `Smoke Extra Project ${RUN_ID}-${index}`);
+      if (result.ok) extraProjectIds.push(result.data.id);
+    }
+    check("six projects/boards can be created by one user", extraProjectIds.length === 5);
+
+    const extraMemberIds: string[] = [];
+    for (let index = 0; index < 5; index++) {
+      const result = await usersService.createByAdmin({
+        firstName: "Smoke",
+        lastName: `Extra${index}`,
+        email: `smoke-extra-member-${RUN_ID}-${index}@example.com`,
+        password: "smoke-extra-member-pass-1",
+        role: "member",
+      });
+      if (result.ok) extraMemberIds.push(result.data.id);
+    }
+    const memberIdsToAdd = [...(memberId ? [memberId] : []), ...extraMemberIds];
+    let addedCount = 0;
+    for (const id of memberIdsToAdd) {
+      if ((await projectsService.addMember(projectId, id)).ok) addedCount++;
+    }
+    const allMembers = await projectsService.members(projectId);
+    check("a board supports more than five members", addedCount === 6 && allMembers.length === 7);
+
     await projectsService.softDelete(projectId);
     const afterSoftDelete = await projectsRepo.findById(projectId);
     check("soft-deleted project excluded from normal findById", afterSoftDelete === null);
@@ -98,6 +126,12 @@ async function main() {
 
     const orphanColumns = await db.query.boardColumns.findMany({ where: (c, { eq }) => eq(c.projectId, projectId) });
     check("permanent delete cascades — no orphaned columns", orphanColumns.length === 0);
+
+    for (const id of extraProjectIds) {
+      await projectsService.softDelete(id);
+      await projectsService.permanentDelete(id, admin.id);
+    }
+    for (const id of extraMemberIds) await db.delete(users).where(eq(users.id, id));
   }
 
   // 5. Last-admin-standing rule: deactivating/deleting the sole admin must be blocked.

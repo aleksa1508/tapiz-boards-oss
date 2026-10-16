@@ -41,6 +41,6 @@ The original `role` enum (`assistant` / `student`) mapped to a teaching hierarch
 ## What was intentionally left out
 
 - **LMS SSO** (OAuth/PKCE against Tapiz LMS) and **public self-registration** — accounts only exist via admin creation (`npm run create-admin` for the first one, the admin UI for the rest). This is the only realistic bootstrap model for a small self-hosted instance with no institutional identity provider behind it.
-- **Freemium/entitlements** — the original's plan-tier gating existed only to distinguish LMS-backed accounts from standalone ones. With no SSO, that distinction disappears, so every member gets full, unlimited access.
+- **Freemium/entitlements** — the original's plan-tier gating existed only to distinguish LMS-backed accounts from standalone ones. With no SSO, that distinction disappears: there are no quotas for projects/boards or project members, and every account gets full access. Each project has its own board.
 - **Native Android app** — it depended on the mobile-only API surface (`/api/mobile/*`), self-registration, and grading, none of which exist in this edition. Only the web app is included.
 - **Peer QA and grading** — these are teaching-specific workflows (cross-team bug review, rubric-based grading) that don't map to a generic team tool.
