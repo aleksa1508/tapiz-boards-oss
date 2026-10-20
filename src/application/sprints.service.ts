@@ -46,8 +46,14 @@ export const sprintsService = {
       if (outcome === "conflict") return fail("Projekat već ima aktivan sprint — prvo ga završite");
       return ok(sprint);
     }
-    await sprintsRepo.setStatus(sprintId, status);
-    return ok(sprint);
+    return fail("Koristite opciju za poništavanje pokretanja sprinta");
+  },
+
+  async undoStart(projectId: string, sprintId: string): Promise<ActionResult<void>> {
+    const result = await sprintsRepo.undoStart(projectId, sprintId);
+    if (result === "missing") return fail("Sprint ne pripada ovom projektu");
+    if (result === "not-active") return fail("Samo aktivan sprint može da se vrati u planirano stanje");
+    return ok(undefined);
   },
 
   async finishSprint(projectId: string, sprintId: string, targetSprintId: string | null): Promise<ActionResult<{

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button, ConfirmDialog, EmptyState, InfoBanner, Plus, Surface, useToast } from "@tapizlabs/ui";
 import type { BoardColumnDto, ProjectDto, ProjectMemberDto, SprintDto, SprintStatus, StoryDto } from "@/domain/types";
 import type { SessionUser } from "@/lib/guards";
-import { deleteSprintAction, setSprintStatusAction } from "@/lib/actions/sprints.actions";
+import { deleteSprintAction, setSprintStatusAction, undoSprintStartAction } from "@/lib/actions/sprints.actions";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ProjectPageHeader } from "./ProjectPageHeader";
 import { SprintFormPanel } from "./SprintFormPanel";
@@ -46,6 +46,7 @@ export function SprintsView({
   const [openStory, setOpenStory] = useState<StoryDto | null>(null);
   const [finishTarget, setFinishTarget] = useState<SprintDto | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<SprintDto | null>(null);
+  const [undoTarget, setUndoTarget] = useState<SprintDto | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [statusLoading, setStatusLoading] = useState<string | null>(null);
 
@@ -54,6 +55,16 @@ export function SprintsView({
     const result = await setSprintStatusAction(project.id, sprint.id, status);
     setStatusLoading(null);
     showToast(result.ok ? (status === "active" ? t.startedToast : t.finishedToast) : result.error, result.ok);
+    router.refresh();
+  };
+
+  const handleUndo = async () => {
+    if (!undoTarget) return;
+    setStatusLoading(undoTarget.id);
+    const result = await undoSprintStartAction(project.id, undoTarget.id);
+    setStatusLoading(null);
+    setUndoTarget(null);
+    showToast(result.ok ? t.undoStartedToast : result.error, result.ok);
     router.refresh();
   };
 
@@ -110,6 +121,7 @@ export function SprintsView({
                 setCreateStoryOpen(true);
               }}
               onStart={() => void handleStatus(sprint, "active")}
+              onUndo={() => setUndoTarget(sprint)}
               onFinish={() => setFinishTarget(sprint)}
               onDelete={() => setDeleteTarget(sprint)}
             />
@@ -153,6 +165,16 @@ export function SprintsView({
         columns={columns}
         sprints={sprints}
         onClose={() => setFinishTarget(null)}
+      />
+      <ConfirmDialog
+        open={undoTarget !== null}
+        title={t.undoStartTitle}
+        description={t.undoStartDescription}
+        confirmLabel={t.undoStart}
+        cancelLabel={dict.common.cancel}
+        loading={statusLoading !== null}
+        onConfirm={() => void handleUndo()}
+        onCancel={() => setUndoTarget(null)}
       />
       <ConfirmDialog
         open={deleteTarget !== null}

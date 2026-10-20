@@ -51,6 +51,17 @@ export async function setSprintStatusAction(
   });
 }
 
+export async function undoSprintStartAction(projectId: unknown, sprintId: unknown): Promise<ActionResult> {
+  return runAction(async () => {
+    const pid = idSchema.parse(projectId);
+    await requireProjectMember(pid);
+    const result = await sprintsService.undoStart(pid, idSchema.parse(sprintId));
+    if (!result.ok) return result;
+    revalidateBoard(pid);
+    return ok(undefined);
+  });
+}
+
 export async function finishSprintAction(
   projectId: unknown,
   sprintId: unknown,

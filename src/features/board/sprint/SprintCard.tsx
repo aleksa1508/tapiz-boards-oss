@@ -11,6 +11,7 @@ import {
   Progress,
   Surface,
   Trash,
+  RotateCcw,
 } from "@tapizlabs/ui";
 import type { BoardColumnDto, SprintDto, SprintStatus, StoryDto } from "@/domain/types";
 import { doneColumnId, storyProgress } from "@/domain/services/board-insights";
@@ -40,6 +41,7 @@ interface SprintCardProps {
   onOpenStory: (story: StoryDto) => void;
   onCreateStory: () => void;
   onStart: () => void;
+  onUndo: () => void;
   onFinish: () => void;
   onDelete: () => void;
 }
@@ -55,6 +57,7 @@ export function SprintCard({
   onOpenStory,
   onCreateStory,
   onStart,
+  onUndo,
   onFinish,
   onDelete,
 }: SprintCardProps) {
@@ -148,6 +151,11 @@ export function SprintCard({
           {sprint.status === "planned" && (
             <Button size="sm" variant="secondary" icon={<ArrowRight size={14} />} loading={statusLoading} onClick={onStart}>
               {t.start}
+            </Button>
+          )}
+          {sprint.status === "active" && (
+            <Button size="sm" variant="ghost" icon={<RotateCcw size={14} />} loading={statusLoading} onClick={onUndo}>
+              {t.undoStart}
             </Button>
           )}
           {sprint.status === "active" && (

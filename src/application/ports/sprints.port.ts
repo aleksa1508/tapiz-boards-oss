@@ -12,6 +12,8 @@ export interface SprintsRepo {
     endDate: string;
   }): Promise<void>;
   setStatus(id: string, status: SprintStatus): Promise<void>;
+  /** Safely revert a mistaken start while preserving all stories and columns. */
+  undoStart(projectId: string, sprintId: string): Promise<"ok" | "missing" | "not-active">;
   /** Atomically starts a sprint unless another one is active; places its unplaced stories in `firstColumnId`. */
   activate(
     projectId: string,

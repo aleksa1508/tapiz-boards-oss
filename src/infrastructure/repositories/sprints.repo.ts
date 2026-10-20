@@ -100,6 +100,20 @@ export const sprintsRepo: SprintsRepo = {
     });
   },
 
+  async undoStart(projectId, sprintId) {
+    return db.transaction(async (tx) => {
+      await lockProject(tx, projectId);
+      const [target] = await tx.select({ status: sprints.status }).from(sprints)
+        .where(and(eq(sprints.id, sprintId), eq(sprints.projectId, projectId))).limit(1);
+      if (!target) return "missing";
+      if (target.status !== "active") return "not-active";
+      // Do not reset story columns: work may have changed since sprint start.
+      // Planned sprint stories are visible in backlog without deleting data.
+      await tx.update(sprints).set({ status: "planned" }).where(eq(sprints.id, sprintId));
+      return "ok";
+    });
+  },
+
   async complete(projectId, sprintId, doneColumnId, targetSprintId) {
     return db.transaction(async (tx) => {
       await lockProject(tx, projectId);
