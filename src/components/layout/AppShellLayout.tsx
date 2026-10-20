@@ -110,7 +110,7 @@ function AppShell({ user, children }: AppShellLayoutProps) {
             <Link href="/" className="flex items-center gap-2.5 no-underline">
               <OSSBrandMark size={28} />
               <span className="font-display text-base font-bold tracking-[-0.02em] text-txt-1">
-                Tapiz <span className="text-primary-300">Boards</span>
+                Tapiz <span className="text-primary-300">Boards</span> <span className="oss-text-tag">OSS</span>
               </span>
             </Link>
             <button

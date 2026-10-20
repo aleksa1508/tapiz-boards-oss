@@ -21,7 +21,7 @@ export function PublicNav() {
           <span className="font-display font-bold text-sm truncate text-txt-1">
             Tapiz <span className="text-primary-300">Boards</span> <span className="oss-text-tag">OSS</span>
           </span>
-          <span className="text-[10px] font-mono shrink-0 ml-0.5 text-txt-4">{pathname}</span>
+          <span className="text-[10px] font-mono shrink-0 ml-0.5 text-txt-4">{pathname.startsWith("/board/") ? "PUBLIC · READ ONLY" : "OSS / COMMUNITY"}</span>
         </Link>
         <Link
           href="/"

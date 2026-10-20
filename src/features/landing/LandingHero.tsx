@@ -8,6 +8,7 @@ import {
 } from "@tapizlabs/ui";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LandingButton } from "./primitives/LandingButton";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 
 export function LandingHero() {
   const { dict } = useI18n();
@@ -58,9 +59,7 @@ export function LandingHero() {
         <div className="lp-product-preview" aria-label={t.previewLabel}>
           <div className="lp-preview-chrome">
             <div className="lp-preview-product">
-              <span className="lp-preview-product-mark" aria-hidden="true">
-                <i /><i /><i /><b />
-              </span>
+              <OSSBrandMark size={28} />
               <span>
                 <strong>Tapiz Boards OSS</strong>
                 <small>{t.previewProjectName}</small>
