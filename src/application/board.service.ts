@@ -5,6 +5,7 @@ import type {
 } from "@/domain/validation/story.schema";
 import type { StoryDto } from "@/domain/types";
 import { boardRepo } from "@/infrastructure/repositories/board.repo";
+import { getPublicStoryDetails } from "@/infrastructure/repositories/board/public.queries";
 import { sprintsRepo } from "@/infrastructure/repositories/sprints.repo";
 import { projectsRepo } from "@/infrastructure/repositories/projects.repo";
 import { fail, ok, type ActionResult } from "@/lib/action-result";
@@ -25,6 +26,8 @@ export const boardService = {
   },
   getColumns: (projectId: string) => boardRepo.columns(projectId),
   getComments: (storyId: string) => boardRepo.comments(storyId),
+  /** Public route calls this only after validating a project sharing token. */
+  getPublicDetails: getPublicStoryDetails,
 
   /** "My Work" — all stories assigned to the user, across all projects. */
   myWork: (userId: string) => boardRepo.assignedToUser(userId),

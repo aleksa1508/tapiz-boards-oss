@@ -3,7 +3,7 @@ import { projectsService } from "@/application/projects.service";
 import { boardService } from "@/application/board.service";
 import { getDict } from "@/i18n/server";
 import { PublicBoardView } from "@/features/board/PublicBoardView";
-import { toPublicColumns } from "@/features/board/public-board";
+import { toPublicColumns, toPublicStories } from "@/features/board/public-board";
 
 /**
  * Public read-only board view via token — no login required.
@@ -20,16 +20,21 @@ export default async function PublicBoardPage({
   const project = await projectsService.findByPublicToken(token);
   if (!project) notFound();
 
-  const [columns, dict] = await Promise.all([
+  const [columns, backlog, dict] = await Promise.all([
     boardService.getBoard(project.id),
+    boardService.getBacklog(project.id),
     getDict(),
   ]);
+  // The token gates access to the entire public snapshot, including details.
+  const storyIds = [...new Set([...columns.flatMap((c) => c.stories), ...backlog].map((s) => s.id))];
+  const details = await boardService.getPublicDetails(storyIds);
 
   return (
     <PublicBoardView
       title={project.name}
       subtitle={dict.board.publicBoardSubtitle}
-      columns={toPublicColumns(columns)}
+      columns={toPublicColumns(columns, details)}
+      backlog={toPublicStories(backlog, details)}
       dict={dict}
     />
   );
