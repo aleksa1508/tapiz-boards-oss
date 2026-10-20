@@ -459,7 +459,7 @@ export const en: Dict = {
     insightsNoAssigned: "No stories assigned yet.",
     publicLinkTitle: "Public board link",
     publicLinkDescription:
-      "Read-only board view for demos or project presentations — opens without signing in.",
+      "Anyone with this link can view the board, backlog, story descriptions, tasks and comments without signing in. The link is read-only.",
     publicLinkOff: "Public link is disabled.",
     publicLinkEnable: "Generate link",
     publicLinkRegenerate: "New link",

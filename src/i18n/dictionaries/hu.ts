@@ -460,7 +460,7 @@ export const hu: Dict = {
     insightsNoAssigned: "Még nincs hozzárendelt story.",
     publicLinkTitle: "Nyilvános board link",
     publicLinkDescription:
-      "Csak olvasható board nézet demóhoz vagy projektbemutatóhoz — bejelentkezés nélkül nyílik meg.",
+      "A link birtokában bejelentkezés nélkül látható a tábla, a backlog, a story-leírások, a feladatok és a megjegyzések. A link csak olvasást enged.",
     publicLinkOff: "A nyilvános link ki van kapcsolva.",
     publicLinkEnable: "Link generálása",
     publicLinkRegenerate: "Új link",

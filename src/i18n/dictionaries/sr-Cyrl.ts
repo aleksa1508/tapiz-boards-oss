@@ -459,7 +459,7 @@ export const srCyrl: Dict = {
     insightsNoAssigned: "Ниједан стори још није додељен.",
     publicLinkTitle: "Јавни линк boarda",
     publicLinkDescription:
-      "Read-only приказ boarda за демо или представљање пројекта — отвара се без пријаве.",
+      "Јавни линк без пријаве приказује таблу, беклог, описе, задатке и коментаре сторија. Свако са линком може да их чита, али не може да мења податке.",
     publicLinkOff: "Јавни линк је искључен.",
     publicLinkEnable: "Генериши линк",
     publicLinkRegenerate: "Нови линк",

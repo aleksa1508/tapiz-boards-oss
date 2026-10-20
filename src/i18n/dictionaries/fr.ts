@@ -460,7 +460,7 @@ export const fr: Dict = {
     insightsNoAssigned: "Aucune story assignée pour le moment.",
     publicLinkTitle: "Lien public du tableau",
     publicLinkDescription:
-      "Vue du tableau en lecture seule pour une démo ou une présentation — s'ouvre sans connexion.",
+      "Toute personne disposant du lien peut voir le tableau, le backlog, les descriptions, les tâches et les commentaires sans connexion. Le lien est en lecture seule.",
     publicLinkOff: "Le lien public est désactivé.",
     publicLinkEnable: "Générer le lien",
     publicLinkRegenerate: "Nouveau lien",

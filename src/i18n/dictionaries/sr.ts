@@ -461,7 +461,7 @@ export const sr = {
     insightsNoAssigned: "Nijedan story još nije dodeljen.",
     publicLinkTitle: "Javni link boarda",
     publicLinkDescription:
-      "Read-only prikaz boarda za demo ili predstavljanje projekta — otvara se bez prijave.",
+      "Javni link bez prijave prikazuje board, backlog, opise, zadatke i komentare storija. Svako sa linkom može da ih čita, ali ne može da menja podatke.",
     publicLinkOff: "Javni link je isključen.",
     publicLinkEnable: "Generiši link",
     publicLinkRegenerate: "Novi link",
