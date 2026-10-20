@@ -2,7 +2,7 @@ import type { Dict } from "./sr";
 
 export const en: Dict = {
   meta: {
-    description: "Tapiz Boards: a self-hosted, open-source backlog, sprint, kanban, and progress workspace for small teams.",
+    description: "Tapiz Boards OSS — a free, self-hosted, open-source Kanban board with backlog, sprint planning and project collaboration.",
   },
   common: {
     cancel: "Cancel",
@@ -85,9 +85,9 @@ export const en: Dict = {
   },
   landing: {
     nav: {
-      board: "How it works",
-      features: "Capabilities",
-      teams: "Who it is for",
+      board: "Board",
+      features: "Features",
+      teams: "For teams",
       login: "Sign in",
       register: "Register",
       menu: "Menu",
@@ -96,25 +96,24 @@ export const en: Dict = {
       ariaMobileNav: "Mobile navigation",
     },
     hero: {
-      badge: "Open source, self-hosted",
-      eyebrow: "Team collaboration, on your own infrastructure",
-      headline1: "From idea to outcome,",
-      headline2: "the whole project",
-      headline3: "on one board.",
-      description:
-        "Tapiz Boards connects planning, sprints, kanban, and progress tracking in one self-hosted workspace. Deploy it on your own infrastructure and keep full control of your data.",
-      ctaRegister: "Sign in",
+      badge: "MIT licensed · open source",
+      eyebrow: "NO PLATFORM LOCK-IN",
+      headline1: "From backlog to delivery.",
+      headline2: "One board.",
+      headline3: "Your rules.",
+      description: "Plan stories, run sprints and track your team's work on your own server. Tapiz Boards OSS is free to self-host, with no app-imposed limits on projects or members.",
+      ctaRegister: "Open workspace",
       ctaLogin: "Sign in",
       sourceLabel: "View source",
       proofs: ["MIT licensed","Your server and database","No plan limits"],
       previewSprintLabel: "SPRINT 03 · ACTIVE",
       storyLabel: "STORY",
       previewLabel: "Tapiz Boards project board preview",
-      previewProjectName: "Website Redesign",
-      sprintGoal: "Goal: finish the MVP for the demo",
+      previewProjectName: "Project workspace",
+      sprintGoal: "Goal: prepare an MVP demo",
       previewStatus: "6 of 9 stories completed",
       previewColumns: [
-        { title: "BACKLOG", cards: [{ title: "Sign-in UX flow", meta: "5 SP" }, { title: "Data model", meta: "3 SP" }] },
+        { title: "TO DO", cards: [{ title: "Sign-in UX flow", meta: "5 SP" }, { title: "Data model", meta: "3 SP" }] },
         { title: "IN PROGRESS", cards: [{ title: "Auth module", meta: "Mina · 8 SP" }, { title: "Board filters", meta: "Luka · 3 SP" }] },
         { title: "DONE", cards: [{ title: "Repo and CI", meta: "Completed" }, { title: "Wireframe", meta: "Completed" }] },
       ],
@@ -129,97 +128,79 @@ export const en: Dict = {
     features: {
       sampleStories: ["User sign-in","User profile","Form validation"],
       donePointsLabel: "DONE POINTS",
-      eyebrow: "One connected workflow",
-      title: "More than kanban. The operating system for your project.",
-      description:
-        "From the first idea in the backlog to a finished feature, every step stays connected, visible, and available to the whole team.",
+      eyebrow: "FROM IDEA TO DONE",
+      title: "Everything a small team needs. Nothing extra.",
+      description: "Planning, a Kanban board and progress tracking work together in a focused tool that runs on your infrastructure.",
       items: [
         {
-          kicker: "PLANNING",
-          title: "Turn ideas into a realistic sprint plan",
-          description:
-            "Collect requirements in the backlog, add priorities, due dates, and story points, then choose what the team can actually deliver next.",
+          kicker: "BACKLOG",
+          title: "Keep requirements organized",
+          description: "Write a story, set its priority, due date and points. Assign work to a sprint when your team is ready.",
         },
         {
-          kicker: "EXECUTION",
-          title: "See what is moving, who owns it, and what is blocked",
-          description:
-            "Drag-and-drop kanban, assignments, checklists, and comments keep daily work in one place instead of scattered across chat threads.",
+          kicker: "KANBAN BOARD",
+          title: "Know what's in progress",
+          description: "Move stories between columns, assign owners and keep checklists and comments close to the work.",
         },
         {
           kicker: "SELF-HOSTED",
-          title: "Your data stays on your infrastructure",
-          description:
-            "Deploy Tapiz Boards to your own server or Vercel project with your own database. No third-party account is required to run it.",
+          title: "Your server. Your data.",
+          description: "Run the app on your infrastructure with your own MySQL database. The source is available under the MIT License.",
         },
         {
-          kicker: "PROGRESS",
-          title: "Progress is visible, not based on impressions",
-          description:
-            "Velocity, completed story points, activity, and retrospectives show the team where things stand and where support is needed.",
+          kicker: "SPRINTS",
+          title: "Track progress without guesswork",
+          description: "See finished stories, story points and retrospectives. Undo an accidentally started sprint without losing its stories.",
         },
         {
-          kicker: "DELIVERY",
-          title: "Ready for demos and presentations",
-          description:
-            "Connect a GitHub repository, share a read-only board without sign-in, and preserve a work history the team can present clearly.",
+          kicker: "PUBLIC VIEW",
+          title: "Share progress, not edit access",
+          description: "Share a read-only link to the active board, backlog and story details. Visitors can explore the work without signing in.",
         },
       ],
     },
     insights: {
-      eyebrow: "Built for small teams",
-      title: "One project. The right view for everyone.",
-      description:
-        "Every member sees the same board, backlog, and sprint — no separate views to keep in sync, no data duplicated across tools.",
-      calloutKicker: "OPEN SOURCE",
-      calloutTitle: "MIT licensed, yours to run",
-      calloutDescription: "Tapiz Boards Community is free to self-host. Every member of your instance gets full access — there are no plan tiers.",
+      eyebrow: "BUILT FOR SMALL TEAMS",
+      title: "One shared view of the project.",
+      description: "Members see the same backlog, sprint and board. Admins manage accounts; project owners manage sharing.",
+      calloutKicker: "WHY OSS?",
+      calloutTitle: "No tiers. No locked features.",
+      calloutDescription: "MIT licensed, self-hosted and without app-imposed project or member quotas.",
       items: [
         {
-          kicker: "FOR TEAMS",
-          title: "Today's work without guesswork",
-          description:
-            "Every member sees their assignments, due dates, active sprint, and enough context to continue moving the work forward.",
+          kicker: "FOR MEMBERS",
+          title: "Know what to work on next",
+          description: "Assignments, comments and deadlines stay with each story instead of getting lost across chats.",
         },
         {
           kicker: "FOR ADMINS",
-          title: "Simple account management",
-          description:
-            "Create member accounts, reset passwords, and activate or deactivate users from one admin screen — no public sign-up to manage.",
+          title: "Access stays under your control",
+          description: "An administrator creates accounts and controls access. No public registration or external login provider required.",
         },
         {
-          kicker: "FOR ACCOUNTABILITY",
-          title: "Project history stays with the project",
-          description:
-            "Activity calendars, comments, and completed sprints preserve the project story even when team membership changes.",
+          kicker: "FOR PROGRESS",
+          title: "Keep the work visible",
+          description: "Activity, completed sprints and retrospectives show what was done and what to improve next.",
         },
         {
-          kicker: "FOR PRESENTATION",
-          title: "One link shows what the team delivered",
-          description:
-            "A public read-only board and GitHub repository give reviewers a clear result without extra accounts or tool explanations.",
+          kicker: "FOR DEMOS",
+          title: "Show the work without editing",
+          description: "A public link shows the board, backlog, story descriptions, tasks and comments — all read-only.",
         },
       ],
     },
     cta: {
-      eyebrow: "Your next sprint starts here",
-      title: "Give your project a place where it can actually move forward.",
-      description:
-        "Sign in with an account created by your instance admin, bring your team together, and turn the first requirement into a finished feature.",
-      points: [
-        "BACKLOG AND SPRINTS",
-        "KANBAN AND ASSIGNMENTS",
-        "SELF-HOSTED, OPEN SOURCE",
-        "PUBLIC BOARD FOR PRESENTATION",
-      ],
+      eyebrow: "GET STARTED ON YOUR SERVER",
+      title: "Your team. Your board.",
+      description: "Deploy the OSS edition on your infrastructure. If your instance is already running, sign in with an account created by its administrator.",
+      points: ["Backlog and sprints", "Columns, tasks and comments", "Self-hosted · MIT licensed", "Read-only public sharing"],
       createAccount: "Sign in",
       login: "Sign in",
-      note: "Self-hosted · MIT licensed · no public sign-up",
-      summaryLabel: "PROJECT WORKSPACE",
+      note: "Accounts are created by the instance admin · no public registration",
+      summaryLabel: "COMMUNITY WORKSPACE",
     },
     footer: {
-      description:
-        "A self-hosted, open-source project workspace for small teams: backlog, sprints, kanban, and presentation-ready boards.",
+      description: "Tapiz Boards OSS is a self-hosted, open-source workspace for backlogs, sprints and team Kanban boards. Keep your project data on your own infrastructure.",
       statusOperational: "STATUS · OPERATIONAL",
       product: "Product",
       board: "Board",
@@ -232,7 +213,7 @@ export const en: Dict = {
       system: "System",
       changelog: "Changelog",
       statusPage: "System status",
-      rights: "All rights reserved.",
+      rights: "MIT licensed · open source",
       statusLine: "Status · Operational",
     },
   },
@@ -569,15 +550,15 @@ export const en: Dict = {
     },
     appearance: {
       title: "Appearance",
-      subtitle: "Theme and color skins",
+      subtitle: "Appearance and OSS palette",
       themeTitle: "Theme",
       themeDesc: "Choose between light and dark mode.",
       light: "Light",
       dark: "Dark",
-      skinTitle: "Color skins",
-      skinDesc: "Skins recolor the app in both light and dark mode. The landing page always keeps the default look.",
+      skinTitle: "OSS palette",
+      skinDesc: "One consistent jade palette across the app, public pages and sign-in. Switch between light and dark mode only.",
       skins: {
-        default: "Ink & Ember",
+        default: "OSS · Jade",
         ocean: "Ocean",
         forest: "Forest",
         rose: "Rose",

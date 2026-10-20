@@ -2,7 +2,7 @@ import type { Dict } from "./sr";
 
 export const hu: Dict = {
   meta: {
-    description: "Tapiz Boards: önállóan üzemeltetett, nyílt forráskódú backlog, sprint, kanban és haladáskövető munkatér kis csapatoknak.",
+    description: "Tapiz Boards OSS — ingyenesen üzemeltethető, nyílt forráskódú Kanban-tábla backloggal, sprintekkel és csapatmunkával.",
   },
   common: {
     cancel: "Mégse",
@@ -85,9 +85,9 @@ export const hu: Dict = {
   },
   landing: {
     nav: {
-      board: "Hogyan működik",
-      features: "Lehetőségek",
-      teams: "Kinek készült",
+      board: "Tábla",
+      features: "Funkciók",
+      teams: "Csapatoknak",
       login: "Bejelentkezés",
       register: "Regisztráció",
       menu: "Menü",
@@ -96,25 +96,24 @@ export const hu: Dict = {
       ariaMobileNav: "Mobil navigáció",
     },
     hero: {
-      badge: "Nyílt forráskódú, önállóan üzemeltetett",
-      eyebrow: "Csapatmunka a saját infrastruktúrádon",
-      headline1: "Az ötlettől a célig,",
-      headline2: "a teljes projekt",
-      headline3: "egyetlen boardon.",
-      description:
-        "A Tapiz Boards összekapcsolja a tervezést, sprinteket, kanbant és a haladás követését egyetlen önállóan üzemeltetett munkatérben. Telepítsd a saját infrastruktúrádra, és tartsd meg a teljes kontrollt az adataid felett.",
-      ctaRegister: "Bejelentkezés",
+      badge: "MIT-licenc · nyílt forráskód",
+      eyebrow: "NINCS PLATFORMFÜGGŐSÉG",
+      headline1: "A backlogtól a szállításig.",
+      headline2: "Egy tábla.",
+      headline3: "A te szabályaid.",
+      description: "Tervezd meg a story-kat, kezeld a sprinteket, és kövesd a csapat munkáját a saját szervereden. A Tapiz Boards OSS ingyenesen üzemeltethető, projektekre és tagokra vonatkozó alkalmazásszintű korlátok nélkül.",
+      ctaRegister: "Munkatér megnyitása",
       ctaLogin: "Bejelentkezés",
       sourceLabel: "Forráskód",
       proofs: ["MIT-licenc","Saját szerver és adatbázis","Nincs csomagkorlát"],
       previewSprintLabel: "SPRINT 03 · AKTÍV",
       storyLabel: "STORY",
       previewLabel: "Tapiz Boards projektboard előnézet",
-      previewProjectName: "Weboldal újratervezés",
-      sprintGoal: "Cél: az MVP befejezése a demóra",
-      previewStatus: "9 storyból 6 elkészült",
+      previewProjectName: "Projektmunkatér",
+      sprintGoal: "Cél: MVP-bemutató előkészítése",
+      previewStatus: "9 story-ból 6 kész",
       previewColumns: [
-        { title: "BACKLOG", cards: [{ title: "Bejelentkezési UX-folyamat", meta: "5 SP" }, { title: "Adatmodell", meta: "3 SP" }] },
+        { title: "TO DO", cards: [{ title: "Bejelentkezési UX-folyamat", meta: "5 SP" }, { title: "Adatmodell", meta: "3 SP" }] },
         { title: "FOLYAMATBAN", cards: [{ title: "Auth modul", meta: "Mina · 8 SP" }, { title: "Board-szűrők", meta: "Luka · 3 SP" }] },
         { title: "KÉSZ", cards: [{ title: "Repo és CI", meta: "Elkészült" }, { title: "Drótváz", meta: "Elkészült" }] },
       ],
@@ -129,97 +128,79 @@ export const hu: Dict = {
     features: {
       sampleStories: ["Felhasználói bejelentkezés","Felhasználói profil","Űrlapellenőrzés"],
       donePointsLabel: "ELKÉSZÜLT PONTOK",
-      eyebrow: "Egy összekapcsolt munkafolyamat",
-      title: "Több mint kanban. A projekt operációs rendszere.",
-      description:
-        "A backlog első ötletétől egy kész funkcióig minden lépés összekapcsolt, átlátható és az egész csapat számára elérhető.",
+      eyebrow: "AZ ÖTLETTŐL A KÉSZ ÁLLAPOTIG",
+      title: "Minden, ami egy kis csapatnak kell.",
+      description: "Tervezés, Kanban-tábla és haladáskövetés egy könnyen használható eszközben, saját infrastruktúrán.",
       items: [
         {
-          kicker: "TERVEZÉS",
-          title: "Alakítsa az ötleteket reális sprinttervvé",
-          description:
-            "Gyűjtse a követelményeket a backlogba, adjon hozzá prioritást, határidőt és story pointot, majd válassza ki a következő sprint reális tartalmát.",
+          kicker: "BACKLOG",
+          title: "Rendszerezett követelmények",
+          description: "Írd le a story-kat, add meg a prioritást, a határidőt és a pontokat, majd rendeld őket sprintekhez.",
         },
         {
-          kicker: "MEGVALÓSÍTÁS",
-          title: "Látható, mi halad, ki felel érte és mi akadt el",
-          description:
-            "A drag & drop kanban, felelősök, checklisták és megjegyzések egy helyen tartják a napi munkát a szétszórt üzenetek helyett.",
+          kicker: "KANBAN-TÁBLA",
+          title: "Látható, min dolgozik a csapat",
+          description: "Mozgasd a story-kat az oszlopok között, rendelj hozzájuk felelősöket, feladatokat és megjegyzéseket.",
         },
         {
-          kicker: "ÖNÁLLÓAN ÜZEMELTETETT",
-          title: "Az adataid a saját infrastruktúrádon maradnak",
-          description:
-            "Telepítsd a Tapiz Boardsot a saját szerveredre vagy Vercel projektedbe, saját adatbázissal. Nincs szükség harmadik féltől származó fiókra a működéséhez.",
+          kicker: "SAJÁT ÜZEMELTETÉS",
+          title: "A te szervered. A te adataid.",
+          description: "Az alkalmazás saját infrastruktúrán és MySQL-adatbázissal fut. A forráskód MIT-licenc alatt érhető el.",
         },
         {
-          kicker: "HALADÁS",
-          title: "A haladás látható, nem benyomásokon alapul",
-          description:
-            "A velocity, elkészült story pointok, aktivitások és retrospektívek megmutatják, hol áll a csapat és hol szükséges segítség.",
+          kicker: "SPRINTEK",
+          title: "Kövesd a haladást",
+          description: "Lásd a kész story-kat, pontokat és retrospektíveket. A véletlenül elindított sprint adatvesztés nélkül visszaállítható.",
         },
         {
-          kicker: "TELJESÍTÉS",
-          title: "Készen áll a demóra és bemutatásra",
-          description:
-            "Kapcsolja a GitHub repót, osszon meg bejelentkezés nélküli, csak olvasható boardot, és őrizze meg a bemutatható munkatörténetet.",
+          kicker: "NYILVÁNOS NÉZET",
+          title: "Mutasd meg az eredményt",
+          description: "A nyilvános, csak olvasható link a táblát, backlogot és story-részleteket mutatja bejelentkezés nélkül.",
         },
       ],
     },
     insights: {
-      eyebrow: "Kis csapatokra tervezve",
-      title: "Egy projekt. A megfelelő nézet mindenkinek.",
-      description:
-        "Minden tag ugyanazt a boardot, backlogot és sprintet látja — nincs külön nézet, amit szinkronban kellene tartani, nincs adatduplikálás az eszközök között.",
-      calloutKicker: "NYÍLT FORRÁSKÓD",
-      calloutTitle: "MIT licenc, a tiéd az üzemeltetés",
-      calloutDescription: "A Tapiz Boards Community ingyenesen önállóan üzemeltethető. A példányod minden tagja teljes hozzáféréssel rendelkezik — nincsenek csomagszintek.",
+      eyebrow: "KIS CSAPATOKNAK KÉSZÜLT",
+      title: "A projektről mindenkinek ugyanaz a képe.",
+      description: "A tagok ugyanazt a backlogot, sprintet és táblát látják. Az adminisztrátor kezeli a fiókokat, a tulajdonos a megosztást.",
+      calloutKicker: "MIÉRT OSS?",
+      calloutTitle: "Nincsenek csomagszintek és lezárt funkciók.",
+      calloutDescription: "MIT-licenc, saját üzemeltetés, alkalmazásszintű projekt- és tagkorlátok nélkül.",
       items: [
         {
-          kicker: "CSAPATOKNAK",
-          title: "A mai munka találgatás nélkül",
-          description:
-            "Minden tag látja saját feladatait, határidőit, az aktív sprintet és a munka folytatásához szükséges összefüggéseket.",
+          kicker: "CSAPATTAGOKNAK",
+          title: "Világos a következő lépés",
+          description: "A megbízások, kommentek és határidők a story-kkal együtt maradnak, nem vesznek el az üzenetek között.",
         },
         {
-          kicker: "ADMINISZTRÁTOROKNAK",
-          title: "Egyszerű fiókkezelés",
-          description:
-            "Hozzon létre tagfiókokat, állítson vissza jelszavakat, és aktiváljon vagy deaktiváljon felhasználókat egyetlen admin felületről — nincs kezelendő nyilvános regisztráció.",
+          kicker: "ADMINOKNAK",
+          title: "Te irányítod a hozzáférést",
+          description: "Az adminisztrátor hozza létre a fiókokat és szabályozza a hozzáférést. Nincs nyilvános regisztráció.",
         },
         {
-          kicker: "NYOMON KÖVETÉSHEZ",
-          title: "A munkatörténet a projekttel marad",
-          description:
-            "Az aktivitásnaptár, megjegyzések és lezárt sprintek akkor is megőrzik a projekt történetét, ha a csapat összetétele változik.",
+          kicker: "HALADÁSKÖVETÉSHEZ",
+          title: "A munka története megmarad",
+          description: "Tevékenységek, lezárt sprintek és retrospektívek mutatják a haladást és a javítandó területeket.",
         },
         {
-          kicker: "BEMUTATÁSHOZ",
-          title: "Egyetlen link mutatja meg a csapat eredményét",
-          description:
-            "A nyilvános, csak olvasható board és a GitHub repo további fiókok és eszközmagyarázat nélkül mutatja be az eredményt.",
+          kicker: "BEMUTATÓHOZ",
+          title: "Megtekintés szerkesztés nélkül",
+          description: "A nyilvános link a táblát, a backlogot, leírásokat, feladatokat és kommenteket csak olvashatóan jeleníti meg.",
         },
       ],
     },
     cta: {
-      eyebrow: "A következő sprint itt kezdődik",
-      title: "Adjon projektjének egy helyet, ahol valóban haladhat.",
-      description:
-        "Jelentkezzen be a példánya adminisztrátora által létrehozott fiókkal, gyűjtse össze a csapatot, és alakítsa az első követelményt kész funkcióvá.",
-      points: [
-        "BACKLOG ÉS SPRINTEK",
-        "KANBAN ÉS FELELŐSÖK",
-        "ÖNÁLLÓAN ÜZEMELTETETT, NYÍLT FORRÁSKÓDÚ",
-        "NYILVÁNOS BOARD A BEMUTATÁSHOZ",
-      ],
+      eyebrow: "KEZDJ A SAJÁT SZERVEREDEN",
+      title: "A te csapatod. A te táblád.",
+      description: "Telepítsd az OSS-kiadást saját infrastruktúrára. Ha már van példányod, jelentkezz be az adminisztrátor által létrehozott fiókkal.",
+      points: ["Backlog és sprintek", "Oszlopok, feladatok, megjegyzések", "Saját üzemeltetés · MIT", "Nyilvános, csak olvasható nézet"],
       createAccount: "Bejelentkezés",
       login: "Bejelentkezés",
-      note: "Önállóan üzemeltetett · MIT licenc · nincs nyilvános regisztráció",
-      summaryLabel: "PROJEKT-MUNKATÉR",
+      note: "A fiókokat az adminisztrátor hozza létre · nincs nyilvános regisztráció",
+      summaryLabel: "KÖZÖSSÉGI MUNKATÉR",
     },
     footer: {
-      description:
-        "Önállóan üzemeltetett, nyílt forráskódú projekt-munkatér kis csapatoknak: backlog, sprintek, kanban és bemutatásra kész boardok.",
+      description: "A Tapiz Boards OSS saját üzemeltetésű, nyílt forráskódú munkatér backloghoz, sprintekhez és csapatok Kanban-táblájához. Az adataid a saját infrastruktúrádon maradnak.",
       statusOperational: "STÁTUSZ · MŰKÖDIK",
       product: "Termék",
       board: "Board",
@@ -232,7 +213,7 @@ export const hu: Dict = {
       system: "Rendszer",
       changelog: "Változásnapló",
       statusPage: "Rendszerállapot",
-      rights: "Minden jog fenntartva.",
+      rights: "MIT-licenc · nyílt forráskód",
       statusLine: "Státusz · Működik",
     },
   },
@@ -570,15 +551,15 @@ export const hu: Dict = {
     },
     appearance: {
       title: "Megjelenés",
-      subtitle: "Téma és színsémák",
+      subtitle: "Megjelenés és OSS-paletta",
       themeTitle: "Téma",
       themeDesc: "Válassz világos vagy sötét módot.",
       light: "Világos",
       dark: "Sötét",
-      skinTitle: "Színsémák",
-      skinDesc: "A színsémák mindkét módban átszínezik az alkalmazást. A nyitóoldal mindig az alapértelmezett megjelenést tartja meg.",
+      skinTitle: "OSS-paletta",
+      skinDesc: "Egységes jádezöld paletta az alkalmazásban, a nyilvános oldalakon és a bejelentkezésnél. Csak világos és sötét mód között lehet váltani.",
       skins: {
-        default: "Ink & Ember",
+        default: "OSS · Jade",
         ocean: "Óceán",
         forest: "Erdő",
         rose: "Rózsa",

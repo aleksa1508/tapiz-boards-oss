@@ -4,7 +4,7 @@
  */
 export const sr = {
   meta: {
-    description: "Tapiz Boards: samostalno hostovan, otvorenog koda backlog, sprint, kanban i radni prostor za praćenje napretka malih timova.",
+    description: "Tapiz Boards OSS — besplatan, samostalno hostovan alat otvorenog koda za backlog, Kanban tablu, sprintove i timski rad.",
   },
   common: {
     cancel: "Otkaži",
@@ -87,9 +87,9 @@ export const sr = {
   },
   landing: {
     nav: {
-      board: "Kako radi",
+      board: "Tabla",
       features: "Mogućnosti",
-      teams: "Za koga je",
+      teams: "Za timove",
       login: "Prijava",
       register: "Registracija",
       menu: "Meni",
@@ -98,25 +98,24 @@ export const sr = {
       ariaMobileNav: "Mobilna navigacija",
     },
     hero: {
-      badge: "Otvorenog koda, samostalno hostovan",
-      eyebrow: "Timska saradnja na sopstvenoj infrastrukturi",
-      headline1: "Od ideje do cilja,",
-      headline2: "ceo projekat",
-      headline3: "na jednom boardu.",
-      description:
-        "Tapiz Boards povezuje planiranje, sprintove, kanban i praćenje napretka u jednom samostalno hostovanom radnom prostoru. Postavite ga na sopstvenu infrastrukturu i zadržite punu kontrolu nad podacima.",
-      ctaRegister: "Prijavi se",
+      badge: "MIT licenca · otvoreni kod",
+      eyebrow: "BEZ VEZIVANJA ZA TUĐU PLATFORMU",
+      headline1: "Od backloga do isporuke.",
+      headline2: "Jedna tabla.",
+      headline3: "Vaša pravila.",
+      description: "Planirajte storije, vodite sprintove i pratite rad tima na sopstvenom serveru. Tapiz Boards OSS je besplatan za samostalno hostovanje, bez ograničenja broja projekata i članova.",
+      ctaRegister: "Otvori radni prostor",
       ctaLogin: "Prijavi se",
       sourceLabel: "Izvorni kod",
       proofs: ["MIT licenca","Vaša baza i server","Bez ograničenja po planu"],
       previewSprintLabel: "SPRINT 03 · U TOKU",
       storyLabel: "STORI",
       previewLabel: "Prikaz Tapiz Boards projektnog boarda",
-      previewProjectName: "Redizajn veb sajta",
-      sprintGoal: "Cilj: završiti MVP za demo",
-      previewStatus: "6 od 9 story-ja završeno",
+      previewProjectName: "Portal za korisnike",
+      sprintGoal: "Cilj: spremiti demonstraciju MVP-a",
+      previewStatus: "6 od 9 storija završeno",
       previewColumns: [
-        { title: "BACKLOG", cards: [{ title: "UX tok prijave", meta: "5 SP" }, { title: "Model podataka", meta: "3 SP" }] },
+        { title: "TO DO", cards: [{ title: "UX tok prijave", meta: "5 SP" }, { title: "Model podataka", meta: "3 SP" }] },
         { title: "IN PROGRESS", cards: [{ title: "Auth modul", meta: "Mina · 8 SP" }, { title: "Board filteri", meta: "Luka · 3 SP" }] },
         { title: "DONE", cards: [{ title: "Repo i CI", meta: "Završeno" }, { title: "Wireframe", meta: "Završeno" }] },
       ],
@@ -131,97 +130,79 @@ export const sr = {
     features: {
       sampleStories: ["Prijava korisnika","Korisnički profil","Validacija forme"],
       donePointsLabel: "ZAVRŠENO SP",
-      eyebrow: "Jedan povezan tok rada",
-      title: "Nije samo kanban. To je operativni sistem vašeg projekta.",
-      description:
-        "Od prve ideje u backlogu do završene funkcionalnosti, svaki korak ostaje povezan, pregledan i dostupan celom timu.",
+      eyebrow: "OD IDEJE DO GOTOVOG",
+      title: "Sve što timu treba. Bez suvišnih koraka.",
+      description: "Planiranje, rad na tabli i praćenje napretka povezuju se u jednom jednostavnom alatu — na vašoj infrastrukturi.",
       items: [
         {
-          kicker: "PLANIRANJE",
-          title: "Pretvorite ideje u jasan plan sprinta",
-          description:
-            "Sakupite zahteve u backlogu, dodajte prioritete, rokove i story points, pa odaberite šta tim realno isporučuje u sledećem sprintu.",
+          kicker: "BACKLOG",
+          title: "Zahtevi koji se ne gube",
+          description: "Zabeležite stori, odredite prioritet, rok i story points. Rasporedite posao u sprint tek kada tim bude spreman.",
         },
         {
-          kicker: "IZVRŠENJE",
-          title: "Svi vide šta se radi, ko radi i gde je zastoj",
-          description:
-            "Drag & drop kanban, zaduženja, checklist stavke i komentari drže svakodnevni rad na jednom mestu, bez traženja poruka po četovima.",
+          kicker: "KANBAN TABLA",
+          title: "Tačno se vidi šta je u toku",
+          description: "Prevlačite storije između kolona, dodeljujte ih članovima i koristite zadatke i komentare za detalje rada.",
         },
         {
-          kicker: "SAMOSTALNO HOSTOVANO",
-          title: "Vaši podaci ostaju na vašoj infrastrukturi",
-          description:
-            "Postavite Tapiz Boards na sopstveni server ili Vercel projekat sa sopstvenom bazom. Nije potreban nikakav nalog trećih strana da bi radio.",
+          kicker: "SELF-HOSTED",
+          title: "Vaš server. Vaši podaci.",
+          description: "Aplikacija radi na vašoj infrastrukturi sa sopstvenom MySQL bazom. Kod je dostupan pod MIT licencom.",
         },
         {
-          kicker: "NAPREDAK",
-          title: "Napredak je vidljiv, ne zasnovan na utisku",
-          description:
-            "Velocity, završeni story points, aktivnosti i retrospektive daju timu jasnu sliku gde se stoji i gde je potrebna podrška.",
+          kicker: "SPRINTOVI",
+          title: "Napredak bez nagađanja",
+          description: "Pratite završene storije, story points i retrospektive. Greškom pokrenut sprint možete vratiti u planirano stanje.",
         },
         {
-          kicker: "ISPORUKA",
-          title: "Spremno za demo i predstavljanje",
-          description:
-            "Povežite GitHub repo, podelite read-only board bez prijave i sačuvajte istoriju rada koju tim može jasno da predstavi.",
+          kicker: "JAVNI PRIKAZ",
+          title: "Rezultat je spreman za deljenje",
+          description: "Podelite read-only link za aktivnu tablu, backlog i detalje storija. Posetioci mogu da pregledaju rad bez prijave.",
         },
       ],
     },
     insights: {
-      eyebrow: "Napravljen za male timove",
-      title: "Isti projekat. Pravi pregled za svakoga.",
-      description:
-        "Svaki član vidi isti board, backlog i sprint — nema odvojenih prikaza koje treba usklađivati, nema dupliranja podataka po alatima.",
-      calloutKicker: "OTVORENI KOD",
-      calloutTitle: "MIT licenca, vaš da ga vodite",
-      calloutDescription: "Tapiz Boards Community je besplatan za samostalno hostovanje. Svaki član vaše instance ima pun pristup — nema nivoa plana.",
+      eyebrow: "PRAVLJENO ZA MALE TIMOVE",
+      title: "Svi rade sa istom slikom projekta.",
+      description: "Članovi vide isti backlog, sprint i tablu. Administrator upravlja nalozima, a vlasnik projekta podešavanjima deljenja.",
+      calloutKicker: "ZAŠTO OSS?",
+      calloutTitle: "Bez planova i zaključanih funkcija",
+      calloutDescription: "MIT licenca, sopstvena instalacija i bez ograničenja projekata ili članova na nivou aplikacije.",
       items: [
         {
-          kicker: "ZA TIMOVE",
-          title: "Današnji zadaci bez nagađanja",
-          description:
-            "Svaki član vidi svoja zaduženja, rokove, aktivan sprint i kontekst koji mu je potreban da nastavi rad.",
+          kicker: "ZA ČLANOVE",
+          title: "Znate šta je sledeće",
+          description: "Zaduženja, komentari i rokovi stoje uz svaki stori, pa tim ne mora da traži kontekst po porukama.",
         },
         {
           kicker: "ZA ADMINISTRATORE",
-          title: "Jednostavno upravljanje nalozima",
-          description:
-            "Kreirajte naloge članova, resetujte lozinke i aktivirajte ili deaktivirajte korisnike sa jednog admin ekrana — bez javne registracije za upravljanje.",
+          title: "Pristup je pod kontrolom instance",
+          description: "Administrator kreira naloge i upravlja pristupom. Nema javne registracije ili obavezne spoljne prijave.",
         },
         {
           kicker: "ZA PRAĆENJE",
-          title: "Istorija rada ostaje uz projekat",
-          description:
-            "Kalendar aktivnosti, komentari i završeni sprintovi čuvaju tok projekta čak i kada se članstvo tima promeni.",
+          title: "Rad ostaje zabeležen",
+          description: "Aktivnosti, završeni sprintovi i retrospektive daju pregled urađenog i osnovu za sledeći korak.",
         },
         {
-          kicker: "ZA PREDSTAVLJANJE",
-          title: "Jedan link pokazuje šta je tim isporučio",
-          description:
-            "Javni read-only board i GitHub repo daju pregled rezultata bez dodatnih naloga i objašnjavanja alata.",
+          kicker: "ZA PREZENTACIJU",
+          title: "Pregled bez prava na izmenu",
+          description: "Javni link prikazuje tablu, backlog, opis, zadatke i komentare storija, ali ne dozvoljava uređivanje.",
         },
       ],
     },
     cta: {
-      eyebrow: "Vaš sledeći sprint počinje ovde",
-      title: "Dajte projektu mesto na kom će zaista napredovati.",
-      description:
-        "Prijavite se nalogom koji je kreirao administrator vaše instance, okupite tim i pretvorite prvi zahtev u završenu funkcionalnost.",
-      points: [
-        "BACKLOG I SPRINTOVI",
-        "KANBAN I ZADUŽENJA",
-        "SAMOSTALNO HOSTOVANO, OTVORENOG KODA",
-        "JAVNI BOARD ZA PREDSTAVLJANJE",
-      ],
+      eyebrow: "POČNITE NA SVOM SERVERU",
+      title: "Vaš tim. Vaša tabla.",
+      description: "Postavite OSS izdanje na sopstvenu infrastrukturu. Ako je instanca već pokrenuta, prijavite se nalogom koji vam je otvorio administrator.",
+      points: ["Backlog i sprintovi", "Kolone, zadaci i komentari", "Samostalno hostovanje · MIT", "Javni prikaz samo za čitanje"],
       createAccount: "Prijavi se",
       login: "Prijavi se",
-      note: "Samostalno hostovano · MIT licenca · bez javne registracije",
-      summaryLabel: "PROJEKTNI RADNI PROSTOR",
+      note: "Nalog kreira administrator instance · bez javne registracije",
+      summaryLabel: "COMMUNITY RADNI PROSTOR",
     },
     footer: {
-      description:
-        "Samostalno hostovan, otvorenog koda projektni radni prostor za male timove: backlog, sprintovi, kanban i board spreman za predstavljanje.",
+      description: "Tapiz Boards OSS je samostalno hostovan alat za backlog, sprintove i timsku Kanban tablu. Otvorenog je koda, a podaci ostaju na vašoj infrastrukturi.",
       statusOperational: "STATUS · OPERATIVAN",
       product: "Proizvod",
       board: "Board",
@@ -234,7 +215,7 @@ export const sr = {
       system: "Sistem",
       changelog: "Istorija izmena",
       statusPage: "Status sistema",
-      rights: "Sva prava zadržana.",
+      rights: "MIT licenca · otvoreni kod",
       statusLine: "Status · Operativan",
     },
   },
@@ -571,15 +552,15 @@ export const sr = {
     },
     appearance: {
       title: "Izgled",
-      subtitle: "Tema i šeme boja",
+      subtitle: "Izgled i OSS paleta",
       themeTitle: "Tema",
       themeDesc: "Izaberi svetli ili tamni režim.",
       light: "Svetla",
       dark: "Tamna",
-      skinTitle: "Šeme boja",
-      skinDesc: "Šeme boja menjaju izgled aplikacije u oba režima. Početna stranica uvek zadržava podrazumevani izgled.",
+      skinTitle: "Paleta OSS izdanja",
+      skinDesc: "Jedinstvena zelena paleta važi za celu aplikaciju, javne stranice i prijavu. Menjajte samo svetli ili tamni režim.",
       skins: {
-        default: "Ink & Ember",
+        default: "OSS · Jade",
         ocean: "Okean",
         forest: "Šuma",
         rose: "Ruža",

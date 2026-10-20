@@ -2,7 +2,7 @@ import type { Dict } from "./sr";
 
 export const fr: Dict = {
   meta: {
-    description: "Tapiz Boards : un espace de travail auto-hébergé et open source pour le backlog, les sprints, le kanban et le suivi de progression des petites équipes.",
+    description: "Tapiz Boards OSS — tableau Kanban open source gratuit à auto-héberger, avec backlog, sprints et collaboration.",
   },
   common: {
     cancel: "Annuler",
@@ -85,9 +85,9 @@ export const fr: Dict = {
   },
   landing: {
     nav: {
-      board: "Comment ça marche",
-      features: "Possibilités",
-      teams: "Pour qui",
+      board: "Tableau",
+      features: "Fonctionnalités",
+      teams: "Pour les équipes",
       login: "Connexion",
       register: "Inscription",
       menu: "Menu",
@@ -96,25 +96,24 @@ export const fr: Dict = {
       ariaMobileNav: "Navigation mobile",
     },
     hero: {
-      badge: "Open source, auto-hébergé",
-      eyebrow: "Collaboration d'équipe sur votre propre infrastructure",
-      headline1: "De l'idée au résultat,",
-      headline2: "tout le projet",
-      headline3: "sur un seul board.",
-      description:
-        "Tapiz Boards relie planification, sprints, kanban et suivi de progression dans un espace de travail auto-hébergé. Déployez-le sur votre propre infrastructure et gardez le contrôle total de vos données.",
-      ctaRegister: "Se connecter",
+      badge: "Licence MIT · open source",
+      eyebrow: "SANS DÉPENDANCE À UNE PLATEFORME",
+      headline1: "Du backlog à la livraison.",
+      headline2: "Un seul tableau.",
+      headline3: "Vos règles.",
+      description: "Planifiez les stories, gérez les sprints et suivez le travail de l'équipe sur votre serveur. Tapiz Boards OSS est gratuit à auto-héberger, sans limite d'application sur les projets ou les membres.",
+      ctaRegister: "Ouvrir l'espace",
       ctaLogin: "Se connecter",
       sourceLabel: "Voir le code",
       proofs: ["Licence MIT","Vos données sur votre serveur","Sans limite de forfait"],
       previewSprintLabel: "SPRINT 03 · ACTIF",
       storyLabel: "STORY",
       previewLabel: "Aperçu d’un board de projet Tapiz Boards",
-      previewProjectName: "Refonte du site web",
-      sprintGoal: "Objectif : terminer le MVP pour la démo",
+      previewProjectName: "Espace projet",
+      sprintGoal: "Objectif : préparer une démo MVP",
       previewStatus: "6 stories sur 9 terminées",
       previewColumns: [
-        { title: "BACKLOG", cards: [{ title: "Parcours UX de connexion", meta: "5 SP" }, { title: "Modèle de données", meta: "3 SP" }] },
+        { title: "TO DO", cards: [{ title: "Parcours UX de connexion", meta: "5 SP" }, { title: "Modèle de données", meta: "3 SP" }] },
         { title: "EN COURS", cards: [{ title: "Module d'authentification", meta: "Mina · 8 SP" }, { title: "Filtres du board", meta: "Luka · 3 SP" }] },
         { title: "TERMINÉ", cards: [{ title: "Dépôt et CI", meta: "Terminé" }, { title: "Wireframe", meta: "Terminé" }] },
       ],
@@ -129,97 +128,79 @@ export const fr: Dict = {
     features: {
       sampleStories: ["Connexion utilisateur","Profil utilisateur","Validation du formulaire"],
       donePointsLabel: "POINTS TERMINÉS",
-      eyebrow: "Un flux de travail connecté",
-      title: "Plus qu'un kanban. Le système d'exploitation de votre projet.",
-      description:
-        "De la première idée dans le backlog à une fonctionnalité terminée, chaque étape reste connectée, visible et accessible à toute l'équipe.",
+      eyebrow: "DE L'IDÉE AU RÉSULTAT",
+      title: "L'essentiel pour votre équipe. Rien de superflu.",
+      description: "Planification, tableau Kanban et suivi de progression réunis dans un outil simple, hébergé sur votre infrastructure.",
       items: [
         {
-          kicker: "PLANIFICATION",
-          title: "Transformez les idées en un plan de sprint réaliste",
-          description:
-            "Rassemblez les besoins dans le backlog, ajoutez priorités, échéances et story points, puis choisissez ce que l'équipe peut réellement livrer.",
+          kicker: "BACKLOG",
+          title: "Des demandes bien organisées",
+          description: "Décrivez chaque story, définissez sa priorité, son échéance et ses points, puis planifiez-la dans un sprint.",
         },
         {
-          kicker: "EXÉCUTION",
-          title: "Voyez ce qui avance, qui s'en charge et ce qui bloque",
-          description:
-            "Kanban drag & drop, responsables, checklists et commentaires regroupent le travail quotidien au lieu de le disperser dans les conversations.",
+          kicker: "KANBAN",
+          title: "Visualisez le travail en cours",
+          description: "Déplacez les stories entre les colonnes, attribuez des responsables et conservez tâches et commentaires au même endroit.",
         },
         {
-          kicker: "AUTO-HÉBERGÉ",
-          title: "Vos données restent sur votre infrastructure",
-          description:
-            "Déployez Tapiz Boards sur votre propre serveur ou projet Vercel avec votre propre base de données. Aucun compte tiers n'est requis pour le faire fonctionner.",
+          kicker: "AUTO-HÉBERGEMENT",
+          title: "Votre serveur. Vos données.",
+          description: "L'application fonctionne sur votre infrastructure avec votre propre base MySQL. Le code est disponible sous licence MIT.",
         },
         {
-          kicker: "PROGRESSION",
-          title: "La progression est visible, pas fondée sur une impression",
-          description:
-            "Vélocité, story points terminés, activités et rétrospectives montrent clairement où en est l'équipe et où intervenir.",
+          kicker: "SPRINTS",
+          title: "Mesurez l'avancement",
+          description: "Retrouvez stories terminées, points et rétrospectives. Annulez le démarrage accidentel d'un sprint sans perdre les données.",
         },
         {
-          kicker: "LIVRAISON",
-          title: "Prêt pour la démo et la présentation",
-          description:
-            "Reliez le dépôt GitHub, partagez un board en lecture seule sans connexion et conservez un historique que l'équipe peut présenter clairement.",
+          kicker: "PARTAGE PUBLIC",
+          title: "Partagez les résultats en lecture seule",
+          description: "Un lien public affiche le tableau actif, le backlog et les détails des stories, sans connexion ni possibilité de modification.",
         },
       ],
     },
     insights: {
-      eyebrow: "Conçu pour les petites équipes",
-      title: "Un seul projet. La bonne vue pour chacun.",
-      description:
-        "Chaque membre voit le même board, le même backlog et le même sprint — pas de vues séparées à synchroniser, pas de données dupliquées entre outils.",
-      calloutKicker: "OPEN SOURCE",
-      calloutTitle: "Licence MIT, à vous de l'héberger",
-      calloutDescription: "Tapiz Boards Community est gratuit à auto-héberger. Chaque membre de votre instance a un accès complet — il n'y a pas de niveaux de plan.",
+      eyebrow: "CONÇU POUR LES PETITES ÉQUIPES",
+      title: "Une seule vue partagée du projet.",
+      description: "Les membres voient le même backlog, le même sprint et le même tableau. L'administrateur gère les comptes, le propriétaire gère le partage.",
+      calloutKicker: "POURQUOI OSS ?",
+      calloutTitle: "Sans forfaits ni fonctions bloquées.",
+      calloutDescription: "Licence MIT, auto-hébergement et aucune limite applicative du nombre de projets ou de membres.",
       items: [
         {
-          kicker: "POUR LES ÉQUIPES",
-          title: "Le travail du jour sans hésitation",
-          description:
-            "Chaque membre voit ses tâches, échéances, sprint actif et tout le contexte nécessaire pour poursuivre le travail.",
+          kicker: "POUR LES MEMBRES",
+          title: "La suite est claire",
+          description: "Attributions, commentaires et échéances restent associés à chaque story, sans dispersion dans les messages.",
         },
         {
-          kicker: "POUR LES ADMINISTRATEURS",
-          title: "Une gestion des comptes simple",
-          description:
-            "Créez des comptes membres, réinitialisez les mots de passe et activez ou désactivez des utilisateurs depuis un seul écran d'administration — sans inscription publique à gérer.",
+          kicker: "POUR LES ADMINS",
+          title: "Contrôlez les accès",
+          description: "L'administrateur crée les comptes et gère les accès. Pas d'inscription publique ni de fournisseur de connexion obligatoire.",
         },
         {
           kicker: "POUR LE SUIVI",
-          title: "L'historique du travail reste avec le projet",
-          description:
-            "Calendrier d'activité, commentaires et sprints terminés préservent le parcours du projet même lorsque l'équipe change.",
+          title: "Conservez l'historique du travail",
+          description: "Activités, sprints terminés et rétrospectives montrent les progrès et les prochaines améliorations.",
         },
         {
-          kicker: "POUR LA PRÉSENTATION",
-          title: "Un seul lien montre ce que l'équipe a livré",
-          description:
-            "Un board public en lecture seule et le dépôt GitHub donnent une vue claire du résultat sans compte supplémentaire.",
+          kicker: "POUR LES DÉMOS",
+          title: "Présentez sans autoriser les modifications",
+          description: "Le lien public donne accès au tableau, au backlog, aux descriptions, tâches et commentaires, uniquement en lecture.",
         },
       ],
     },
     cta: {
-      eyebrow: "Votre prochain sprint commence ici",
-      title: "Donnez à votre projet un espace où il peut vraiment avancer.",
-      description:
-        "Connectez-vous avec un compte créé par l'administrateur de votre instance, rassemblez votre équipe et transformez le premier besoin en fonctionnalité terminée.",
-      points: [
-        "BACKLOG ET SPRINTS",
-        "KANBAN ET RESPONSABLES",
-        "AUTO-HÉBERGÉ, OPEN SOURCE",
-        "BOARD PUBLIC POUR LA PRÉSENTATION",
-      ],
+      eyebrow: "DÉMARREZ SUR VOTRE SERVEUR",
+      title: "Votre équipe. Votre tableau.",
+      description: "Installez l'édition OSS sur votre infrastructure. Si une instance existe déjà, connectez-vous avec le compte créé par son administrateur.",
+      points: ["Backlog et sprints", "Colonnes, tâches et commentaires", "Auto-hébergement · MIT", "Partage public en lecture seule"],
       createAccount: "Se connecter",
       login: "Se connecter",
-      note: "Auto-hébergé · licence MIT · sans inscription publique",
-      summaryLabel: "ESPACE DE TRAVAIL PROJET",
+      note: "Comptes créés par l'administrateur · pas d'inscription publique",
+      summaryLabel: "ESPACE COMMUNAUTAIRE",
     },
     footer: {
-      description:
-        "Un espace de travail projet open source et auto-hébergé pour les petites équipes : backlog, sprints, kanban et boards prêts à présenter.",
+      description: "Tapiz Boards OSS est un espace open source auto-hébergé pour les backlogs, les sprints et les tableaux Kanban d'équipe. Vos données restent sur votre infrastructure.",
       statusOperational: "STATUT · OPÉRATIONNEL",
       product: "Produit",
       board: "Tableau",
@@ -232,7 +213,7 @@ export const fr: Dict = {
       system: "Système",
       changelog: "Historique des modifications",
       statusPage: "Statut du système",
-      rights: "Tous droits réservés.",
+      rights: "Licence MIT · open source",
       statusLine: "Statut · Opérationnel",
     },
   },
@@ -571,15 +552,15 @@ export const fr: Dict = {
     },
     appearance: {
       title: "Apparence",
-      subtitle: "Thème et couleurs",
+      subtitle: "Apparence et palette OSS",
       themeTitle: "Thème",
       themeDesc: "Choisissez le mode clair ou sombre.",
       light: "Clair",
       dark: "Sombre",
-      skinTitle: "Thèmes de couleurs",
-      skinDesc: "Les thèmes de couleurs recolorent l'application dans les deux modes. La page d'accueil conserve toujours l'apparence par défaut.",
+      skinTitle: "Palette OSS",
+      skinDesc: "Une palette jade cohérente sur toute l'application, les pages publiques et la connexion. Seuls les modes clair et sombre sont proposés.",
       skins: {
-        default: "Ink & Ember",
+        default: "OSS · Jade",
         ocean: "Océan",
         forest: "Forêt",
         rose: "Rose",
