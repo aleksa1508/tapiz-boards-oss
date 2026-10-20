@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Auth stranice — vizuelni sloj usklađen sa Tapiz LMS auth dizajnom (/ui).
-   Skopirano iz tapiz-reactjs-ui `login-form.css`; scope-ovano kroz `.auth-page`
-   da ne curi u app shell. Klase zamenjuju ranije inline arbitrary-value Tailwind.
+   OSS login — isolated, jade-toned auth workspace.
+   All colors derive from the same root palette as the board and landing.
+   Scoped under .auth-page so login-specific patterns do not leak into the app.
    ========================================================================== */
 
 .auth-page {

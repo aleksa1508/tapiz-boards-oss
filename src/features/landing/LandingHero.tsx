@@ -18,26 +18,6 @@ export function LandingHero() {
 
   return (
     <section className="lp-hero" id="board">
-      <div className="lp-hero-board-pattern" aria-hidden="true">
-        <span className="lp-hero-board-lane">
-          <b />
-          <i /><i /><i />
-        </span>
-        <span className="lp-hero-board-lane">
-          <b />
-          <i /><i />
-        </span>
-        <span className="lp-hero-board-lane">
-          <b />
-          <i /><i /><i />
-        </span>
-      </div>
-      <div className="lp-hero-edge lp-hero-edge-start" aria-hidden="true">
-        <i /><i /><i />
-      </div>
-      <div className="lp-hero-edge lp-hero-edge-end" aria-hidden="true">
-        <i /><i /><i />
-      </div>
       <div className="lp-container lp-hero-grid">
         <div className="lp-hero-copy">
           <div className="lp-hero-badge">

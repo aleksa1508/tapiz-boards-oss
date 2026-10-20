@@ -40,7 +40,7 @@ export function LandingFeatures() {
               {index === 0 && (
                 <div className="lp-mini-backlog" aria-hidden="true">
                   {t.sampleStories.map((title, index) => (
-                    <span key={title}><i /> {[8, 5, 3][index]} SP <b>{title}</b></span>
+                    <span key={title}><i /> {([8, 5, 3] as const)[index]} SP <b>{title}</b></span>
                   ))}
                 </div>
               )}

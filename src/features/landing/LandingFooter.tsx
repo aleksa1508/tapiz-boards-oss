@@ -47,12 +47,6 @@ export function LandingFooter() {
 
   return (
     <footer className="lp-footer">
-      <div className="lp-footer-board-pattern" aria-hidden="true">
-        <span className="lp-footer-board-lane"><b /><i /><i /></span>
-        <span className="lp-footer-board-lane"><b /><i /><i /><i /></span>
-        <span className="lp-footer-board-lane"><b /><i /><i /></span>
-      </div>
-      <div className="lp-footer-edge-cards" aria-hidden="true"><i /><i /><i /></div>
       <div className="lp-container lp-footer-grid">
         <div className="lp-footer-brand">
           <Brand />

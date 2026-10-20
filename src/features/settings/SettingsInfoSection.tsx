@@ -3,7 +3,7 @@
 import { ExternalLink } from "@tapizlabs/ui";
 import { INTL_LOCALES } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
-import { EcosystemLogoMark } from "@/shared/components/ui/EcosystemLogoMark";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.0.0";
 const BUILD_DATE = process.env.NEXT_PUBLIC_BUILD_DATE ?? new Date().toISOString();
@@ -31,7 +31,7 @@ export function SettingsInfoSection() {
     <div className="mx-auto max-w-lg animate-in fade-in duration-200">
       <div className="mb-8 flex flex-col items-center pt-2 text-center">
         <div className="mb-4 grid h-18 w-18 place-items-center text-txt-1">
-          <EcosystemLogoMark size={56} variant="boards" tone="mono" />
+          <OSSBrandMark size={56} />
         </div>
         <h2 className="mb-1 text-xl font-bold text-txt-1">{t.productTitle}</h2>
         <p className="max-w-xs text-sm leading-relaxed text-txt-3">{t.productDescription}</p>
