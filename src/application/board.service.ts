@@ -24,6 +24,17 @@ export const boardService = {
     const activeSprint = await sprintsRepo.findActiveByProject(projectId);
     return boardRepo.backlog(projectId, activeSprint?.id ?? null);
   },
+  /** Resolve the active sprint once so public board/backlog use the same split. */
+  async getPublicSnapshot(projectId: string) {
+    const active = await sprintsRepo.findActiveByProject(projectId);
+    const [columns, backlog] = await Promise.all([
+      active
+        ? boardRepo.boardWithStories(projectId, active.id)
+        : boardRepo.columns(projectId).then((cols) => cols.map((col) => ({ ...col, stories: [] as StoryDto[] }))),
+      boardRepo.backlog(projectId, active?.id ?? null),
+    ]);
+    return { columns, backlog };
+  },
   getColumns: (projectId: string) => boardRepo.columns(projectId),
   getComments: (storyId: string) => boardRepo.comments(storyId),
   /** Public route calls this only after validating a project sharing token. */

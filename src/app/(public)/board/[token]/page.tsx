@@ -20,9 +20,8 @@ export default async function PublicBoardPage({
   const project = await projectsService.findByPublicToken(token);
   if (!project) notFound();
 
-  const [columns, backlog, dict] = await Promise.all([
-    boardService.getBoard(project.id),
-    boardService.getBacklog(project.id),
+  const [{ columns, backlog }, dict] = await Promise.all([
+    boardService.getPublicSnapshot(project.id),
     getDict(),
   ]);
   // The token gates access to the entire public snapshot, including details.
