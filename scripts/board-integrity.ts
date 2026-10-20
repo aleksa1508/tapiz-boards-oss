@@ -14,6 +14,7 @@ import { projects, stories, users } from "../src/infrastructure/db/schema";
 import { boardService } from "../src/application/board.service";
 import { projectsService } from "../src/application/projects.service";
 import { sprintsService } from "../src/application/sprints.service";
+import { toPublicStories } from "../src/features/board/public-board";
 import { usersService } from "../src/application/users.service";
 import type { ActionResult } from "../src/lib/action-result";
 
@@ -144,6 +145,20 @@ async function main() {
     check("hidden S2 stories stay in the backlog list", backlog2.includes("H1") && backlog2.includes("H2"));
     void f;
 
+    console.log("\nPublic story projection:");
+    const hiddenStoryId = titleIds.get("H1")!;
+    unwrap(await boardService.addTask(pid, hiddenStoryId, "Public checklist entry"));
+    await boardService.addComment(hiddenStoryId, owner.id, "Public discussion entry");
+    const publicDetails = await boardService.getPublicDetails([hiddenStoryId]);
+    const publicStory = toPublicStories([unwrap(await boardService.getStory(hiddenStoryId))], publicDetails)[0];
+    check("public details include tasks and comments", publicStory.tasks.length === 1 &&
+      publicStory.tasks[0].title === "Public checklist entry" &&
+      publicStory.comments.length === 1 &&
+      publicStory.comments[0].body === "Public discussion entry");
+    check("public story projection excludes internal account/project IDs",
+      !("authorId" in publicStory) && !("assigneeId" in publicStory) && !("projectId" in publicStory));
+    check("public details handles an empty selection", Object.keys(await boardService.getPublicDetails([])).length === 0);
+
     console.log("\nAuthorization boundaries in the service layer:");
     const [foreignTodo] = await boardService.getColumns(foreign.id);
     const crossColumn = await boardService.moveStory(pid, { storyId: titleIds.get("B")!, toColumnId: foreignTodo.id, toIndex: 0 });
@@ -216,6 +231,22 @@ async function main() {
     ]);
     const active = (await sprintsService.listByProject(pid)).filter((s) => s.status === "active");
     check("two concurrent starts leave exactly one active sprint", active.length === 1 && starts.filter((r) => r.ok).length === 1, starts);
+
+    console.log("\nUndoing a mistaken sprint start:");
+    const wrongSprint = active[0];
+    const intendedSprint = wrongSprint.id === s2.id ? s3 : s2;
+    const sprintStoriesBefore = (await sprintsService.getStoriesBySprints([wrongSprint.id]))[wrongSprint.id] ?? [];
+    check("foreign project cannot undo sprint", !(await sprintsService.undoStart(foreign.id, wrongSprint.id)).ok);
+    const undone = await sprintsService.undoStart(pid, wrongSprint.id);
+    check("active sprint can return to Planned", undone.ok &&
+      (await sprintsService.activeByProject(pid)) === null &&
+      (await sprintsService.getSprint(wrongSprint.id)).ok);
+    const restoredSprint = unwrap(await sprintsService.getSprint(wrongSprint.id));
+    check("undo preserves sprint and stories", restoredSprint.status === "planned" &&
+      (await sprintsService.getStoriesBySprints([wrongSprint.id]))[wrongSprint.id]?.length === sprintStoriesBefore.length);
+    check("undo twice is rejected", !(await sprintsService.undoStart(pid, wrongSprint.id)).ok);
+    check("completed sprint cannot be undone", !(await sprintsService.undoStart(pid, s1.id)).ok);
+    check("intended sprint starts after undo", (await sprintsService.setStatus(pid, intendedSprint.id, "active")).ok);
 
     console.log("\nMembership:");
     const adds = await Promise.all([projectsService.addMember(pid, other.id), projectsService.addMember(pid, other.id)]);
