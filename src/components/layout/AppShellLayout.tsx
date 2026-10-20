@@ -6,7 +6,6 @@ import { Grid, Layers, Palette, Shield, Trash, UserCheck, Zap } from "@tapizlabs
 import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
-import { useApplySkin } from "@/components/theme/useApplySkin";
 import { useI18n } from "@/i18n/I18nProvider";
 import { logoutAction } from "@/lib/actions/auth.actions";
 import type { Role } from "@/domain/types";
@@ -34,7 +33,6 @@ export function AppShellLayout({ user, children }: AppShellLayoutProps) {
 }
 
 function AppShell({ user, children }: AppShellLayoutProps) {
-  useApplySkin();
   const pathname = usePathname();
   const router = useRouter();
   const { dict } = useI18n();

@@ -42,30 +42,8 @@ try {
 } catch (e) {
   // default light
 }
-// Apply the chosen skin synchronously, before hydration, so the app never
-// flashes the default brand for a frame before useApplySkin swaps to the
-// user's skin. Skins only apply where useApplySkin is mounted (app shell +
-// auth); landing/public routes keep the fixed brand, so gate on path. The
-// root "/" is landing-or-dashboard, so treat it as public to protect the
-// logged-out landing (a logged-in root dashboard may flash brand for a frame).
-try {
-  var p = location.pathname;
-  var isPublic =
-    p === "/" ||
-    p === "/changelog" ||
-    p === "/status" ||
-    p === "/privacy-policy" ||
-    p === "/terms-of-service" ||
-    p.indexOf("/board/") === 0;
-  var skin = localStorage.getItem("tb-skin");
-  if (!isPublic && skin && skin !== "default") {
-    root.setAttribute("data-skin", skin);
-  } else {
-    root.removeAttribute("data-skin");
-  }
-} catch (e) {
-  root.removeAttribute("data-skin");
-}
+// OSS uses one coherent jade palette; discard any previously stored hosted-product skin.
+root.removeAttribute("data-skin");
 `;
 
 export default async function RootLayout({
