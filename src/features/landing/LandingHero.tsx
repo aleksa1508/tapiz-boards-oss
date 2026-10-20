@@ -62,11 +62,11 @@ export function LandingHero() {
                 <i /><i /><i /><b />
               </span>
               <span>
-                <strong>Tapiz Boards</strong>
+                <strong>Tapiz Boards OSS</strong>
                 <small>{t.previewProjectName}</small>
               </span>
             </div>
-            <span className="lp-preview-live"><i /> SPRINT 03</span>
+            <span className="lp-preview-live"><i /> OSS · SPRINT 03</span>
           </div>
 
           <div className="lp-preview-toolbar">

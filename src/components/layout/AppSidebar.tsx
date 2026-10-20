@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronLeft, Gear, LogOut, Palette } from "@tapizlabs/ui";
-import { EcosystemLogoMark } from "@/shared/components/ui/EcosystemLogoMark";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 import { LanguageSwitcher } from "@/i18n/LanguageSwitcher";
 import { useI18n } from "@/i18n/I18nProvider";
 import { fmt } from "@/i18n/config";
@@ -53,16 +53,16 @@ export function AppSidebar({
       <div className={`flex h-14 shrink-0 items-center border-b border-border1 px-3.5 ${collapsed ? "justify-center" : "justify-between"}`}>
         {!collapsed && (
           <Link href="/" className="flex items-center gap-2.5 no-underline">
-            <EcosystemLogoMark size={32} variant="boards" tone="mono" className="text-txt-1" />
+            <OSSBrandMark size={32} />
             <div className="min-w-0">
-              <div className="truncate font-display text-[17px] font-bold tracking-[-0.02em] text-txt-1">Tapiz Boards</div>
+              <div className="truncate font-display text-[17px] font-bold tracking-[-0.02em] text-txt-1">Tapiz Boards <span className="oss-text-tag">OSS</span></div>
               <div className="font-mono text-[10px] font-semibold text-primary-300">{fmt(dict.nav.build, { version })}</div>
             </div>
           </Link>
         )}
         {collapsed && (
           <Link href="/" className="flex items-center no-underline">
-            <EcosystemLogoMark variant="boards" tone="mono" className="text-txt-1" />
+            <OSSBrandMark size={28} />
           </Link>
         )}
       </div>
@@ -167,7 +167,7 @@ export function AppSidebar({
       </div>
 
       <div className="shrink-0 px-2.5 pb-2 pt-1 text-center text-[11px] font-semibold text-txt-4">
-        {collapsed ? "TB" : "© 2026 Tapiz Labs"}
+        {collapsed ? "OSS" : "MIT · Open Source · Self-hosted"}
       </div>
     </aside>
   );

@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { EcosystemLogoMark } from "@/shared/components/ui/EcosystemLogoMark";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" className="lp-brand" aria-label="Tapiz Boards">
+    <Link href="/" className="lp-brand" aria-label="Tapiz Boards OSS">
       <span className="lp-brand-mark" aria-hidden="true">
-        <EcosystemLogoMark size={compact ? 21 : 24} variant="boards" tone="mono" />
+        <OSSBrandMark size={28} />
       </span>
-      {!compact && <span className="lp-brand-name">Tapiz Boards</span>}
+      {!compact && <span className="lp-brand-name">Tapiz Boards <small>OSS / COMMUNITY</small></span>}
     </Link>
   );
 }

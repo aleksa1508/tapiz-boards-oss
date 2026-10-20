@@ -19,7 +19,7 @@ export function PublicNav() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 min-w-0">
           <span className="font-display font-bold text-sm truncate text-txt-1">
-            Tapiz <span className="text-primary-300">Boards</span>
+            Tapiz <span className="text-primary-300">Boards</span> <span className="oss-text-tag">OSS</span>
           </span>
           <span className="text-[10px] font-mono shrink-0 ml-0.5 text-txt-4">{pathname}</span>
         </Link>

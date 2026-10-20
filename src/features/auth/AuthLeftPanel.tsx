@@ -1,6 +1,6 @@
 "use client";
 
-import { EcosystemLogoMark } from "@/shared/components/ui/EcosystemLogoMark";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 import { useI18n } from "@/i18n/I18nProvider";
 
 export function AuthLeftPanel() {
@@ -16,10 +16,10 @@ export function AuthLeftPanel() {
       <div className="auth-edge-cards" aria-hidden="true"><i /><i /><i /></div>
       {/* Brend */}
       <div className="auth-brand relative z-10 flex items-center gap-3 p-10 animate-fade-in-down">
-        <EcosystemLogoMark size={38} variant="boards" tone="mono" className="text-txt-1" />
+        <OSSBrandMark size={38} />
         <div>
           <div className="font-display text-[19px] font-bold tracking-tight text-txt-1">
-            Tapiz Boards
+            Tapiz Boards <span className="oss-text-tag">OSS</span>
           </div>
           <div className="auth-product-label mt-0.5 font-mono text-[11px] uppercase tracking-wider">
             {t.tagline}
@@ -66,9 +66,9 @@ export function AuthLeftPanel() {
       {/* Footer */}
       <div className="auth-aside-footer relative z-10 flex items-center justify-between px-10 py-3 animate-fade-in-up">
         <span className="auth-footer-brand">
-          <EcosystemLogoMark size={25} variant="boards" tone="mono" />
+          <OSSBrandMark size={25} />
           <span className="auth-footer-copy">
-            <strong>Tapiz Boards</strong>
+            <strong>Tapiz Boards OSS</strong>
             <small>© {new Date().getFullYear()} Tapiz Labs</small>
           </span>
         </span>

@@ -96,7 +96,7 @@ export function LandingFooter() {
         </nav>
       </div>
       <div className="lp-container lp-footer-bottom">
-        <span>© {new Date().getFullYear()} Tapiz Labs · {t.rights}</span>
+        <span>© {new Date().getFullYear()} Tapiz Boards OSS · MIT · {t.rights}</span>
       </div>
     </footer>
   );

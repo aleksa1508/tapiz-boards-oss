@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Grid, Layers, Palette, Shield, Trash, UserCheck, Zap } from "@tapizlabs/ui";
-import { EcosystemLogoMark } from "@/shared/components/ui/EcosystemLogoMark";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 import { useApplySkin } from "@/components/theme/useApplySkin";
@@ -108,7 +108,7 @@ function AppShell({ user, children }: AppShellLayoutProps) {
         <header className="sticky top-0 z-30 border-b border-border bg-ink-200 sm:hidden">
           <div className="flex h-14 items-center justify-between px-4">
             <Link href="/" className="flex items-center gap-2.5 no-underline">
-              <EcosystemLogoMark size={28} variant="boards" tone="mono" className="text-txt-1" />
+              <OSSBrandMark size={28} />
               <span className="font-display text-base font-bold tracking-[-0.02em] text-txt-1">
                 Tapiz <span className="text-primary-300">Boards</span>
               </span>

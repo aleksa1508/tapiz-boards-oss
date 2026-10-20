@@ -26,7 +26,7 @@ export function LandingCta() {
           <div className="lp-cta-summary">
             <div className="lp-cta-summary-head">
               <span><Layers size={19} /></span>
-              <div><strong>Tapiz Boards</strong><small>{t.summaryLabel}</small></div>
+              <div><strong>Tapiz Boards OSS</strong><small>{t.summaryLabel}</small></div>
             </div>
             <ul>
               {t.points.map((point) => (

@@ -10,7 +10,7 @@ import { I18nProvider } from "@/i18n/I18nProvider";
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDict();
-  const name = "Tapiz Boards";
+  const name = "Tapiz Boards OSS";
   const description = dict.meta.description;
   const url = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3004";
   return {
