@@ -5,6 +5,7 @@
 @import "@tapizlabs/ui/tailwind-theme.css";
 @import "../features/landing/landing.css";
 @import "./auth.css";
+@import "./oss.css";
 
 /* Komponente design systema nose Tailwind klase u dist bundle-u —
    bez ovoga Tailwind ne generiše njihove utility klase (node_modules se ne skenira). */

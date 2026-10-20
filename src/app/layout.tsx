@@ -87,7 +87,7 @@ export default async function RootLayout({
             kao zaseban fajl pa stigne tek posle prvog paint-a → flash pogrešne teme. */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="oss-app min-h-full flex flex-col">
         <I18nProvider locale={locale} dict={dict}>
           <ThemeProvider>
             <AppToastProvider>{children}</AppToastProvider>
