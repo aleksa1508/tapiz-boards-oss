@@ -5,7 +5,8 @@
  */
 
 /* Keep user-selected skins usable; brand palette is the default OSS skin. */
-html:not([data-skin]) body.oss-app {
+html:not([data-skin]) body.oss-app,
+html[data-skin="default"] body.oss-app {
   --color-primary-300: #078b78;
   --color-primary-400: #087764;
   --color-primary-600: #086957;
@@ -15,7 +16,8 @@ html:not([data-skin]) body.oss-app {
   --tapiz-accent-soft: rgba(8, 139, 120, .1);
   --tapiz-accent-contrast: #ffffff;
 }
-html.dark:not([data-skin]) body.oss-app {
+html.dark:not([data-skin]) body.oss-app,
+html.dark[data-skin="default"] body.oss-app {
   --color-primary-300: #54e0b9;
   --color-primary-400: #8af1d3;
   --color-primary-600: #3fc9a5;
@@ -215,4 +217,13 @@ html.dark .auth-aside {
 }
 @media (prefers-reduced-motion: reduce) {
   .lp-page .lp-product-preview { transition: none; }
+}
+
+/* Graph-paper workspace sidebar: a visible OSS-only structural signature. */
+body.oss-app aside.sticky {
+  border-right: 2px solid color-mix(in srgb, var(--tapiz-accent) 28%, var(--color-border));
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--tapiz-accent) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--tapiz-accent) 3%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
 }

@@ -8,7 +8,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         className="pointer-events-none fixed inset-0 -z-10 opacity-80"
         style={{
           background:
-            "radial-gradient(circle at 15% 0%, rgba(56,212,240,0.12), transparent 32rem), linear-gradient(180deg, var(--color-ink-200), var(--color-ink-100) 18rem)",
+            "radial-gradient(circle at 15% 0%, rgba(25,159,112,0.12), transparent 32rem), linear-gradient(180deg, var(--color-ink-200), var(--color-ink-100) 18rem)",
         }}
       />
       <PublicNav />

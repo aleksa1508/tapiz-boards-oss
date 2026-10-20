@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-  <rect width="48" height="48" rx="11.5" fill="#f6f4fa"></rect>
-  <rect x="0.5" y="0.5" width="47" height="47" rx="11" fill="none" stroke="#e7e2f0"></rect>
-  <path d="M13 10 V34 M24 8 V28 M35 14 V40" stroke="#221c30" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-  <path d="M6 24 H42" stroke="#f6f4fa" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-  <path d="M6 24 H42" stroke="#7759c2" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+  <title>Tapiz Boards OSS</title>
+  <rect width="48" height="48" rx="9" fill="#0d3029"/>
+  <rect x="5" y="5" width="38" height="38" rx="5" fill="none" stroke="#54e0b9" stroke-width="2"/>
+  <rect x="12" y="12" width="10" height="10" rx="1" fill="#cbef8b"/>
+  <rect x="26" y="12" width="10" height="10" rx="1" fill="#54e0b9" opacity=".5"/>
+  <rect x="12" y="26" width="10" height="10" rx="1" fill="#54e0b9" opacity=".5"/>
+  <rect x="26" y="26" width="10" height="10" rx="1" fill="#54e0b9"/>
 </svg>

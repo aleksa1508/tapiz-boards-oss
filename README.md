@@ -4,7 +4,14 @@ A self-hosted Kanban and sprint-planning tool for small teams: backlog, board wi
 
 This is the open-source edition of Tapiz Boards, derived from the hosted product. It has no dependency on Tapiz LMS, no SSO, and no public self-registration — an admin creates every account.
 
+The OSS edition has its own jade-and-pine visual identity, with a distinct pixel-board logo and clear OSS / Community branding. The hosted product's design and repository are not changed by these customizations.
+
 There are **no free-plan quotas**: the self-hosted edition allows unlimited projects (one board per project) and unlimited members per project, subject only to your own infrastructure capacity.
+
+## Public sharing and sprint recovery
+
+- A project owner can enable a token-based public link. Anyone with the link can view the active board, backlog, story descriptions, assignees, checklist items and comments, **without signing in**. These public pages provide no mutation actions. Treat the link as a public disclosure and disable/regenerate it when no longer needed.
+- If a member accidentally starts the wrong sprint, use **Undo start / Vrati u planirano** on the active sprint and confirm. This atomically returns it to Planned, freeing the active slot for the correct sprint. Stories, tasks, and current board columns are retained. Completed sprints cannot be reopened this way.
 
 ## Stack
 

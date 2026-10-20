@@ -3,7 +3,7 @@ import { AuthLeftPanel } from "@/features/auth/AuthLeftPanel";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { ApplySkin } from "@/components/theme/ApplySkin";
 import { LanguageSwitcher } from "@/i18n/LanguageSwitcher";
-import { EcosystemLogoMark } from "@/shared/components/ui/EcosystemLogoMark";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,8 +19,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
         <div className="auth-mobile-brand lg:hidden mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2 font-display text-xl font-bold tracking-tight">
-            <EcosystemLogoMark size={30} variant="boards" tone="mono" />
-            <span>Tapiz Boards</span>
+            <OSSBrandMark size={30} />
+            <span>Tapiz Boards <span className="oss-text-tag">OSS</span></span>
           </Link>
         </div>
         {children}

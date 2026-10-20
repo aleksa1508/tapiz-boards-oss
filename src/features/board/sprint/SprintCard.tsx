@@ -11,7 +11,7 @@ import {
   Progress,
   Surface,
   Trash,
-  RotateCcw,
+  RefreshCw,
 } from "@tapizlabs/ui";
 import type { BoardColumnDto, SprintDto, SprintStatus, StoryDto } from "@/domain/types";
 import { doneColumnId, storyProgress } from "@/domain/services/board-insights";
@@ -154,7 +154,7 @@ export function SprintCard({
             </Button>
           )}
           {sprint.status === "active" && (
-            <Button size="sm" variant="ghost" icon={<RotateCcw size={14} />} loading={statusLoading} onClick={onUndo}>
+            <Button size="sm" variant="ghost" icon={<RefreshCw size={14} />} loading={statusLoading} onClick={onUndo}>
               {t.undoStart}
             </Button>
           )}
