@@ -105,6 +105,10 @@ export const en: Dict = {
         "Tapiz Boards connects planning, sprints, kanban, and progress tracking in one self-hosted workspace. Deploy it on your own infrastructure and keep full control of your data.",
       ctaRegister: "Sign in",
       ctaLogin: "Sign in",
+      sourceLabel: "View source",
+      proofs: ["MIT licensed","Your server and database","No plan limits"],
+      previewSprintLabel: "SPRINT 03 · ACTIVE",
+      storyLabel: "STORY",
       previewLabel: "Tapiz Boards project board preview",
       previewProjectName: "Website Redesign",
       sprintGoal: "Goal: finish the MVP for the demo",
@@ -123,6 +127,8 @@ export const en: Dict = {
       ],
     },
     features: {
+      sampleStories: ["User sign-in","User profile","Form validation"],
+      donePointsLabel: "DONE POINTS",
       eyebrow: "One connected workflow",
       title: "More than kanban. The operating system for your project.",
       description:

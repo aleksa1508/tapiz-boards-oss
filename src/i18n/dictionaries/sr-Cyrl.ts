@@ -105,6 +105,10 @@ export const srCyrl: Dict = {
         "Tapiz Boards повезује планирање, sprint-ове, kanban и праћење напретка у једном самостално хостованом радном простору. Поставите га на сопствену инфраструктуру и задржите пуну контролу над подацима.",
       ctaRegister: "Пријави се",
       ctaLogin: "Пријави се",
+      sourceLabel: "Изворни код",
+      proofs: ["MIT лиценца","Ваша база и сервер","Без ограничења по плану"],
+      previewSprintLabel: "СПРИНТ 03 · У ТОКУ",
+      storyLabel: "СТОРИ",
       previewLabel: "Приказ Tapiz Boards пројектног board-а",
       previewProjectName: "Редизајн веб сајта",
       sprintGoal: "Циљ: завршити MVP за демо",
@@ -123,6 +127,8 @@ export const srCyrl: Dict = {
       ],
     },
     features: {
+      sampleStories: ["Пријава корисника","Кориснички профил","Валидација форме"],
+      donePointsLabel: "ЗАВРШЕНО SP",
       eyebrow: "Један повезан ток рада",
       title: "Није само kanban. То је оперативни систем вашег пројекта.",
       description:

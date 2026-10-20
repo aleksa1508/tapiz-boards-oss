@@ -105,6 +105,10 @@ export const hu: Dict = {
         "A Tapiz Boards összekapcsolja a tervezést, sprinteket, kanbant és a haladás követését egyetlen önállóan üzemeltetett munkatérben. Telepítsd a saját infrastruktúrádra, és tartsd meg a teljes kontrollt az adataid felett.",
       ctaRegister: "Bejelentkezés",
       ctaLogin: "Bejelentkezés",
+      sourceLabel: "Forráskód",
+      proofs: ["MIT-licenc","Saját szerver és adatbázis","Nincs csomagkorlát"],
+      previewSprintLabel: "SPRINT 03 · AKTÍV",
+      storyLabel: "STORY",
       previewLabel: "Tapiz Boards projektboard előnézet",
       previewProjectName: "Weboldal újratervezés",
       sprintGoal: "Cél: az MVP befejezése a demóra",
@@ -123,6 +127,8 @@ export const hu: Dict = {
       ],
     },
     features: {
+      sampleStories: ["Felhasználói bejelentkezés","Felhasználói profil","Űrlapellenőrzés"],
+      donePointsLabel: "ELKÉSZÜLT PONTOK",
       eyebrow: "Egy összekapcsolt munkafolyamat",
       title: "Több mint kanban. A projekt operációs rendszere.",
       description:

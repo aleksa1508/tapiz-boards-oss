@@ -107,6 +107,10 @@ export const sr = {
         "Tapiz Boards povezuje planiranje, sprintove, kanban i praćenje napretka u jednom samostalno hostovanom radnom prostoru. Postavite ga na sopstvenu infrastrukturu i zadržite punu kontrolu nad podacima.",
       ctaRegister: "Prijavi se",
       ctaLogin: "Prijavi se",
+      sourceLabel: "Izvorni kod",
+      proofs: ["MIT licenca","Vaša baza i server","Bez ograničenja po planu"],
+      previewSprintLabel: "SPRINT 03 · U TOKU",
+      storyLabel: "STORI",
       previewLabel: "Prikaz Tapiz Boards projektnog boarda",
       previewProjectName: "Redizajn veb sajta",
       sprintGoal: "Cilj: završiti MVP za demo",
@@ -125,6 +129,8 @@ export const sr = {
       ],
     },
     features: {
+      sampleStories: ["Prijava korisnika","Korisnički profil","Validacija forme"],
+      donePointsLabel: "ZAVRŠENO SP",
       eyebrow: "Jedan povezan tok rada",
       title: "Nije samo kanban. To je operativni sistem vašeg projekta.",
       description:

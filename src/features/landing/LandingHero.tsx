@@ -5,6 +5,8 @@ import {
   CheckSquare,
   FileText,
   Users,
+  Check,
+  GitHubIcon,
 } from "@tapizlabs/ui";
 import { useI18n } from "@/i18n/I18nProvider";
 import { LandingButton } from "./primitives/LandingButton";
@@ -42,6 +44,7 @@ export function LandingHero() {
             <span />
             {t.badge}
           </div>
+          <span className="lp-hero-eyebrow">{t.eyebrow}</span>
           <h1>
             {t.headline1} <mark>{t.headline2}</mark> {t.headline3}
           </h1>
@@ -52,8 +55,15 @@ export function LandingHero() {
               {t.ctaRegister}
               <ArrowRight size={16} aria-hidden="true" />
             </LandingButton>
+            <LandingButton href="https://github.com/owlCoder/tapiz-boards-oss" variant="secondary">
+              <GitHubIcon size={16} aria-hidden="true" /> {t.sourceLabel}
+            </LandingButton>
           </div>
-
+          <ul className="lp-hero-proofs">
+            {t.proofs.map((proof) => (
+              <li key={proof}><Check size={15} aria-hidden="true" />{proof}</li>
+            ))}
+          </ul>
         </div>
 
         <div className="lp-product-preview" aria-label={t.previewLabel}>
@@ -65,9 +75,14 @@ export function LandingHero() {
                 <small>{t.previewProjectName}</small>
               </span>
             </div>
-            <span className="lp-preview-live"><i /> OSS · SPRINT 03</span>
+            <span className="lp-preview-live"><i /> {t.previewSprintLabel}</span>
           </div>
 
+          <div className="lp-preview-tabs" aria-hidden="true">
+            <span className="is-active">{dict.board.tabBoard}</span>
+            <span>{dict.board.tabBacklog}</span>
+            <span>{dict.board.tabSprints}</span>
+          </div>
           <div className="lp-preview-toolbar">
             <span><Users size={14} /> 5</span>
             <strong>{t.sprintGoal}</strong>
@@ -86,7 +101,7 @@ export function LandingHero() {
                     className={`lp-preview-card is-${columnIndex === 1 ? "accent" : columnIndex === 2 ? "success" : "neutral"}`}
                     key={card.title}
                   >
-                    <span className="lp-preview-card-kicker">USER STORY</span>
+                    <span className="lp-preview-card-kicker">{t.storyLabel}</span>
                     <strong>{card.title}</strong>
                     <small>{card.meta}</small>
                   </article>

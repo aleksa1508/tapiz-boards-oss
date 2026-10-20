@@ -105,6 +105,10 @@ export const fr: Dict = {
         "Tapiz Boards relie planification, sprints, kanban et suivi de progression dans un espace de travail auto-hébergé. Déployez-le sur votre propre infrastructure et gardez le contrôle total de vos données.",
       ctaRegister: "Se connecter",
       ctaLogin: "Se connecter",
+      sourceLabel: "Voir le code",
+      proofs: ["Licence MIT","Vos données sur votre serveur","Sans limite de forfait"],
+      previewSprintLabel: "SPRINT 03 · ACTIF",
+      storyLabel: "STORY",
       previewLabel: "Aperçu d’un board de projet Tapiz Boards",
       previewProjectName: "Refonte du site web",
       sprintGoal: "Objectif : terminer le MVP pour la démo",
@@ -123,6 +127,8 @@ export const fr: Dict = {
       ],
     },
     features: {
+      sampleStories: ["Connexion utilisateur","Profil utilisateur","Validation du formulaire"],
+      donePointsLabel: "POINTS TERMINÉS",
       eyebrow: "Un flux de travail connecté",
       title: "Plus qu'un kanban. Le système d'exploitation de votre projet.",
       description:

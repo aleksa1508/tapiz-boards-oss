@@ -39,14 +39,14 @@ export function LandingFeatures() {
               <p>{feature.description}</p>
               {index === 0 && (
                 <div className="lp-mini-backlog" aria-hidden="true">
-                  <span><i /> 8 SP <b>Prijava korisnika</b></span>
-                  <span><i /> 5 SP <b>Dashboard tima</b></span>
-                  <span><i /> 3 SP <b>Validacija forme</b></span>
+                  {t.sampleStories.map((title, index) => (
+                    <span key={title}><i /> {[8, 5, 3][index]} SP <b>{title}</b></span>
+                  ))}
                 </div>
               )}
               {index === 1 && (
                 <div className="lp-mini-progress" aria-hidden="true">
-                  <span><b>18</b><small>DONE SP</small></span>
+                  <span><b>18</b><small>{t.donePointsLabel}</small></span>
                   <div><i /></div>
                   <Zap size={19} />
                 </div>
