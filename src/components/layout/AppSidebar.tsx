@@ -108,7 +108,7 @@ export function AppSidebar({
               </div>
               <div className="min-w-0">
                 <div className="overflow-hidden text-ellipsis whitespace-nowrap text-xs font-semibold text-txt-1">{userName}</div>
-                <div className="mt-0.5 inline-flex items-center rounded-full border border-primary-300/40 bg-tint-lavender px-2 py-px text-[11px] font-semibold text-primary-300">
+                <div className="mt-0.5 inline-flex items-center rounded-full border border-primary-300/40 bg-primary-300/10 px-2 py-px text-[11px] font-semibold text-primary-300">
                   {roleLabel}
                 </div>
                 {inTeamWorkspace && (

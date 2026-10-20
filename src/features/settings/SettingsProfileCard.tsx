@@ -28,7 +28,7 @@ export function SettingsProfileCard({ user }: SettingsProfileCardProps) {
       <div className="kicker mb-3">{t.profileTitle}</div>
 
       <div className="flex items-start gap-4">
-        <div className="grid size-12 shrink-0 place-items-center rounded-lg border border-primary-300/25 bg-tint-lavender font-display text-sm font-bold text-primary-300">
+        <div className="grid size-12 shrink-0 place-items-center rounded-lg border border-primary-300/25 bg-primary-300/10 font-display text-sm font-bold text-primary-300">
           {initials}
         </div>
 

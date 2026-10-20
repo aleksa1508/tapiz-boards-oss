@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Info } from "@tapizlabs/ui";
 import { INTL_LOCALES } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
-import { EcosystemLogoMark } from "@/shared/components/ui/EcosystemLogoMark";
+import { OSSBrandMark } from "@/components/layout/OSSBrandMark";
 
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.0.0";
 const BUILD_DATE = process.env.NEXT_PUBLIC_BUILD_DATE ?? new Date().toISOString();
@@ -30,10 +30,10 @@ export function DashboardAppInfoCard() {
     <div className="overflow-hidden rounded-xl border border-border bg-ink-200">
       <div className="flex items-center justify-between border-b border-border bg-ink-300 px-4 py-3">
         <div className="flex items-center gap-2.5">
-          <div className="grid size-8 shrink-0 place-items-center rounded-md border border-primary-300/15 bg-tint-lavender text-primary-300">
+          <div className="grid size-8 shrink-0 place-items-center rounded-md border border-primary-300/15 bg-primary-300/10 text-primary-300">
             <Info size={16} />
           </div>
-          <span className="text-[11px] font-semibold text-txt-2">Tapiz Boards</span>
+          <span className="text-[11px] font-semibold text-txt-2">Tapiz Boards OSS</span>
         </div>
         <a
           href="/status"
@@ -48,9 +48,9 @@ export function DashboardAppInfoCard() {
 
       <div className="flex flex-col gap-4 bg-ink-200 p-4">
         <div className="flex items-center gap-3 border-b border-border pb-4">
-          <EcosystemLogoMark size={36} variant="boards" tone="mono" className="shrink-0 text-txt-1" />
+          <OSSBrandMark size={36} />
           <div className="min-w-0">
-            <div className="font-display text-sm font-bold leading-tight text-txt-1">Tapiz Boards</div>
+            <div className="font-display text-sm font-bold leading-tight text-txt-1">Tapiz Boards OSS</div>
             <div className="mt-0.5 truncate text-[11px] leading-snug text-txt-4">{t.productDescription}</div>
           </div>
           <span className="ml-auto shrink-0 rounded-full border border-primary-300/30 bg-primary-300/8 px-2 py-0.5 text-[11px] font-semibold text-primary-300">

@@ -35,7 +35,7 @@ export function SettingsInfoSection() {
         </div>
         <h2 className="mb-1 text-xl font-bold text-txt-1">{t.productTitle}</h2>
         <p className="max-w-xs text-sm leading-relaxed text-txt-3">{t.productDescription}</p>
-        <span className="mt-3 rounded-full border border-primary-300/20 bg-tint-lavender px-2.5 py-1 font-mono text-[10px] font-bold tracking-widest text-primary-300">
+        <span className="mt-3 rounded-full border border-primary-300/20 bg-primary-300/10 px-2.5 py-1 font-mono text-[10px] font-bold tracking-widest text-primary-300">
           v{APP_VERSION} · {t.releaseLabel}
         </span>
       </div>
