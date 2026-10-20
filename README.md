@@ -101,7 +101,7 @@ No LMS, telemetry, or third-party service keys are needed — this edition has n
 ## Checks
 
 ```bash
-npm run lint && npm run typecheck && npm run build
+npm run test:design && npm run lint && npm run typecheck && npm run build
 ```
 
 Smoke test against a real database (creates and cleans up its own throwaway data):
