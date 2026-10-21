@@ -82,16 +82,16 @@ body {
 .app-info-banner,
 [class*="InfoBanner"],
 :where(.tapiz-info-banner) {
-  border-color: color-mix(in srgb, var(--color-primary-300) 42%, var(--color-border)) !important;
-  background: color-mix(in srgb, var(--color-primary-300) 7%, var(--color-ink-100)) !important;
+  border-color: var(--color-border) !important;
+  background: var(--color-ink-200) !important;
   color: var(--color-primary-300) !important;
 }
 
 html:not(.dark) .app-info-banner,
 html:not(.dark) [class*="InfoBanner"],
 html:not(.dark) :where(.tapiz-info-banner) {
-  border-color: color-mix(in srgb, var(--color-primary-600) 36%, var(--color-border-hi)) !important;
-  background: color-mix(in srgb, var(--color-primary-300) 10%, white) !important;
+  border-color: var(--color-border) !important;
+  background: var(--color-ink-200) !important;
   color: var(--color-primary-700) !important;
 }
 
@@ -162,7 +162,7 @@ select.qa-pair-select {
 /* Scrollbar-ovi u brutal/enterprise stilu umesto browser default-a. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--color-primary-300) 72%, var(--color-txt-3)) var(--color-ink-100);
+  scrollbar-color: var(--color-border-hi) var(--color-ink-100);
 }
 
 *::-webkit-scrollbar {
@@ -176,12 +176,12 @@ select.qa-pair-select {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--color-primary-300) 70%, var(--color-txt-3));
+  background: var(--color-border-hi);
   border: 3px solid var(--color-ink-100);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-300);
+  background: var(--color-txt-3);
 }
 
 /* theme.css u @layer base stavlja backdrop-filter/opacity na .tapiz-landing-navbar__drawer
@@ -210,7 +210,7 @@ select.qa-pair-select {
 :is(.bg-gray-100, .bg-gray-200, .bg-primary-50, .bg-primary-100).animate-pulse {
   background: linear-gradient(90deg,
     color-mix(in srgb, var(--color-txt-3) 10%, var(--color-ink-100)) 25%,
-    color-mix(in srgb, var(--color-primary-300) 12%, var(--color-ink-200)) 50%,
+    var(--color-ink-300) 50%,
     color-mix(in srgb, var(--color-txt-3) 10%, var(--color-ink-100)) 75%) !important;
   background-size: 800px 100% !important;
   border-color: var(--color-border) !important;
@@ -229,20 +229,20 @@ select.qa-pair-select {
  * ========================================================================== */
 html:root:not(.dark) {
   color-scheme: light;
-  --color-ink-000: #f6f8f9;
+  --color-ink-000: #f8f9fb;
   --color-ink-100: #ffffff;
-  --color-ink-200: #f2f5f6;
-  --color-ink-300: #e8eef0;
-  --color-ink-400: #dbe5e7;
-  --color-border: #d5e0e3;
-  --color-border-hi: #b4c7cc;
-  --color-txt-1: #182b32;
-  --color-txt-2: #465f67;
-  --color-txt-3: #617980;
-  --color-txt-4: #667f86;
-  --color-primary-50: #eff6f7;
-  --color-primary-100: #dfedee;
-  --color-primary-200: #b7d6d9;
+  --color-ink-200: #f3f4f6;
+  --color-ink-300: #e9ebef;
+  --color-ink-400: #dfe3e8;
+  --color-border: #d9dde3;
+  --color-border-hi: #bec4cc;
+  --color-txt-1: #20252c;
+  --color-txt-2: #4b5563;
+  --color-txt-3: #687281;
+  --color-txt-4: #727c89;
+  --color-primary-50: #f3f4f6;
+  --color-primary-100: #e9ebef;
+  --color-primary-200: #d7dce2;
   --color-primary-300: #0b5e66;
   --color-primary-400: #09515a;
   --color-primary-500: #0a5660;
@@ -250,29 +250,29 @@ html:root:not(.dark) {
   --color-primary-700: #063f46;
   --color-primary-800: #0a373d;
   --color-primary-900: #082b30;
-  --color-tint-lavender: #e2eff0;
-  --color-icon-bg: #e2eff0;
+  --color-tint-lavender: #f3f4f6;
+  --color-icon-bg: #f3f4f6;
   --tapiz-accent: #0b5e66;
   --tapiz-accent-hover: #09515a;
-  --tapiz-accent-soft: rgba(11, 94, 102, .095);
+  --tapiz-accent-soft: rgba(11, 94, 102, .065);
   --tapiz-accent-contrast: #ffffff;
 }
 html:root.dark {
   color-scheme: dark;
-  --color-ink-000: #111a1f;
-  --color-ink-100: #182329;
-  --color-ink-200: #202d33;
-  --color-ink-300: #2a3a41;
-  --color-ink-400: #394c53;
-  --color-border: #35474f;
-  --color-border-hi: #526b73;
-  --color-txt-1: #eff4f5;
-  --color-txt-2: #c4d3d7;
-  --color-txt-3: #9eb5bc;
-  --color-txt-4: #9ab0b7;
-  --color-primary-50: #142e33;
-  --color-primary-100: #193940;
-  --color-primary-200: #295d65;
+  --color-ink-000: #121417;
+  --color-ink-100: #1a1d21;
+  --color-ink-200: #22262b;
+  --color-ink-300: #2d3238;
+  --color-ink-400: #383e45;
+  --color-border: #383e45;
+  --color-border-hi: #525b65;
+  --color-txt-1: #f3f4f6;
+  --color-txt-2: #cbd0d7;
+  --color-txt-3: #a5aeba;
+  --color-txt-4: #98a3af;
+  --color-primary-50: #22262b;
+  --color-primary-100: #2d3238;
+  --color-primary-200: #383e45;
   --color-primary-300: #499ba3;
   --color-primary-400: #5aadb4;
   --color-primary-500: #3f929a;
@@ -280,12 +280,12 @@ html:root.dark {
   --color-primary-700: #286c74;
   --color-primary-800: #20535b;
   --color-primary-900: #153f46;
-  --color-tint-lavender: #203a40;
-  --color-icon-bg: #203a40;
+  --color-tint-lavender: #2d3238;
+  --color-icon-bg: #2d3238;
   --tapiz-accent: #499ba3;
   --tapiz-accent-hover: #5aadb4;
-  --tapiz-accent-soft: rgba(73, 155, 163, .14);
-  --tapiz-accent-contrast: #0e1b20;
+  --tapiz-accent-soft: rgba(73, 155, 163, .085);
+  --tapiz-accent-contrast: #121417;
 }
 /* The old commercial skins may have left a data-skin attribute in storage.
  * No skin may override the only OSS palette, even before hydration. */

@@ -18,7 +18,7 @@ function ThemeModeTile({ label, icon, selected, onSelect }: {
       aria-pressed={selected}
       className={`flex flex-col items-center gap-2 rounded-xl border p-4 transition-colors ${
         selected
-          ? "border-primary-300/60 bg-primary-300/10 text-primary-300"
+          ? "border-border-hi bg-ink-300 text-primary-300"
           : "border-border bg-ink-300/40 text-txt-3 hover:border-primary-300/40 hover:bg-ink-300"
       }`}
     >
@@ -44,11 +44,11 @@ export function SettingsAppearanceSection() {
       </SettingsSection>
       <SettingsSection title={t.skinTitle}>
         <p className="mb-3 text-[13px] leading-relaxed text-txt-3">{t.skinDesc}</p>
-        <div className="flex items-center gap-3 rounded-xl border border-primary-300/45 bg-primary-300/8 px-4 py-3">
+        <div className="flex items-center gap-3 rounded-xl border border-border bg-ink-200 px-4 py-3">
           <span aria-hidden="true" className="flex shrink-0 overflow-hidden rounded-md border border-border">
-            <span className="h-9 w-6 bg-[#182329]" />
+            <span className="h-9 w-6 bg-[#22262b]" />
             <span className="h-9 w-6 bg-[#0b5e66]" />
-            <span className="h-9 w-6 bg-[#e2eff0]" />
+            <span className="h-9 w-6 bg-[#f3f4f6]" />
           </span>
           <span className="flex-1 text-sm font-semibold text-txt-1">{t.skins.default}</span>
           <Check size={17} className="shrink-0 text-primary-300" />

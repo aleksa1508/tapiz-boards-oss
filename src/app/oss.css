@@ -11,7 +11,7 @@
  */
 /* Secondary accent surfaces should follow the product palette. */
 body.oss-app .bg-tint-lavender {
-  background: var(--tapiz-accent-soft);
+  background: var(--color-ink-200);
 }
 body.oss-app :is(a, button, input, select, textarea):focus-visible {
   outline-color: var(--tapiz-accent);
@@ -39,11 +39,8 @@ body.oss-app :is(a, button, input, select, textarea):focus-visible {
 
 /* Landing layout and palette are defined once in landing.css. */
 
-/* Graph-paper workspace sidebar: a visible OSS-only structural signature. */
+/* Neutral sidebar surface; teal is reserved for active icons and indicators. */
 body.oss-app aside.sticky {
-  border-right: 2px solid color-mix(in srgb, var(--tapiz-accent) 28%, var(--color-border));
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--tapiz-accent) 3%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--tapiz-accent) 3%, transparent) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background: var(--color-ink-200);
+  border-right: 1px solid var(--color-border);
 }

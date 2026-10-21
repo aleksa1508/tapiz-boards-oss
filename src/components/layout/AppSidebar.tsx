@@ -40,7 +40,7 @@ export function AppSidebar({
   const itemClassName = (active: boolean) =>
     `mx-2 flex items-center gap-2.5 rounded-md py-2 text-[13px] no-underline transition-[background,color] duration-100 ${
       active
-        ? "bg-primary-300/12 font-semibold text-txt-1"
+        ? "bg-ink-300 font-semibold text-txt-1"
         : "font-medium text-txt-2 hover:bg-ink-300 hover:text-txt-1"
     } ${collapsed ? "justify-center px-0" : "px-2.5"}`;
 

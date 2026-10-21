@@ -115,7 +115,7 @@ export function MobileMoreSheet({
                           }
                           className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all active:scale-95 ${
                             item.active
-                              ? "border-primary-300 bg-primary-300/10 text-primary-300"
+                              ? "border-border-hi bg-ink-300 text-txt-1"
                               : "border-border bg-ink-200 text-txt-3 hover:bg-ink-300 hover:text-txt-1"
                           } ${item.disabled ? "cursor-default opacity-65" : ""}`}
                         >

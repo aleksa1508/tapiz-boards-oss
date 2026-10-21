@@ -11,15 +11,13 @@
   isolation: isolate;
   color: var(--color-txt-1);
   background:
-    radial-gradient(38rem 28rem at 8% -6%, color-mix(in srgb, var(--color-primary-300) 13%, transparent), transparent),
-    radial-gradient(32rem 26rem at 100% 4%, color-mix(in srgb, var(--color-signal-400) 9%, transparent), transparent),
+    linear-gradient(180deg, var(--color-ink-000), var(--color-ink-000)),
     var(--color-ink-000);
 }
 
 html:not(.dark) .auth-page {
   background:
-    radial-gradient(38rem 28rem at 8% -6%, color-mix(in srgb, var(--color-primary-300) 13%, transparent), transparent),
-    radial-gradient(32rem 26rem at 100% 4%, color-mix(in srgb, var(--color-signal-400) 10%, transparent), transparent),
+    linear-gradient(180deg, var(--color-ink-000), var(--color-ink-000)),
     linear-gradient(180deg, var(--color-ink-000), color-mix(in srgb, var(--color-ink-100) 55%, var(--color-ink-000)) 60%, var(--color-ink-000));
 }
 
@@ -29,8 +27,7 @@ html:not(.dark) .auth-page {
   overflow: hidden;
   border-right: 1px solid var(--color-border);
   background:
-    radial-gradient(36rem 30rem at 22% 0%, color-mix(in srgb, var(--color-primary-300) 14%, transparent), transparent 60%),
-    linear-gradient(160deg, color-mix(in srgb, var(--color-ink-200) 94%, transparent), var(--color-ink-100));
+    var(--color-ink-100);
 }
 
 .auth-aside::before,
@@ -49,7 +46,7 @@ html:not(.dark) .auth-page {
   top: -8rem;
   left: -6rem;
   opacity: .5;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-primary-300) 40%, transparent), transparent 65%);
+  background: transparent;
 }
 
 .auth-aside::after {
@@ -58,7 +55,7 @@ html:not(.dark) .auth-page {
   bottom: -8rem;
   right: -7rem;
   opacity: .4;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-signal-400) 30%, transparent), transparent 65%);
+  background: transparent;
 }
 
 /* gradijentni akcenat tekst */
@@ -96,16 +93,12 @@ html:not(.dark) .auth-page {
 
 /* Boards auth — product-specific, quieter and more purposeful than the app shell. */
 .auth-page {
-  background:
-    radial-gradient(32rem 26rem at 98% 0%, color-mix(in srgb, var(--tapiz-accent) 9%, transparent), transparent 72%),
-    var(--color-ink-000);
+  background: var(--color-ink-000);
 }
 
 .auth-aside {
   border-right-color: color-mix(in srgb, var(--color-border) 82%, transparent);
-  background:
-    radial-gradient(34rem 28rem at 10% 10%, color-mix(in srgb, var(--tapiz-accent) 22%, transparent), transparent 65%),
-    var(--color-ink-100);
+  background: var(--color-ink-100);
 }
 
 .auth-board-pattern { position:absolute; z-index:0; inset:5.5rem -9rem 3.5rem -5rem; display:grid; grid-template-columns:repeat(3,minmax(180px,1fr)); gap:.8rem; pointer-events:none; opacity:.4; transform:rotate(-3deg); -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.84),rgba(0,0,0,.3) 72%,transparent); mask-image:linear-gradient(to bottom,rgba(0,0,0,.84),rgba(0,0,0,.3) 72%,transparent); }
@@ -129,7 +122,7 @@ html:not(.dark) .auth-page {
   bottom: -14rem;
   left: -12rem;
   opacity: .35;
-  background: radial-gradient(circle, color-mix(in srgb, var(--tapiz-accent) 32%, transparent), transparent 68%);
+  background: transparent;
 }
 
 .auth-aside::after {
@@ -139,7 +132,7 @@ html:not(.dark) .auth-page {
   right: -12rem;
   bottom: auto;
   opacity: .42;
-  background: radial-gradient(circle, color-mix(in srgb, var(--tapiz-accent) 38%, transparent), transparent 67%);
+  background: transparent;
 }
 
 .auth-product-label { color:var(--tapiz-accent-hover); font-weight:800; letter-spacing:.14em; }
