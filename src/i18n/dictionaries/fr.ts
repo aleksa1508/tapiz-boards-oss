@@ -558,9 +558,9 @@ export const fr: Dict = {
       light: "Clair",
       dark: "Sombre",
       skinTitle: "Palette OSS",
-      skinDesc: "Une palette jade cohérente sur toute l'application, les pages publiques et la connexion. Seuls les modes clair et sombre sont proposés.",
+      skinDesc: "Un seul accent sarcelle foncé pour toute l'application, la connexion et les pages publiques. Même palette en mode clair et sombre.",
       skins: {
-        default: "OSS · Jade",
+        default: "OSS · Teal",
         ocean: "Océan",
         forest: "Forêt",
         rose: "Rose",

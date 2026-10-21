@@ -556,9 +556,9 @@ export const en: Dict = {
       light: "Light",
       dark: "Dark",
       skinTitle: "OSS palette",
-      skinDesc: "One consistent jade palette across the app, public pages and sign-in. Switch between light and dark mode only.",
+      skinDesc: "One darker teal accent across the entire app, sign-in and public pages. Light and dark modes share the same palette.",
       skins: {
-        default: "OSS · Jade",
+        default: "OSS · Teal",
         ocean: "Ocean",
         forest: "Forest",
         rose: "Rose",

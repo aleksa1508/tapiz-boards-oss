@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
   <title>Tapiz Boards OSS</title>
-  <rect width="48" height="48" rx="9" fill="#0d3029"/>
-  <rect x="5" y="5" width="38" height="38" rx="5" fill="none" stroke="#54e0b9" stroke-width="2"/>
-  <rect x="12" y="12" width="10" height="10" rx="1" fill="#cbef8b"/>
-  <rect x="26" y="12" width="10" height="10" rx="1" fill="#54e0b9" opacity=".5"/>
-  <rect x="12" y="26" width="10" height="10" rx="1" fill="#54e0b9" opacity=".5"/>
-  <rect x="26" y="26" width="10" height="10" rx="1" fill="#54e0b9"/>
+  <rect width="48" height="48" rx="9" fill="#182329"/>
+  <rect x="5" y="5" width="38" height="38" rx="5" fill="none" stroke="#499ba3" stroke-width="2"/>
+  <rect x="12" y="12" width="10" height="10" rx="1" fill="#79b7bd"/>
+  <rect x="26" y="12" width="10" height="10" rx="1" fill="#499ba3" opacity=".5"/>
+  <rect x="12" y="26" width="10" height="10" rx="1" fill="#499ba3" opacity=".5"/>
+  <rect x="26" y="26" width="10" height="10" rx="1" fill="#499ba3"/>
 </svg>

@@ -558,9 +558,9 @@ export const sr = {
       light: "Svetla",
       dark: "Tamna",
       skinTitle: "Paleta OSS izdanja",
-      skinDesc: "Jedinstvena zelena paleta važi za celu aplikaciju, javne stranice i prijavu. Menjajte samo svetli ili tamni režim.",
+      skinDesc: "Jedna tamnija teal akcentna boja kroz celu aplikaciju, prijavu i javne stranice. Dostupni su svetli i tamni režim.",
       skins: {
-        default: "OSS · Jade",
+        default: "OSS · Teal",
         ocean: "Okean",
         forest: "Šuma",
         rose: "Ruža",

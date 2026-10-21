@@ -42,7 +42,7 @@ try {
 } catch (e) {
   // default light
 }
-// OSS uses one coherent jade palette; discard any previously stored hosted-product skin.
+// OSS uses one coherent teal palette; discard any previously stored hosted-product skin.
 root.removeAttribute("data-skin");
 `;
 

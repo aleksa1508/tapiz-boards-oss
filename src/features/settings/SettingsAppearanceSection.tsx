@@ -28,7 +28,7 @@ function ThemeModeTile({ label, icon, selected, onSelect }: {
   );
 }
 
-/** One OSS palette in both themes. No imported indigo/rose skins. */
+/** One global dark-teal palette in light and dark modes. */
 export function SettingsAppearanceSection() {
   const { dict } = useI18n();
   const t = dict.settings.appearance;

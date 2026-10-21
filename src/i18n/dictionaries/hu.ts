@@ -557,9 +557,9 @@ export const hu: Dict = {
       light: "Világos",
       dark: "Sötét",
       skinTitle: "OSS-paletta",
-      skinDesc: "Egységes jádezöld paletta az alkalmazásban, a nyilvános oldalakon és a bejelentkezésnél. Csak világos és sötét mód között lehet váltani.",
+      skinDesc: "Egyetlen sötétebb petrolkék kiemelőszín az alkalmazásban, a bejelentkezésnél és a nyilvános oldalakon. Ugyanaz a paletta világos és sötét módban.",
       skins: {
-        default: "OSS · Jade",
+        default: "OSS · Teal",
         ocean: "Óceán",
         forest: "Erdő",
         rose: "Rózsa",
