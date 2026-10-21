@@ -4,7 +4,7 @@ A self-hosted Kanban and sprint-planning tool for small teams: backlog, board wi
 
 This is the open-source edition of Tapiz Boards, derived from the hosted product. It has no dependency on Tapiz LMS, no SSO, and no public self-registration — an admin creates every account.
 
-The OSS edition uses one dark-teal and neutral-charcoal visual identity across the landing page, app, login and public board, with a distinct pixel-board logo and OSS / Community branding. A single accessible palette is shared by light and dark modes; legacy hosted-product skins are intentionally unavailable here. The hosted product's design and repository are not changed by these customizations.
+The OSS edition uses one dark-teal and neutral-charcoal visual identity across the landing page, app, login and public board, with a distinct pixel-board logo and OSS / Community branding. Light mode uses neutral white/gray surfaces and dark mode uses charcoal/gray surfaces. Teal is reserved for small interactive accents, not large colored cards or page backgrounds; both modes inherit the same global design tokens. Legacy hosted-product skins are intentionally unavailable here. The hosted product's design and repository are not changed by these customizations.
 
 There are **no free-plan quotas**: the self-hosted edition allows unlimited projects (one board per project) and unlimited members per project, subject only to your own infrastructure capacity.
 

@@ -1,5 +1,5 @@
 /**
- * Database-free regression guard for the single OSS dark-teal palette.
+ * Database-free regression guard for the single OSS theme-aware teal palette.
  * Run with: npm run test:design
  */
 import assert from "node:assert/strict";
@@ -20,9 +20,9 @@ for (const path of css) {
 const globals = load("src/app/globals.css");
 assert.match(globals, /html:root:not\(\.dark\)\s*\{[^}]*--color-primary-300:\s*#0b5e66/);
 assert.match(globals, /html:root\.dark\s*\{[^}]*--color-primary-300:\s*#499ba3/);
-assert.match(globals, /html:root:not\(\.dark\)\s*\{[^}]*--color-ink-000:\s*#f6f8f9/);
-assert.match(globals, /html:root\.dark\s*\{[^}]*--color-ink-000:\s*#111a1f/);
-assert.match(globals, /--color-tint-lavender:\s*#e2eff0/);
+assert.match(globals, /html:root:not\(\.dark\)\s*\{[^}]*--color-ink-000:\s*#f8f9fb/);
+assert.match(globals, /html:root\.dark\s*\{[^}]*--color-ink-000:\s*#121417/);
+assert.match(globals, /--color-tint-lavender:\s*#f3f4f6/);
 assert.ok(
   globals.indexOf("html:root:not(.dark)") > globals.lastIndexOf("/* Mekši skeleton-i"),
   "Root palette must follow upstream UI definitions and local CSS rules",
@@ -30,7 +30,17 @@ assert.ok(
 const landing = load("src/features/landing/landing.css");
 assert.match(landing, /--lp-accent:\s*var\(--color-primary-300\)/);
 assert.match(landing, /--lp-bg:\s*var\(--color-ink-000\)/);
-assert.doesNotMatch(landing, /--lp-jade|--lp-lime/);
+assert.doesNotMatch(landing, /--lp-jade|--lp-lime|#0b5e66|#18343b/);
+assert.match(landing, /\.lp-feature-card-2\s*\{[^}]*background:\s*var\(--lp-surface\)/);
+assert.match(landing, /\.lp-cta-stage\s*\{[^}]*background:\s*var\(--lp-bg\)/);
+assert.match(landing, /\.lp-preview-chrome\s*\{[^}]*background:\s*var\(--lp-surface-hi\)/);
+assert.match(landing, /\.lp-page \.btn-primary, \.lp-page \.lp-btn-primary\s*\{[^}]*background:\s*var\(--lp-accent\)/);
+assert.match(landing, /\.lp-hero-copy h1 mark\s*\{[^}]*color:\s*inherit/);
+assert.doesNotMatch(load("src/app/auth.css"), /radial-gradient\([^\n]*var\(--tapiz-accent\)/);
+assert.match(globals, /--color-ink-200:\s*#f3f4f6/);
+assert.match(globals, /--color-ink-200:\s*#22262b/);
+assert.match(globals, /--color-primary-50:\s*#f3f4f6/);
+assert.match(globals, /--color-primary-50:\s*#22262b/);
 assert.doesNotMatch(load("src/components/theme/ThemeProvider.tsx"), /TAPIZ_SKINS|setSkin/);
 assert.doesNotMatch(load("src/components/layout/AppShellLayout.tsx"), /useApplySkin/);
 assert.doesNotMatch(load("src/app/(auth)/layout.tsx"), /<ApplySkin/);
@@ -49,4 +59,4 @@ for (const language of ["sr", "sr-Cyrl", "en", "fr", "hu"]) {
   }
   assert.match(dict, /default:\s*"OSS · Teal"/);
 }
-console.log("OSS global dark-teal palette and copy checks passed.");
+console.log("OSS neutral light/dark surfaces, teal accents and copy checks passed.");

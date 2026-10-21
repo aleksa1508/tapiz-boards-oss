@@ -224,8 +224,9 @@ select.qa-pair-select {
  * define defaults earlier: these higher-specificity html root declarations
  * must win in both modes, including portals, auth, settings and public views.
  *
- * Accent is teal ONLY. Neutral gray/charcoal surfaces prevent the dark mode
- * from looking green; no indigo or extra user-selectable skins.
+ * All major surfaces are neutral grays (light) or charcoal (dark).
+ * Only interactive detail accents are teal; no indigo, tinted page backgrounds
+ * or additional user-selectable color skins.
  * ========================================================================== */
 html:root:not(.dark) {
   color-scheme: light;
