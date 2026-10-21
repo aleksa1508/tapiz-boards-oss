@@ -215,3 +215,87 @@ select.qa-pair-select {
   background-size: 800px 100% !important;
   border-color: var(--color-border) !important;
 }
+
+
+/* ==========================================================================
+ * TAPIZ BOARDS OSS: ONE GLOBAL TEAL PALETTE
+ *
+ * Last in the stylesheet on purpose. The packaged UI theme and Tailwind
+ * define defaults earlier: these higher-specificity html root declarations
+ * must win in both modes, including portals, auth, settings and public views.
+ *
+ * Accent is teal ONLY. Neutral gray/charcoal surfaces prevent the dark mode
+ * from looking green; no indigo or extra user-selectable skins.
+ * ========================================================================== */
+html:root:not(.dark) {
+  color-scheme: light;
+  --color-ink-000: #f6f8f9;
+  --color-ink-100: #ffffff;
+  --color-ink-200: #f2f5f6;
+  --color-ink-300: #e8eef0;
+  --color-ink-400: #dbe5e7;
+  --color-border: #d5e0e3;
+  --color-border-hi: #b4c7cc;
+  --color-txt-1: #182b32;
+  --color-txt-2: #465f67;
+  --color-txt-3: #617980;
+  --color-txt-4: #667f86;
+  --color-primary-50: #eff6f7;
+  --color-primary-100: #dfedee;
+  --color-primary-200: #b7d6d9;
+  --color-primary-300: #0b5e66;
+  --color-primary-400: #09515a;
+  --color-primary-500: #0a5660;
+  --color-primary-600: #084b53;
+  --color-primary-700: #063f46;
+  --color-primary-800: #0a373d;
+  --color-primary-900: #082b30;
+  --color-tint-lavender: #e2eff0;
+  --color-icon-bg: #e2eff0;
+  --tapiz-accent: #0b5e66;
+  --tapiz-accent-hover: #09515a;
+  --tapiz-accent-soft: rgba(11, 94, 102, .095);
+  --tapiz-accent-contrast: #ffffff;
+}
+html:root.dark {
+  color-scheme: dark;
+  --color-ink-000: #111a1f;
+  --color-ink-100: #182329;
+  --color-ink-200: #202d33;
+  --color-ink-300: #2a3a41;
+  --color-ink-400: #394c53;
+  --color-border: #35474f;
+  --color-border-hi: #526b73;
+  --color-txt-1: #eff4f5;
+  --color-txt-2: #c4d3d7;
+  --color-txt-3: #9eb5bc;
+  --color-txt-4: #9ab0b7;
+  --color-primary-50: #142e33;
+  --color-primary-100: #193940;
+  --color-primary-200: #295d65;
+  --color-primary-300: #499ba3;
+  --color-primary-400: #5aadb4;
+  --color-primary-500: #3f929a;
+  --color-primary-600: #337e87;
+  --color-primary-700: #286c74;
+  --color-primary-800: #20535b;
+  --color-primary-900: #153f46;
+  --color-tint-lavender: #203a40;
+  --color-icon-bg: #203a40;
+  --tapiz-accent: #499ba3;
+  --tapiz-accent-hover: #5aadb4;
+  --tapiz-accent-soft: rgba(73, 155, 163, .14);
+  --tapiz-accent-contrast: #0e1b20;
+}
+/* The old commercial skins may have left a data-skin attribute in storage.
+ * No skin may override the only OSS palette, even before hydration. */
+html:root[data-skin]:not(.dark) {
+  --color-primary-300: #0b5e66;
+  --color-primary-400: #09515a;
+  --tapiz-accent: #0b5e66;
+}
+html:root.dark[data-skin] {
+  --color-primary-300: #499ba3;
+  --color-primary-400: #5aadb4;
+  --tapiz-accent: #499ba3;
+}

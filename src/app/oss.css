@@ -1,78 +1,14 @@
 /*
  * Tapiz Boards OSS visual identity
- * Terminal-inspired jade + deep pine, square tiles and graph-paper details.
+ * Terminal-inspired dark teal + neutral charcoal, square tiles and graph-paper details.
  * Intentionally separate from the hosted Tapiz Boards purple/rose treatment.
  */
 
 /*
- * The OSS palette lives on html rather than body. Components from @tapizlabs/ui
- * read --color-primary-* and --color-ink-* off the root; scoping only to body
- * let the old indigo theme leak into portals, buttons, badges and auth.
- * One jade identity across board, backlog, sprints, forms, public and landing.
+ * OSS identity helpers only. The entire light/dark color palette now lives
+ * at the very end of globals.css, after the upstream design system tokens.
+ * Keep a SINGLE color source so light mode can never fall back to indigo.
  */
-:root {
-  color-scheme: light;
-  --color-ink-000: #f3f8f4;
-  --color-ink-100: #ffffff;
-  --color-ink-200: #f8fbf8;
-  --color-ink-300: #eaf3ed;
-  --color-ink-400: #d8e9df;
-  --color-border: #cadfd1;
-  --color-border-hi: #a8c9b6;
-  --color-txt-1: #142f29;
-  --color-txt-2: #36594e;
-  --color-txt-3: #58786b;
-  --color-txt-4: #627e72;
-  --color-primary-50: #eef9f1;
-  --color-primary-100: #d8f1e1;
-  --color-primary-200: #a4dec0;
-  --color-primary-300: #0a765c;
-  --color-primary-400: #08674f;
-  --color-primary-500: #08654e;
-  --color-primary-600: #075940;
-  --color-primary-700: #064732;
-  --color-primary-800: #0c3929;
-  --color-primary-900: #09291f;
-  --color-tint-lavender: #e5f4e9;
-  --color-tint-peach: #f9efd8;
-  --color-icon-bg: #e5f4e9;
-  --tapiz-accent: #0a765c;
-  --tapiz-accent-hover: #08674f;
-  --tapiz-accent-soft: rgba(10,118,92,.11);
-  --tapiz-accent-contrast: #fff;
-}
-html.dark {
-  color-scheme: dark;
-  --color-ink-000: #0d1b18;
-  --color-ink-100: #12251e;
-  --color-ink-200: #1a2e26;
-  --color-ink-300: #243e33;
-  --color-ink-400: #325244;
-  --color-border: #365649;
-  --color-border-hi: #517763;
-  --color-txt-1: #f1faf3;
-  --color-txt-2: #c6dfd0;
-  --color-txt-3: #a4c5b2;
-  --color-txt-4: #8aaf9b;
-  --color-primary-50: #0f3427;
-  --color-primary-100: #124632;
-  --color-primary-200: #2b8768;
-  --color-primary-300: #6ee4af;
-  --color-primary-400: #8bf1c5;
-  --color-primary-500: #53d89f;
-  --color-primary-600: #36bd89;
-  --color-primary-700: #25a774;
-  --color-primary-800: #18855d;
-  --color-primary-900: #126046;
-  --color-tint-lavender: #1b4031;
-  --color-tint-peach: #544329;
-  --color-icon-bg: #1a4533;
-  --tapiz-accent: #6ee4af;
-  --tapiz-accent-hover: #8bf1c5;
-  --tapiz-accent-soft: rgba(110,228,175,.14);
-  --tapiz-accent-contrast: #0c2419;
-}
-
 /* Secondary accent surfaces should follow the product palette. */
 body.oss-app .bg-tint-lavender {
   background: var(--tapiz-accent-soft);

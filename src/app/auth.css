@@ -97,14 +97,14 @@ html:not(.dark) .auth-page {
 /* Boards auth — product-specific, quieter and more purposeful than the app shell. */
 .auth-page {
   background:
-    radial-gradient(32rem 26rem at 98% 0%, color-mix(in srgb, #0a765c 9%, transparent), transparent 72%),
+    radial-gradient(32rem 26rem at 98% 0%, color-mix(in srgb, var(--tapiz-accent) 9%, transparent), transparent 72%),
     var(--color-ink-000);
 }
 
 .auth-aside {
   border-right-color: color-mix(in srgb, var(--color-border) 82%, transparent);
   background:
-    radial-gradient(34rem 28rem at 10% 10%, color-mix(in srgb, #0a765c 22%, transparent), transparent 65%),
+    radial-gradient(34rem 28rem at 10% 10%, color-mix(in srgb, var(--tapiz-accent) 22%, transparent), transparent 65%),
     var(--color-ink-100);
 }
 
@@ -112,13 +112,13 @@ html:not(.dark) .auth-page {
 .auth-board-lane { display:flex; flex-direction:column; gap:.7rem; padding:.85rem; border:1px solid color-mix(in srgb,var(--color-border-hi) 68%,transparent); border-radius:18px; background:color-mix(in srgb,var(--color-ink-200) 32%,transparent); }
 .auth-board-lane:nth-child(2) { transform:translateY(2.5rem); }
 .auth-board-lane:nth-child(3) { transform:translateY(1rem); }
-.auth-board-lane b { width:38%; height:.4rem; margin:.1rem 0 .3rem; border-radius:999px; background:color-mix(in srgb,#0a765c 20%,var(--color-border)); }
-.auth-board-lane i { display:block; height:clamp(4.5rem,8vw,7rem); border:1px solid color-mix(in srgb,var(--color-border-hi) 68%,transparent); border-radius:13px; background:linear-gradient(110deg,color-mix(in srgb,var(--color-ink-200) 58%,transparent),color-mix(in srgb,var(--color-ink-300) 25%,transparent)); box-shadow:inset 3px 0 0 color-mix(in srgb,#0a765c 14%,transparent); }
+.auth-board-lane b { width:38%; height:.4rem; margin:.1rem 0 .3rem; border-radius:999px; background:color-mix(in srgb,var(--tapiz-accent) 20%,var(--color-border)); }
+.auth-board-lane i { display:block; height:clamp(4.5rem,8vw,7rem); border:1px solid color-mix(in srgb,var(--color-border-hi) 68%,transparent); border-radius:13px; background:linear-gradient(110deg,color-mix(in srgb,var(--color-ink-200) 58%,transparent),color-mix(in srgb,var(--color-ink-300) 25%,transparent)); box-shadow:inset 3px 0 0 color-mix(in srgb,var(--tapiz-accent) 14%,transparent); }
 .auth-board-lane i:nth-of-type(2) { width:86%; align-self:flex-end; }
 .auth-board-lane:nth-child(2) i:first-of-type { height:clamp(6rem,10vw,8.5rem); }
 .auth-edge-cards { position:absolute; z-index:0; top:20%; right:-52px; display:grid; gap:.65rem; width:112px; pointer-events:none; opacity:.58; transform:rotate(4deg); }
-.auth-edge-cards i { position:relative; display:block; height:42px; border:1px solid color-mix(in srgb,var(--color-border-hi) 74%,transparent); border-radius:10px; background:color-mix(in srgb,var(--color-ink-200) 72%,transparent); box-shadow:0 14px 30px -25px color-mix(in srgb,#0a765c 65%,transparent); }
-.auth-edge-cards i::before { content:""; position:absolute; top:11px; left:12px; width:7px; height:7px; border-radius:50%; background:#0a765c; box-shadow:0 0 0 4px color-mix(in srgb,#0a765c 11%,transparent); }
+.auth-edge-cards i { position:relative; display:block; height:42px; border:1px solid color-mix(in srgb,var(--color-border-hi) 74%,transparent); border-radius:10px; background:color-mix(in srgb,var(--color-ink-200) 72%,transparent); box-shadow:0 14px 30px -25px color-mix(in srgb,var(--tapiz-accent) 65%,transparent); }
+.auth-edge-cards i::before { content:""; position:absolute; top:11px; left:12px; width:7px; height:7px; border-radius:50%; background:var(--tapiz-accent); box-shadow:0 0 0 4px color-mix(in srgb,var(--tapiz-accent) 11%,transparent); }
 .auth-edge-cards i::after { content:""; position:absolute; top:13px; right:12px; left:30px; height:4px; border-radius:999px; background:color-mix(in srgb,var(--color-txt-4) 18%,transparent); box-shadow:0 9px 0 color-mix(in srgb,var(--color-txt-4) 11%,transparent); }
 .auth-edge-cards i:nth-child(2) { width:82%; }
 
@@ -129,7 +129,7 @@ html:not(.dark) .auth-page {
   bottom: -14rem;
   left: -12rem;
   opacity: .35;
-  background: radial-gradient(circle, color-mix(in srgb, #bddf83 32%, transparent), transparent 68%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--tapiz-accent) 32%, transparent), transparent 68%);
 }
 
 .auth-aside::after {
@@ -139,15 +139,15 @@ html:not(.dark) .auth-page {
   right: -12rem;
   bottom: auto;
   opacity: .42;
-  background: radial-gradient(circle, color-mix(in srgb, #0a765c 38%, transparent), transparent 67%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--tapiz-accent) 38%, transparent), transparent 67%);
 }
 
-.auth-product-label { color:#08674f; font-weight:800; letter-spacing:.14em; }
-html.dark .auth-product-label { color:#b6ebc8; }
+.auth-product-label { color:var(--tapiz-accent-hover); font-weight:800; letter-spacing:.14em; }
+html.dark .auth-product-label { color:var(--color-primary-200); }
 .auth-pitch { max-width: 42rem; }
-.auth-pitch > div:first-child { color: #0a765c; font-weight: 800; letter-spacing: .16em; }
+.auth-pitch > div:first-child { color: var(--tapiz-accent); font-weight: 800; letter-spacing: .16em; }
 .auth-pitch h1 { max-width: 11ch; font-size: clamp(3rem, 4.7vw, 4.7rem); line-height: .91; letter-spacing: -.065em; }
-.auth-accent { background: linear-gradient(110deg, #0a765c, #69d6a5 58%, #bddf83); -webkit-background-clip: text; background-clip: text; }
+.auth-accent { background: linear-gradient(110deg, var(--tapiz-accent), var(--color-primary-300) 58%, var(--tapiz-accent)); -webkit-background-clip: text; background-clip: text; }
 .auth-pitch > p { max-width: 52ch; color: var(--color-txt-2); font-size: .92rem; line-height: 1.65; }
 
 .auth-workflow {
@@ -167,14 +167,14 @@ html.dark .auth-product-label { color:#b6ebc8; }
   height: .85rem;
   border-radius: 50%;
   background: var(--color-ink-200);
-  color: #0a765c;
+  color: var(--tapiz-accent);
   font-size: .62rem;
   transform: translateY(-50%);
 }
 .auth-workflow > div > div:first-child { font-size: .78rem; }
 .auth-workflow > div > div:last-child { font-size: .6rem; letter-spacing: .08em; }
 
-.auth-chip { border-radius: 6px; border-color: color-mix(in srgb, #0a765c 20%, var(--color-border)); background: color-mix(in srgb, #0a765c 7%, transparent); color: var(--color-txt-3); font-size: 9px; font-weight: 750; }
+.auth-chip { border-radius: 6px; border-color: color-mix(in srgb, var(--tapiz-accent) 20%, var(--color-border)); background: color-mix(in srgb, var(--tapiz-accent) 7%, transparent); color: var(--color-txt-3); font-size: 9px; font-weight: 750; }
 .auth-aside-footer { min-height:64px; border-top:1px solid color-mix(in srgb,var(--color-border) 78%,transparent); background:color-mix(in srgb,var(--color-ink-100) 76%,transparent); backdrop-filter:blur(14px); }
 .auth-footer-brand { display:flex; align-items:center; gap:.65rem; color:var(--color-txt-1); }
 .auth-footer-brand>svg { flex:none; color:var(--color-txt-1); }
@@ -185,7 +185,7 @@ html.dark .auth-product-label { color:#b6ebc8; }
 .auth-main { min-width: 0; }
 .auth-controls button:focus,
 .auth-controls button:focus-visible {
-  outline: 2px solid color-mix(in srgb, #0a765c 48%, transparent) !important;
+  outline: 2px solid color-mix(in srgb, var(--tapiz-accent) 48%, transparent) !important;
   outline-offset: 2px !important;
   border-radius: 6px;
   box-shadow: none !important;
@@ -194,7 +194,7 @@ html.dark .auth-product-label { color:#b6ebc8; }
 .auth-form-shell h1 { font-size: clamp(2rem, 3vw, 2.45rem); letter-spacing: -.045em; }
 .auth-form-shell form > div { animation-fill-mode: both; }
 .auth-page .auth-input-group { border-radius: 9px; background: var(--color-ink-100); }
-.auth-page .auth-input-group:focus-within { border-color: color-mix(in srgb, #0a765c 78%, var(--color-border-hi)); box-shadow: 0 0 0 3px color-mix(in srgb, #0a765c 12%, transparent); }
+.auth-page .auth-input-group:focus-within { border-color: color-mix(in srgb, var(--tapiz-accent) 78%, var(--color-border-hi)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--tapiz-accent) 12%, transparent); }
 .auth-page .auth-input-group input { min-height: 2.75rem; }
 .auth-page .auth-form-shell button[type="submit"] { min-height: 2.75rem; border-radius: 8px; }
 

@@ -46,9 +46,9 @@ export function SettingsAppearanceSection() {
         <p className="mb-3 text-[13px] leading-relaxed text-txt-3">{t.skinDesc}</p>
         <div className="flex items-center gap-3 rounded-xl border border-primary-300/45 bg-primary-300/8 px-4 py-3">
           <span aria-hidden="true" className="flex shrink-0 overflow-hidden rounded-md border border-border">
-            <span className="h-9 w-6 bg-[#0e342b]" />
-            <span className="h-9 w-6 bg-[#0a765c]" />
-            <span className="h-9 w-6 bg-[#d5f0d9]" />
+            <span className="h-9 w-6 bg-[#182329]" />
+            <span className="h-9 w-6 bg-[#0b5e66]" />
+            <span className="h-9 w-6 bg-[#e2eff0]" />
           </span>
           <span className="flex-1 text-sm font-semibold text-txt-1">{t.skins.default}</span>
           <Check size={17} className="shrink-0 text-primary-300" />
