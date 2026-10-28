@@ -35,6 +35,7 @@ import { BoardSprintBar } from "./BoardSprintBar";
 import { BoardFilters } from "./board/BoardFilters";
 import { useBoardFilters } from "./useBoardFilters";
 import { useBoardDragDrop } from "./useBoardDragDrop";
+import { ProjectExportPanel } from "./board/ProjectExportPanel";
 
 interface BoardViewProps {
   project: ProjectDto;
@@ -61,6 +62,7 @@ export function BoardView({
   const [manageOpen, setManageOpen] = useState(false);
   const [insightsOpen, setInsightsOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [membersOpen, setMembersOpen] = useState(false);
 
@@ -101,6 +103,7 @@ export function BoardView({
         onPriorityChange={filters.setFilterPriority}
         onClearFilters={filters.clearFilters}
         onCalendarOpen={() => setCalendarOpen(true)}
+        onExportOpen={() => setExportOpen(true)}
         onInsightsToggle={() => setInsightsOpen(true)}
         onCreateStory={() => setCreateOpen(true)}
         onSettingsOpen={() => setSettingsOpen(true)}
@@ -178,6 +181,13 @@ export function BoardView({
         <ProjectMembersModal project={membersOpen ? project : null} onClose={() => setMembersOpen(false)} />
       )}
       <ProjectCalendarPanel open={calendarOpen} projectId={project.id} onClose={() => setCalendarOpen(false)} />
+      {canManage && (
+        <ProjectExportPanel
+          open={exportOpen}
+          projectId={project.id}
+          onClose={() => setExportOpen(false)}
+        />
+      )}
       <BoardInsightsPanel
         open={insightsOpen}
         columns={columns}

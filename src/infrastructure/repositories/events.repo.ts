@@ -2,7 +2,12 @@ import { and, asc, eq, gte, lt, sql } from "drizzle-orm";
 import { db } from "@/infrastructure/db/client";
 import { stories, projectEvents, users } from "@/infrastructure/db/schema";
 import type { EventsRepo } from "@/application/ports";
-import type { ActivityDay, ProjectEventDto, ProjectEventType } from "@/domain/types";
+import type {
+  ActivityDay,
+  ProjectEventDto,
+  ProjectEventType,
+  ProjectExportActivity,
+} from "@/domain/types";
 
 /**
  * [start, end) bounds for whole days, as 'yyyy-mm-dd 00:00:00' literals compared
@@ -76,5 +81,25 @@ export const eventsRepo: EventsRepo = {
       .where(and(eq(stories.projectId, projectId), eq(stories.dueDate, dayIso)))
       .orderBy(asc(stories.title));
     return rows.map((row) => row.title);
+  },
+
+  async listForExport(projectId): Promise<ProjectExportActivity[]> {
+    const rows = await db
+      .select({
+        id: projectEvents.id,
+        projectId: projectEvents.projectId,
+        actorId: projectEvents.actorId,
+        actorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+        actorEmail: users.email,
+        type: projectEvents.type,
+        storyId: projectEvents.storyId,
+        detail: projectEvents.detail,
+        createdAt: projectEvents.createdAt,
+      })
+      .from(projectEvents)
+      .innerJoin(users, eq(users.id, projectEvents.actorId))
+      .where(eq(projectEvents.projectId, projectId))
+      .orderBy(asc(projectEvents.createdAt), asc(projectEvents.id));
+    return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
   },
 };

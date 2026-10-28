@@ -1,4 +1,4 @@
-import type { ActivityDay, ProjectEventDto, ProjectEventType } from "@/domain/types";
+import type { ActivityDay, ProjectEventDto, ProjectEventType, ProjectExportActivity } from "@/domain/types";
 
 export interface EventsRepo {
   add(
@@ -15,4 +15,5 @@ export interface EventsRepo {
   daysInRange(projectId: string, fromIso: string, toIso: string): Promise<ActivityDay[]>;
   /** Titles of stories due on the selected day. */
   dueStoriesByDay(projectId: string, dayIso: string): Promise<string[]>;
+  listForExport(projectId: string): Promise<ProjectExportActivity[]>;
 }

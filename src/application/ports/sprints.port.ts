@@ -1,7 +1,16 @@
-import type { RetroCategory, SprintDto, SprintRetroItemDto, SprintStatus } from "@/domain/types";
+import type {
+  ProjectExportRetrospective,
+  ProjectExportSprint,
+  RetroCategory,
+  SprintDto,
+  SprintRetroItemDto,
+  SprintStatus,
+} from "@/domain/types";
 
 export interface SprintsRepo {
   listByProject(projectId: string): Promise<SprintDto[]>;
+  listForExport(projectId: string): Promise<ProjectExportSprint[]>;
+  retroItemsForSprintsExport(sprintIds: string[]): Promise<ProjectExportRetrospective[]>;
   findById(id: string): Promise<SprintDto | null>;
   findActiveByProject(projectId: string): Promise<SprintDto | null>;
   create(input: {

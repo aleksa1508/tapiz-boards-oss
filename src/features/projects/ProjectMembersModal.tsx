@@ -98,7 +98,7 @@ const candidates = useMemo(() => {
   return users.filter((u) => !memberIds.has(u.id));
 }, [users, members]);
 
-// kandidati nakon pretrage
+// candidates after filtering by search query (name or email)
 const filteredCandidates = useMemo(() => {
   const q = search.trim().toLowerCase();
   if (!q) return candidates;
@@ -107,11 +107,9 @@ const filteredCandidates = useMemo(() => {
   );
 }, [candidates, search]);
 
-  // ✅ NOVO: označavanje / odznačavanje jednog korisnika
   const toggle = (id: string) =>
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
-  // ✅ NOVO: "Označi sve" djeluje samo na trenutno filtrirane rezultate
   const allFilteredSelected =
     filteredCandidates.length > 0 && filteredCandidates.every((u) => selectedIds.includes(u.id));
 

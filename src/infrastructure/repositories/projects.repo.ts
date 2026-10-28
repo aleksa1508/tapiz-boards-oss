@@ -90,6 +90,15 @@ export const projectsRepo: ProjectsRepo = {
 
   findById: findByIdCached,
 
+  async createdAt(id) {
+    const [row] = await db
+      .select({ createdAt: projects.createdAt })
+      .from(projects)
+      .where(eq(projects.id, id))
+      .limit(1);
+    return row?.createdAt ?? null;
+  },
+
   async findByIdIncludingDeleted(id: string): Promise<ProjectDto | null> {
     const rows = await db.select(dtoColumns).from(projects).where(eq(projects.id, id)).limit(1);
     return rows[0] ?? null;
@@ -198,6 +207,27 @@ export const projectsRepo: ProjectsRepo = {
       .innerJoin(users, eq(users.id, projectMembers.userId))
       .where(eq(projectMembers.projectId, projectId))
       .orderBy(asc(users.lastName), asc(users.firstName));
+  },
+
+  async membersForExport(projectId) {
+    const rows = await db
+      .select({
+        userId: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+        joinedAt: projectMembers.joinedAt,
+      })
+      .from(projectMembers)
+      .innerJoin(users, eq(users.id, projectMembers.userId))
+      .where(eq(projectMembers.projectId, projectId))
+      .orderBy(asc(projectMembers.joinedAt), asc(projectMembers.userId));
+
+    return rows.map((row) => ({
+      ...row,
+      joinedAt: row.joinedAt.toISOString(),
+      isOwner: false,
+    }));
   },
 
   isMember: isMemberCached,

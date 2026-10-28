@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { BarChart, Button, Calendar, Gear, Plus, SearchInput, Select, X } from "@tapizlabs/ui";
+import { BarChart, Button, Calendar, Download, Gear, Plus, SearchInput, Select, X } from "@tapizlabs/ui";
 import type { ProjectMemberDto } from "@/domain/types";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -20,6 +20,7 @@ interface BoardFiltersProps {
   onPriorityChange: (v: string) => void;
   onClearFilters: () => void;
   onCalendarOpen: () => void;
+  onExportOpen: () => void;
   onInsightsToggle: () => void;
   /** Opciono — kad nije prosleđeno, dugme za kolone se ne prikazuje (premešteno u Подешавања drawer). */
   onManageColumns?: () => void;
@@ -40,6 +41,7 @@ export function BoardFilters({
   onPriorityChange,
   onClearFilters,
   onCalendarOpen,
+  onExportOpen,
   onInsightsToggle,
   onManageColumns,
   onCreateStory,
@@ -111,6 +113,19 @@ export function BoardFilters({
 
       {/* Akcije — na mobilnom 2-kol grid pune širine, na lg inline desno */}
       <div className="grid grid-cols-2 gap-2 lg:ml-auto lg:flex lg:flex-wrap lg:items-center">
+        {canManage && (
+          <Button
+            variant="secondary"
+            size="md"
+            icon={<Download size={16} />}
+            onClick={onExportOpen}
+            aria-label={dict.board.exportTitle}
+            title={dict.board.exportTitle}
+            className="h-11 w-full justify-center lg:w-auto"
+          >
+            {dict.board.exportData}
+          </Button>
+        )}
         <Button
           variant="secondary"
           size="md"

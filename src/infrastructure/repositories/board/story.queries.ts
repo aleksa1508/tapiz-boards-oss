@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, isNull, ne, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNull, ne, or, sql } from "drizzle-orm";
 import { alias } from "drizzle-orm/mysql-core";
 import { db } from "@/infrastructure/db/client";
 import {
@@ -10,12 +10,21 @@ import {
   projects,
   users,
 } from "@/infrastructure/db/schema";
-import type { BoardColumnWithStories, MyWorkItem, StoryDto } from "@/domain/types";
+import type {
+  BoardColumnWithStories,
+  MyWorkItem,
+  ProjectExportComment,
+  ProjectExportStory,
+  ProjectExportTask,
+  StoryDto,
+} from "@/domain/types";
 import { getColumns } from "./column.queries";
 import { storyOrder } from "./move.queries";
 
 const assignees = alias(users, "assignees");
 const ownProjects = alias(projects, "own_projects");
+const exportAuthors = alias(users, "export_authors");
+const exportAssignees = alias(users, "export_assignees");
 
 export const storyColumns = {
   id: stories.id,
@@ -104,6 +113,82 @@ export async function getStoriesBySprints(
     (byId[row.sprintId] ??= []).push(row);
   }
   return byId;
+}
+
+export async function getStoriesForExport(projectId: string): Promise<ProjectExportStory[]> {
+  const rows = await db
+    .select({
+      id: stories.id,
+      projectId: stories.projectId,
+      columnId: stories.columnId,
+      columnName: boardColumns.name,
+      sprintId: stories.sprintId,
+      sprintName: sprints.name,
+      title: stories.title,
+      description: stories.description,
+      position: stories.position,
+      authorId: stories.authorId,
+      authorName: sql<string>`concat(${exportAuthors.firstName}, ' ', ${exportAuthors.lastName})`,
+      authorEmail: exportAuthors.email,
+      assigneeId: stories.assigneeId,
+      assigneeName: sql<string | null>`if(${exportAssignees.id} is null, null, concat(${exportAssignees.firstName}, ' ', ${exportAssignees.lastName}))`,
+      assigneeEmail: exportAssignees.email,
+      storyPoints: stories.storyPoints,
+      priority: stories.priority,
+      dueDate: stories.dueDate,
+      createdAt: stories.createdAt,
+      updatedAt: stories.updatedAt,
+    })
+    .from(stories)
+    .innerJoin(exportAuthors, eq(exportAuthors.id, stories.authorId))
+    .leftJoin(exportAssignees, eq(exportAssignees.id, stories.assigneeId))
+    .leftJoin(boardColumns, eq(boardColumns.id, stories.columnId))
+    .leftJoin(sprints, eq(sprints.id, stories.sprintId))
+    .where(eq(stories.projectId, projectId))
+    .orderBy(asc(stories.createdAt), asc(stories.id));
+
+  return rows.map((row) => ({
+    ...row,
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
+  }));
+}
+
+export async function getTasksForStories(storyIds: string[]): Promise<ProjectExportTask[]> {
+  if (storyIds.length === 0) return [];
+  const rows = await db
+    .select({
+      id: storyTasks.id,
+      storyId: storyTasks.storyId,
+      title: storyTasks.title,
+      done: storyTasks.done,
+      position: storyTasks.position,
+      createdAt: storyTasks.createdAt,
+    })
+    .from(storyTasks)
+    .where(inArray(storyTasks.storyId, storyIds))
+    .orderBy(asc(storyTasks.storyId), asc(storyTasks.position), asc(storyTasks.id));
+  return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
+}
+
+export async function getCommentsForStoriesExport(storyIds: string[]): Promise<ProjectExportComment[]> {
+  if (storyIds.length === 0) return [];
+  const authors = alias(users, "export_comment_authors");
+  const rows = await db
+    .select({
+      id: comments.id,
+      storyId: comments.storyId,
+      authorId: comments.authorId,
+      authorName: sql<string>`concat(${authors.firstName}, ' ', ${authors.lastName})`,
+      authorEmail: authors.email,
+      body: comments.body,
+      createdAt: comments.createdAt,
+    })
+    .from(comments)
+    .innerJoin(authors, eq(authors.id, comments.authorId))
+    .where(inArray(comments.storyId, storyIds))
+    .orderBy(asc(comments.createdAt), asc(comments.id));
+  return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
 }
 
 /** All stories assigned to the user, across all their projects — for "My Work". */

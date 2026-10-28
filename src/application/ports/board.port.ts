@@ -6,6 +6,9 @@ import type {
   StoryDto,
   StoryPriority,
   StoryTaskDto,
+  ProjectExportStory,
+  ProjectExportTask,
+  ProjectExportComment,
 } from "@/domain/types";
 
 /** The list a story is ordered within — what the user sees when dropping it. */
@@ -65,6 +68,9 @@ export interface BoardRepo {
     scope: StoryOrderScope;
   }): Promise<void>;
   comments(storyId: string): Promise<CommentDto[]>;
+  storiesForExport(projectId: string): Promise<ProjectExportStory[]>;
+  tasksForStories(storyIds: string[]): Promise<ProjectExportTask[]>;
+  commentsForStoriesExport(storyIds: string[]): Promise<ProjectExportComment[]>;
   commentById(id: string): Promise<CommentDto | null>;
   addComment(storyId: string, authorId: string, body: string): Promise<CommentDto>;
   removeComment(id: string): Promise<void>;

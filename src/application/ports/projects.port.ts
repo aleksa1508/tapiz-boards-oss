@@ -1,4 +1,4 @@
-import type { ProjectDto, ProjectMemberDto } from "@/domain/types";
+import type { ProjectDto, ProjectMemberDto, ProjectExportMember } from "@/domain/types";
 
 export interface ProjectsRepo {
   /** All non-deleted projects the user is a member of. */
@@ -8,6 +8,7 @@ export interface ProjectsRepo {
   /** Non-deleted projects owned by the user that are in Trash — used by the Trash view. */
   listTrashForUser(userId: string): Promise<ProjectDto[]>;
   findById(id: string): Promise<ProjectDto | null>;
+  createdAt(id: string): Promise<Date | null>;
   /** Same as findById but also returns soft-deleted projects — used by restore/permanent-delete. */
   findByIdIncludingDeleted(id: string): Promise<ProjectDto | null>;
   findByPublicToken(token: string): Promise<ProjectDto | null>;
@@ -25,6 +26,7 @@ export interface ProjectsRepo {
   /** Projects owned by the user, including Trash — used by admin account-deletion checks. */
   countOwnedByUser(userId: string): Promise<number>;
   members(projectId: string): Promise<ProjectMemberDto[]>;
+  membersForExport(projectId: string): Promise<ProjectExportMember[]>;
   isMember(projectId: string, userId: string): Promise<boolean>;
   /** False when the user is already a member (primary key conflict). */
   addMember(projectId: string, userId: string): Promise<boolean>;
