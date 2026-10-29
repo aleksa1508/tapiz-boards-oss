@@ -20,7 +20,8 @@ export interface SprintRetroItemDto {
   sprintId: string;
   category: RetroCategory;
   body: string;
-  authorId: string;
+  authorId: string | null;
   authorName: string;
+  authorEmail: string;
   createdAt: string;
 }

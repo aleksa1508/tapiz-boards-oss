@@ -36,7 +36,8 @@ export const storyColumns = {
   description: stories.description,
   position: stories.position,
   authorId: stories.authorId,
-  authorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+  authorName: sql<string>`coalesce(concat(${users.firstName}, ' ', ${users.lastName}), nullif(${stories.authorName}, ''), '')`,
+  authorEmail: sql<string>`coalesce(${users.email}, nullif(${stories.authorEmail}, ''), '')`,
   assigneeId: stories.assigneeId,
   assigneeName: sql<
     string | null
@@ -54,7 +55,7 @@ export function storySelect() {
   return db
     .select(storyColumns)
     .from(stories)
-    .innerJoin(users, eq(users.id, stories.authorId))
+    .leftJoin(users, eq(users.id, stories.authorId))
     .leftJoin(assignees, eq(assignees.id, stories.assigneeId))
     .leftJoin(sprints, eq(sprints.id, stories.sprintId));
 }
@@ -128,8 +129,8 @@ export async function getStoriesForExport(projectId: string): Promise<ProjectExp
       description: stories.description,
       position: stories.position,
       authorId: stories.authorId,
-      authorName: sql<string>`concat(${exportAuthors.firstName}, ' ', ${exportAuthors.lastName})`,
-      authorEmail: exportAuthors.email,
+      authorName: sql<string>`coalesce(concat(${exportAuthors.firstName}, ' ', ${exportAuthors.lastName}), nullif(${stories.authorName}, ''), '')`,
+      authorEmail: sql<string>`coalesce(${exportAuthors.email}, nullif(${stories.authorEmail}, ''), '')`,
       assigneeId: stories.assigneeId,
       assigneeName: sql<string | null>`if(${exportAssignees.id} is null, null, concat(${exportAssignees.firstName}, ' ', ${exportAssignees.lastName}))`,
       assigneeEmail: exportAssignees.email,
@@ -140,7 +141,7 @@ export async function getStoriesForExport(projectId: string): Promise<ProjectExp
       updatedAt: stories.updatedAt,
     })
     .from(stories)
-    .innerJoin(exportAuthors, eq(exportAuthors.id, stories.authorId))
+    .leftJoin(exportAuthors, eq(exportAuthors.id, stories.authorId))
     .leftJoin(exportAssignees, eq(exportAssignees.id, stories.assigneeId))
     .leftJoin(boardColumns, eq(boardColumns.id, stories.columnId))
     .leftJoin(sprints, eq(sprints.id, stories.sprintId))
@@ -179,13 +180,13 @@ export async function getCommentsForStoriesExport(storyIds: string[]): Promise<P
       id: comments.id,
       storyId: comments.storyId,
       authorId: comments.authorId,
-      authorName: sql<string>`concat(${authors.firstName}, ' ', ${authors.lastName})`,
-      authorEmail: authors.email,
+      authorName: sql<string>`coalesce(concat(${authors.firstName}, ' ', ${authors.lastName}), nullif(${comments.authorName}, ''), '')`,
+      authorEmail: sql<string>`coalesce(${authors.email}, nullif(${comments.authorEmail}, ''), '')`,
       body: comments.body,
       createdAt: comments.createdAt,
     })
     .from(comments)
-    .innerJoin(authors, eq(authors.id, comments.authorId))
+    .leftJoin(authors, eq(authors.id, comments.authorId))
     .where(inArray(comments.storyId, storyIds))
     .orderBy(asc(comments.createdAt), asc(comments.id));
   return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
@@ -200,7 +201,7 @@ export async function getStoriesAssignedToUser(userId: string): Promise<MyWorkIt
       columnName: sql<string | null>`${boardColumns.name}`,
     })
     .from(stories)
-    .innerJoin(users, eq(users.id, stories.authorId))
+    .leftJoin(users, eq(users.id, stories.authorId))
     .leftJoin(assignees, eq(assignees.id, stories.assigneeId))
     .leftJoin(sprints, eq(sprints.id, stories.sprintId))
     .innerJoin(ownProjects, eq(ownProjects.id, stories.projectId))
@@ -219,7 +220,12 @@ export async function createStory(input: {
   position: number;
   authorId: string;
 }): Promise<void> {
-  await db.insert(stories).values(input);
+  const [author] = await db.select({
+    authorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+    authorEmail: users.email,
+  }).from(users).where(eq(users.id, input.authorId)).limit(1);
+  if (!author) throw new Error("Autor story-ja nije pronađen");
+  await db.insert(stories).values({ ...input, ...author });
 }
 
 /** Every editable story field, written in one statement after the service validated it. */

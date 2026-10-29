@@ -32,7 +32,8 @@ const retroItemColumns = {
   category: sprintRetroItems.category,
   body: sprintRetroItems.body,
   authorId: sprintRetroItems.authorId,
-  authorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+  authorName: sql<string>`coalesce(concat(${users.firstName}, ' ', ${users.lastName}), nullif(${sprintRetroItems.authorName}, ''), '')`,
+  authorEmail: sql<string>`coalesce(${users.email}, nullif(${sprintRetroItems.authorEmail}, ''), '')`,
   createdAt: sql<string>`date_format(${sprintRetroItems.createdAt}, '%d.%m.%Y.')`,
 };
 const exportRetroAuthors = alias(users, "export_retro_authors");
@@ -183,7 +184,7 @@ export const sprintsRepo: SprintsRepo = {
     return db
       .select(retroItemColumns)
       .from(sprintRetroItems)
-      .innerJoin(users, eq(users.id, sprintRetroItems.authorId))
+      .leftJoin(users, eq(users.id, sprintRetroItems.authorId))
       .where(eq(sprintRetroItems.sprintId, sprintId))
       .orderBy(asc(sprintRetroItems.createdAt), asc(sprintRetroItems.id));
   },
@@ -195,14 +196,14 @@ export const sprintsRepo: SprintsRepo = {
         id: sprintRetroItems.id,
         sprintId: sprintRetroItems.sprintId,
         authorId: sprintRetroItems.authorId,
-        authorName: sql<string>`concat(${exportRetroAuthors.firstName}, ' ', ${exportRetroAuthors.lastName})`,
-        authorEmail: exportRetroAuthors.email,
+        authorName: sql<string>`coalesce(concat(${exportRetroAuthors.firstName}, ' ', ${exportRetroAuthors.lastName}), nullif(${sprintRetroItems.authorName}, ''), '')`,
+        authorEmail: sql<string>`coalesce(${exportRetroAuthors.email}, nullif(${sprintRetroItems.authorEmail}, ''), '')`,
         category: sprintRetroItems.category,
         body: sprintRetroItems.body,
         createdAt: sprintRetroItems.createdAt,
       })
       .from(sprintRetroItems)
-      .innerJoin(exportRetroAuthors, eq(exportRetroAuthors.id, sprintRetroItems.authorId))
+      .leftJoin(exportRetroAuthors, eq(exportRetroAuthors.id, sprintRetroItems.authorId))
       .where(inArray(sprintRetroItems.sprintId, sprintIds))
       .orderBy(asc(sprintRetroItems.createdAt), asc(sprintRetroItems.id));
     return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));
@@ -212,7 +213,7 @@ export const sprintsRepo: SprintsRepo = {
     const rows = await db
       .select(retroItemColumns)
       .from(sprintRetroItems)
-      .innerJoin(users, eq(users.id, sprintRetroItems.authorId))
+      .leftJoin(users, eq(users.id, sprintRetroItems.authorId))
       .where(eq(sprintRetroItems.id, id))
       .limit(1);
     return rows[0] ?? null;
@@ -224,7 +225,12 @@ export const sprintsRepo: SprintsRepo = {
     category: RetroCategory,
     body: string,
   ): Promise<void> {
-    await db.insert(sprintRetroItems).values({ sprintId, authorId, category, body });
+    const [author] = await db.select({
+      authorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+      authorEmail: users.email,
+    }).from(users).where(eq(users.id, authorId)).limit(1);
+    if (!author) throw new Error("Autor retrospektive nije pronađen");
+    await db.insert(sprintRetroItems).values({ sprintId, authorId, ...author, category, body });
   },
 
   async removeRetroItem(id: string): Promise<void> {

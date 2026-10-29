@@ -22,7 +22,12 @@ export default async function HomePage() {
 
   return (
     <AppShellLayout user={user}>
-      <Dashboard firstName={user.firstName} projects={projects} currentUserId={profile.id} />
+      <Dashboard
+        firstName={user.firstName}
+        projects={projects}
+        currentUserId={profile.id}
+        isAdmin={profile.role === "admin"}
+      />
     </AppShellLayout>
   );
 }

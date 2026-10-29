@@ -12,9 +12,10 @@ interface DashboardProps {
   firstName: string;
   projects: ProjectDto[];
   currentUserId: string;
+  isAdmin: boolean;
 }
 
-export function Dashboard({ firstName, projects, currentUserId }: DashboardProps) {
+export function Dashboard({ firstName, projects, currentUserId, isAdmin }: DashboardProps) {
   const { dict } = useI18n();
   const t = dict.dashboard;
 
@@ -28,7 +29,7 @@ export function Dashboard({ firstName, projects, currentUserId }: DashboardProps
 
       <section>
         <SectionHeader num="00" title={t.personalTeams} />
-        <PersonalTeamsSection projects={projects} currentUserId={currentUserId} />
+        <PersonalTeamsSection projects={projects} currentUserId={currentUserId} isAdmin={isAdmin} />
       </section>
 
       <section>

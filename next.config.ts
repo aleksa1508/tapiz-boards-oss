@@ -41,6 +41,9 @@ const nextConfig: NextConfig = {
      Next ih učitava iz node_modules u runtime-u. */
   serverExternalPackages: ["mysql2", "bcryptjs"],
   experimental: {
+    serverActions: {
+      bodySizeLimit: "12mb",
+    },
     /* Client router cache: ponovne navigacije na već posećene rute su trenutne;
        mutacije i dalje osvežavaju podatke kroz revalidatePath/router.refresh(). */
     staleTimes: {

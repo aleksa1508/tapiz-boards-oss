@@ -31,7 +31,12 @@ export const eventsRepo: EventsRepo = {
     detail: string,
     storyId: string | null = null,
   ): Promise<void> {
-    await db.insert(projectEvents).values({ projectId, actorId, type, detail, storyId });
+    const [actor] = await db.select({
+      actorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+      actorEmail: users.email,
+    }).from(users).where(eq(users.id, actorId)).limit(1);
+    if (!actor) throw new Error("Autor aktivnosti nije pronađen");
+    await db.insert(projectEvents).values({ projectId, actorId, ...actor, type, detail, storyId });
   },
 
   /** Retention: deletes events older than `cutoff`. Returns the number of rows deleted. */
@@ -45,13 +50,13 @@ export const eventsRepo: EventsRepo = {
       .select({
         id: projectEvents.id,
         type: projectEvents.type,
-        actorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+        actorName: sql<string>`coalesce(concat(${users.firstName}, ' ', ${users.lastName}), nullif(${projectEvents.actorName}, ''), '')`,
         storyId: projectEvents.storyId,
         detail: projectEvents.detail,
         time: sql<string>`date_format(${projectEvents.createdAt}, '%H:%i')`,
       })
       .from(projectEvents)
-      .innerJoin(users, eq(users.id, projectEvents.actorId))
+      .leftJoin(users, eq(users.id, projectEvents.actorId))
       .where(
         and(eq(projectEvents.projectId, projectId), dayRange(dayIso, dayIso)),
       )
@@ -89,15 +94,15 @@ export const eventsRepo: EventsRepo = {
         id: projectEvents.id,
         projectId: projectEvents.projectId,
         actorId: projectEvents.actorId,
-        actorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
-        actorEmail: users.email,
+        actorName: sql<string>`coalesce(concat(${users.firstName}, ' ', ${users.lastName}), nullif(${projectEvents.actorName}, ''), '')`,
+        actorEmail: sql<string>`coalesce(${users.email}, nullif(${projectEvents.actorEmail}, ''), '')`,
         type: projectEvents.type,
         storyId: projectEvents.storyId,
         detail: projectEvents.detail,
         createdAt: projectEvents.createdAt,
       })
       .from(projectEvents)
-      .innerJoin(users, eq(users.id, projectEvents.actorId))
+      .leftJoin(users, eq(users.id, projectEvents.actorId))
       .where(eq(projectEvents.projectId, projectId))
       .orderBy(asc(projectEvents.createdAt), asc(projectEvents.id));
     return rows.map((row) => ({ ...row, createdAt: row.createdAt.toISOString() }));

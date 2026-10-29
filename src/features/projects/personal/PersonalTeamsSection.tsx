@@ -1,25 +1,36 @@
 "use client";
 
 import { useState } from "react";
-import { Button, EmptyState, Plus, Star } from "@tapizlabs/ui";
+import { Button, EmptyState, FileUpload, Plus, Star } from "@tapizlabs/ui";
 import type { ProjectDto } from "@/domain/types";
 import { useI18n } from "@/i18n/I18nProvider";
 import { CreatePersonalTeamModal } from "./CreatePersonalTeamModal";
 import { EntityCard } from "@/features/dashboard/EntityCard";
+import { ImportProjectPanel } from "./ImportProjectPanel";
 
 interface PersonalTeamsSectionProps {
   projects: ProjectDto[];
   currentUserId: string;
+  isAdmin: boolean;
 }
 
-export function PersonalTeamsSection({ projects, currentUserId }: PersonalTeamsSectionProps) {
+export function PersonalTeamsSection({ projects, currentUserId, isAdmin }: PersonalTeamsSectionProps) {
   const { dict } = useI18n();
   const t = dict.dashboard;
   const [createOpen, setCreateOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
 
   return (
     <>
       <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={<FileUpload size={15} />}
+          onClick={() => setImportOpen(true)}
+        >
+          {t.importProjectButton}
+        </Button>
         <Button size="sm" icon={<Plus size={15} />} onClick={() => setCreateOpen(true)}>
           {t.newPersonalTeam}
         </Button>
@@ -45,6 +56,7 @@ export function PersonalTeamsSection({ projects, currentUserId }: PersonalTeamsS
         </div>
       )}
       <CreatePersonalTeamModal isOpen={createOpen} onClose={() => setCreateOpen(false)} />
+      <ImportProjectPanel open={importOpen} isAdmin={isAdmin} onClose={() => setImportOpen(false)} />
     </>
   );
 }

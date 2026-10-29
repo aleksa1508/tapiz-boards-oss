@@ -25,11 +25,11 @@ export async function getPublicStoryDetails(storyIds: string[]): Promise<Record<
     db.select({
       id: comments.id,
       storyId: comments.storyId,
-      authorName: sql<string>`concat(${users.firstName}, ' ', ${users.lastName})`,
+      authorName: sql<string>`coalesce(concat(${users.firstName}, ' ', ${users.lastName}), nullif(${comments.authorName}, ''), '')`,
       body: comments.body,
       createdAt: sql<string>`date_format(${comments.createdAt}, '%d.%m.%Y. %H:%i')`,
     }).from(comments)
-      .innerJoin(users, eq(users.id, comments.authorId))
+      .leftJoin(users, eq(users.id, comments.authorId))
       .where(inArray(comments.storyId, storyIds))
       .orderBy(asc(comments.createdAt), asc(comments.id)),
   ]);

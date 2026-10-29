@@ -18,6 +18,7 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
+    "db:backfill-import-snapshots": "tsx --env-file=.env scripts/backfill-import-author-snapshots.ts",
     "create-admin": "tsx --env-file=.env scripts/create-admin.ts",
     "smoke": "tsx --env-file=.env scripts/smoke.ts",
     "test:board": "tsx --env-file=.env scripts/board-integrity.ts",

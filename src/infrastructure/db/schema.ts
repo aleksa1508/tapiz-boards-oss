@@ -35,6 +35,8 @@ export const projects = mysqlTable("projects", {
   ownerId: varchar("owner_id", { length: 36 })
     .notNull()
     .references(() => users.id, { onDelete: "restrict" }),
+  importedFromProjectId: varchar("imported_from_project_id", { length: 36 }),
+  importedAt: timestamp("imported_at"),
   /** Token for the public read-only board view; NULL = link disabled. */
   publicToken: varchar("public_token", { length: 36 }).unique(),
   /** Public GitHub repo linked to the project; NULL = not linked. */
@@ -42,7 +44,7 @@ export const projects = mysqlTable("projects", {
   /** Soft delete — set when moved to Trash; NULL = active project. */
   deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
-});
+}, (t) => [index("ix_projects_imported_from").on(t.importedFromProjectId)]);
 
 export const projectMembers = mysqlTable(
   "project_members",
@@ -91,8 +93,9 @@ export const sprintRetroItems = mysqlTable("sprint_retro_items", {
     .notNull()
     .references(() => sprints.id, { onDelete: "cascade" }),
   authorId: varchar("author_id", { length: 36 })
-    .notNull()
-    .references(() => users.id, { onDelete: "restrict" }),
+    .references(() => users.id, { onDelete: "set null" }),
+  authorName: varchar("author_name", { length: 201 }).notNull().default(""),
+  authorEmail: varchar("author_email", { length: 255 }).notNull().default(""),
   category: mysqlEnum("category", ["good", "bad"]).notNull(),
   body: varchar("body", { length: 1000 }).notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -115,8 +118,9 @@ export const stories = mysqlTable(
     description: text("description"),
     position: int("position").notNull().default(0),
     authorId: varchar("author_id", { length: 36 })
-      .notNull()
-      .references(() => users.id, { onDelete: "restrict" }),
+      .references(() => users.id, { onDelete: "set null" }),
+    authorName: varchar("author_name", { length: 201 }).notNull().default(""),
+    authorEmail: varchar("author_email", { length: 255 }).notNull().default(""),
     assigneeId: varchar("assignee_id", { length: 36 }).references(() => users.id, {
       onDelete: "set null",
     }),
@@ -151,8 +155,9 @@ export const comments = mysqlTable("comments", {
     .notNull()
     .references(() => stories.id, { onDelete: "cascade" }),
   authorId: varchar("author_id", { length: 36 })
-    .notNull()
-    .references(() => users.id, { onDelete: "restrict" }),
+    .references(() => users.id, { onDelete: "set null" }),
+  authorName: varchar("author_name", { length: 201 }).notNull().default(""),
+  authorEmail: varchar("author_email", { length: 255 }).notNull().default(""),
   body: text("body").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
@@ -180,8 +185,9 @@ export const projectEvents = mysqlTable(
       .notNull()
       .references(() => projects.id, { onDelete: "cascade" }),
     actorId: varchar("actor_id", { length: 36 })
-      .notNull()
-      .references(() => users.id, { onDelete: "restrict" }),
+      .references(() => users.id, { onDelete: "set null" }),
+    actorName: varchar("actor_name", { length: 201 }).notNull().default(""),
+    actorEmail: varchar("actor_email", { length: 255 }).notNull().default(""),
     type: mysqlEnum("type", PROJECT_EVENT_TYPES).notNull(),
     storyId: varchar("story_id", { length: 36 }).references(() => stories.id, {
       onDelete: "set null",

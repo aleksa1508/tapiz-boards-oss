@@ -97,6 +97,25 @@ No LMS, telemetry, or third-party service keys are needed — this edition has n
 - **Projects** — any member can create a project; it comes pre-seeded with three columns (`TO DO`, `IN PROGRESS`, `DONE`). Every signed-in user can see and work on every project; the owner manages columns, members (the people stories can be assigned to), the public link and Trash.
 - **Trash** — deleting a project soft-deletes it into **Trash**, where the owner can restore it or permanently delete it (which also removes its columns, stories, tasks, comments, and sprints).
 - **Admin** — the account created by `create-admin` is an instance admin. Admin's only special power is user management (`/admin/users`): creating accounts, resetting passwords, activating/deactivating, and deleting users. For day-to-day project work, admin behaves exactly like any other member. The instance always keeps at least one active admin — the last one can't be deactivated or deleted.
+- **Project manager** - project managers can search for users, select multiple accounts, and add them to a project in one operation.
+
+
+## Project data import and export
+
+### Export
+
+Project managers can export project data from a project board in either format:
+
+- **JSON** — structured data suitable for backup or re-import.
+- **CSV (ZIP)** — separate CSV files for reviewing and analyzing project data in spreadsheet tools.
+
+Exports include supported project data such as members, stories, checklist items, comments, retrospectives, and activities.
+
+### Import
+
+Signed-in users can import a JSON project export up to 9 MB. The file is validated before import, and a summary of its contents is shown. The import process generates new IDs for all imported entities, preserves relationships between records and their timestamps, and creates the project atomically.
+
+Administrators can manually map imported people to active local accounts; email addresses are never used for automatic matching. Unlinked author details are preserved, and unmatched assignees remain unassigned. If the same source project was imported before, the user must confirm before another copy is created.
 
 ## Checks
 

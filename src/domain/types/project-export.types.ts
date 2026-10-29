@@ -30,7 +30,7 @@ export interface ProjectExportStory {
   title: string;
   description: string | null;
   position: number;
-  authorId: string;
+  authorId: string | null;
   authorName: string;
   authorEmail: string;
   assigneeId: string | null;
@@ -55,7 +55,7 @@ export interface ProjectExportTask {
 export interface ProjectExportComment {
   id: string;
   storyId: string;
-  authorId: string;
+  authorId: string | null;
   authorName: string;
   authorEmail: string;
   body: string;
@@ -65,7 +65,7 @@ export interface ProjectExportComment {
 export interface ProjectExportRetrospective {
   id: string;
   sprintId: string;
-  authorId: string;
+  authorId: string | null;
   authorName: string;
   authorEmail: string;
   category: "good" | "bad";
@@ -76,7 +76,7 @@ export interface ProjectExportRetrospective {
 export interface ProjectExportActivity {
   id: string;
   projectId: string;
-  actorId: string;
+  actorId: string | null;
   actorName: string;
   actorEmail: string;
   type: ProjectEventType;

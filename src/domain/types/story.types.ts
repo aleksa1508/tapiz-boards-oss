@@ -9,8 +9,9 @@ export interface StoryDto {
   title: string;
   description: string | null;
   position: number;
-  authorId: string;
+  authorId: string | null;
   authorName: string;
+  authorEmail: string;
   assigneeId: string | null;
   assigneeName: string | null;
   storyPoints: number | null;
@@ -39,8 +40,9 @@ export interface StoryTaskDto {
 export interface CommentDto {
   id: string;
   storyId: string;
-  authorId: string;
+  authorId: string | null;
   authorName: string;
+  authorEmail: string;
   body: string;
   createdAt: string;
 }
