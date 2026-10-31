@@ -119,7 +119,7 @@ Administrators can manually map imported people to active local accounts; email 
 
 ### Upgrading an existing database
 
-Back up the database and stop application writes before upgrading. Run `npm run db:upgrade` to apply the Drizzle schema changes and, only if Drizzle reports success, backfill author names and emails for existing stories, comments, retrospectives, and activities. This preserves historical author details if an account is later deleted. If the schema update fails, the backfill will not run; resolve the database error before deploying the updated application. A fresh database has no legacy author data to backfill.
+Back up the database and stop application writes before upgrading. Run `npm run db:upgrade` to update the schema and backfill legacy author details; the backfill runs only if the schema update succeeds. Fresh databases have no legacy data to backfill.
 
 ## Checks
 
