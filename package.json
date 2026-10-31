@@ -23,6 +23,7 @@
     "create-admin": "tsx --env-file=.env scripts/create-admin.ts",
     "smoke": "tsx --env-file=.env scripts/smoke.ts",
     "test:board": "tsx --env-file=.env scripts/board-integrity.ts",
+    "test:project-import": "tsx --test tests/project-import-validation.test.ts",
     "test:design": "node scripts/check-oss-design.mjs"
   },
   "dependencies": {

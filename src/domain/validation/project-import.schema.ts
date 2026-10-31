@@ -55,7 +55,7 @@ export const projectImportSchema = z.object({
     id: uuid,
     projectId: uuid,
     name: z.string().trim().min(1).max(100),
-    goal: z.string().nullable(),
+    goal: mysqlText.nullable(),
     startDate: isoDay,
     endDate: isoDay,
     status: z.enum(["planned", "active", "completed"]),
@@ -184,8 +184,8 @@ export function projectImportRelationshipError(data: ProjectImportData): string 
   const sprintIds = new Set(data.sprints.map((sprint) => sprint.id));
   const storyIds = new Set(data.stories.map((story) => story.id));
 
-  if (data.columns.length === 0) {
-    return "Projekat mora imati kolone.";
+  if (data.columns.length === 0 || data.columns.filter((column) => column.isDone).length > 1) {
+    return "Projekat mora imati kolone i najviše jednu završnu (Done) kolonu.";
   }
   if (data.sprints.filter((sprint) => sprint.status === "active").length > 1) {
     return "Projekat ne može imati više od jednog aktivnog sprinta.";
