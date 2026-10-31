@@ -178,11 +178,10 @@ export function ColumnManagerModal({ isOpen, projectId, columns, onClose }: Colu
                   />
                 </div>
                 <Button
-                  variant="ghost"
+                  variant={column.isDone ? "muted-primary" : "ghost"}
                   size="sm"
                   icon={<CheckCircle size={14} />}
                   title={t.doneColumnLabel}
-                  className={column.isDone ? "text-(--tapiz-accent)" : "text-(--tapiz-text-muted)"}
                   onClick={() => void handleToggleDone(column)}
                 />
                 <Button

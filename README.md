@@ -117,6 +117,10 @@ Signed-in users can import a JSON project export up to 9 MB. The file is validat
 
 Administrators can manually map imported people to active local accounts; email addresses are never used for automatic matching. Unlinked author details are preserved, and unmatched assignees remain unassigned. If the same source project was imported before, the user must confirm before another copy is created.
 
+### Upgrading an existing database
+
+Back up the database and stop application writes before upgrading. Run `npm run db:upgrade` to apply the Drizzle schema changes and, only if Drizzle reports success, backfill author names and emails for existing stories, comments, retrospectives, and activities. This preserves historical author details if an account is later deleted. If the schema update fails, the backfill will not run; resolve the database error before deploying the updated application. A fresh database has no legacy author data to backfill.
+
 ## Checks
 
 ```bash

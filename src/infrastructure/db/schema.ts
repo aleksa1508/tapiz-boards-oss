@@ -57,7 +57,13 @@ export const projectMembers = mysqlTable(
       .references(() => users.id, { onDelete: "cascade" }),
     joinedAt: timestamp("joined_at").notNull().defaultNow(),
   },
-  (t) => [primaryKey({ columns: [t.projectId, t.userId] })],
+  (t) => [
+    primaryKey({
+      // MySQL introspection omits the `_pk` suffix for composite primary keys.
+      name: "project_members_project_id_user_id",
+      columns: [t.projectId, t.userId],
+    }),
+  ],
 );
 
 export const boardColumns = mysqlTable("board_columns", {

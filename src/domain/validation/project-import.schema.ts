@@ -184,7 +184,7 @@ export function projectImportRelationshipError(data: ProjectImportData): string 
   const sprintIds = new Set(data.sprints.map((sprint) => sprint.id));
   const storyIds = new Set(data.stories.map((story) => story.id));
 
-  if (data.columns.length === 0 || data.columns.filter((column) => column.isDone).length !== 1) {
+  if (data.columns.length === 0) {
     return "Projekat mora imati kolone i tačno jednu završnu (Done) kolonu.";
   }
   if (data.sprints.filter((sprint) => sprint.status === "active").length > 1) {
